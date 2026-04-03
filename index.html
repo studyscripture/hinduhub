@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hindu Scripture Hub — सनातन ग्रन्थालय</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Sanskrit:ital@0;1&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0c0905;
+    --surface: #17100a;
+    --card: #1c1409;
+    --border: #352210;
+    --border-hover: #6b4520;
+    --saffron: #f5a623;
+    --saffron-dim: rgba(245,166,35,0.12);
+    --gold-light: #f7d060;
+    --cream: #ede0c8;
+    --cream-dim: #b8a080;
+    --muted: #7a6248;
+    --white: #f5ede0;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--cream);
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    overflow-x: hidden;
+    line-height: 1.6;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 100% 50% at 50% 0%, rgba(245,166,35,0.07) 0%, transparent 55%),
+      radial-gradient(ellipse 60% 60% at 0% 80%, rgba(26,74,122,0.05) 0%, transparent 50%),
+      radial-gradient(ellipse 60% 60% at 100% 20%, rgba(106,42,138,0.04) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .wrap { max-width: 1060px; margin: 0 auto; padding: 0 20px; position: relative; z-index: 1; }
+
+  /* LANG BAR */
+  .lang-bar {
+    display: flex; justify-content: flex-end; align-items: center;
+    padding: 14px 20px 0; position: relative; z-index: 10;
+    max-width: 1060px; margin: 0 auto;
+  }
+  .lang-label { font-size: 12px; color: var(--muted); margin-right: 10px; letter-spacing: 0.08em; }
+  .lang-toggle { display: flex; border: 1px solid var(--border); border-radius: 3px; overflow: hidden; }
+  .lang-btn {
+    padding: 5px 16px; font-family: 'Jost', sans-serif; font-size: 13px;
+    font-weight: 500; cursor: pointer; border: none;
+    background: var(--surface); color: var(--muted); transition: all 0.15s; letter-spacing: 0.05em;
+  }
+  .lang-btn.active { background: var(--saffron); color: var(--bg); }
+
+  /* HEADER */
+  header { text-align: center; padding: 48px 20px 40px; position: relative; }
+  .om {
+    font-family: 'Tiro Devanagari Sanskrit', serif;
+    font-size: 56px; color: var(--saffron); display: block;
+    margin-bottom: 14px; line-height: 1;
+    animation: pulse-glow 4s ease-in-out infinite alternate;
+  }
+  @keyframes pulse-glow {
+    from { text-shadow: 0 0 20px rgba(245,166,35,0.25), 0 0 50px rgba(245,166,35,0.08); }
+    to   { text-shadow: 0 0 35px rgba(245,166,35,0.55), 0 0 80px rgba(245,166,35,0.2); }
+  }
+  h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(34px,5.5vw,58px); font-weight: 600; letter-spacing: 0.02em; line-height: 1.15; }
+  h1 em { color: var(--saffron); font-style: italic; }
+  .sub-en { margin-top: 10px; font-size: 13px; color: var(--muted); letter-spacing: 0.14em; text-transform: uppercase; }
+  .sub-hi { margin-top: 10px; font-family: 'Tiro Devanagari Sanskrit', serif; font-size: 17px; color: var(--muted); display: none; }
+  .rule { width: 100px; height: 1px; background: linear-gradient(90deg,transparent,var(--saffron),transparent); margin: 24px auto 0; }
+
+  /* NOTICE */
+  .notice {
+    border: 1px solid var(--border); border-left: 3px solid var(--saffron);
+    background: var(--surface); border-radius: 3px;
+    padding: 16px 20px; margin-bottom: 32px;
+    font-size: 14px; color: var(--cream-dim); line-height: 1.7;
+  }
+  .notice strong { color: var(--saffron); font-weight: 500; }
+
+  /* FILTER ROWS */
+  .filter-group { margin-bottom: 10px; }
+  .filter-label { font-size: 10.5px; letter-spacing: 0.13em; text-transform: uppercase; color: var(--muted); margin-bottom: 7px; }
+  .tabs { display: flex; gap: 6px; flex-wrap: wrap; }
+  .tabs.trad-tabs { margin-bottom: 36px; }
+  .tab {
+    padding: 6px 16px; border: 1px solid var(--border);
+    background: var(--surface); color: var(--muted);
+    font-family: 'Jost', sans-serif; font-size: 12.5px;
+    cursor: pointer; border-radius: 2px; transition: all 0.15s; letter-spacing: 0.06em;
+  }
+  .tab:hover { border-color: var(--border-hover); color: var(--cream-dim); }
+  .tab.active { background: var(--saffron); border-color: var(--saffron); color: var(--bg); font-weight: 600; }
+  .tab.trad-vaishnava.active { background: #4090cc; border-color: #4090cc; }
+  .tab.trad-shaiva.active    { background: #9a4aaa; border-color: #9a4aaa; }
+  .tab.trad-shakta.active    { background: #c05050; border-color: #c05050; }
+  .tab.trad-smarta.active    { background: #1a9b8c; border-color: #1a9b8c; }
+  .tab.trad-shrauta.active   { background: #c08030; border-color: #c08030; }
+
+  /* SECTION */
+  .section { margin-bottom: 52px; }
+  .section.hidden { display: none; }
+  .sec-head { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; }
+  .sec-head h2 { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 600; white-space: nowrap; color: var(--white); }
+  .sec-line { flex: 1; height: 1px; background: var(--border); }
+  .sec-tag { font-size: 10.5px; letter-spacing: 0.13em; text-transform: uppercase; color: var(--saffron); border: 1px solid rgba(245,166,35,0.3); padding: 3px 10px; border-radius: 2px; white-space: nowrap; }
+  .sec-desc { font-size: 13.5px; color: var(--muted); margin-bottom: 18px; max-width: 680px; line-height: 1.65; }
+
+  /* GRID */
+  .grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(300px,1fr)); gap: 14px; }
+  .card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 4px; padding: 20px 20px 16px;
+    text-decoration: none; display: block;
+    transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+    position: relative; overflow: hidden;
+  }
+  .card.card-hidden { display: none; }
+  .card::after {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: var(--accent,var(--saffron));
+    transform: scaleX(0); transform-origin: left; transition: transform 0.25s;
+  }
+  .card:hover { border-color: var(--accent,var(--saffron)); transform: translateY(-2px); box-shadow: 0 10px 32px rgba(0,0,0,0.5); }
+  .card:hover::after { transform: scaleX(1); }
+  .card-icon { font-size: 22px; margin-bottom: 9px; display: block; line-height: 1; }
+  .card-title { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 600; color: var(--white); margin-bottom: 3px; line-height: 1.2; }
+  .card-title-hi { font-family: 'Tiro Devanagari Sanskrit', serif; font-size: 16px; color: var(--saffron); margin-bottom: 3px; display: none; }
+  .card-source { font-size: 11px; color: var(--accent,var(--saffron)); letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; margin-bottom: 9px; }
+  .card-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
+  .card-desc-hi { font-family: 'Tiro Devanagari Sanskrit', serif; font-size: 13px; color: var(--muted); line-height: 1.7; display: none; }
+  .badges { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 12px; }
+  .badge { font-size: 10.5px; padding: 2px 8px; border-radius: 2px; letter-spacing: 0.05em; }
+  .b-skt  { background: rgba(245,166,35,0.1);  color: #e0ab48; border: 1px solid rgba(245,166,35,0.25); }
+  .b-eng  { background: rgba(237,224,200,0.07); color: #9e8464; border: 1px solid rgba(237,224,200,0.15); }
+  .b-hin  { background: rgba(26,122,110,0.12);  color: #4abaaa; border: 1px solid rgba(26,122,110,0.28); }
+  .b-vs   { background: rgba(184,50,50,0.15);   color: #e07070; border: 1px solid rgba(184,50,50,0.3); }
+  .b-srch { background: rgba(26,74,122,0.2);    color: #60aadd; border: 1px solid rgba(26,74,122,0.4); }
+  .b-trad-vaishnava { background: rgba(64,144,204,0.15); color: #60aadd; border: 1px solid rgba(64,144,204,0.35); }
+  .b-trad-shaiva    { background: rgba(154,74,170,0.15); color: #c080dd; border: 1px solid rgba(154,74,170,0.35); }
+  .b-trad-shakta    { background: rgba(192,80,80,0.15);  color: #e07070; border: 1px solid rgba(192,80,80,0.35); }
+  .b-trad-smarta    { background: rgba(26,155,140,0.15); color: #4abaaa; border: 1px solid rgba(26,155,140,0.35); }
+  .b-trad-shrauta   { background: rgba(192,128,48,0.15); color: #d4943a; border: 1px solid rgba(192,128,48,0.35); }
+
+  /* accent colors */
+  .a-saffron { --accent: #f5a623; }
+  .a-red     { --accent: #c05050; }
+  .a-teal    { --accent: #1a9b8c; }
+  .a-blue    { --accent: #4090cc; }
+  .a-green   { --accent: #48a068; }
+  .a-purple  { --accent: #9a4aaa; }
+
+  /* empty state */
+  .no-results {
+    display: none; text-align: center; padding: 40px 20px;
+    color: var(--muted); font-size: 14px; letter-spacing: 0.05em;
+    border: 1px dashed var(--border); border-radius: 4px; margin-bottom: 30px;
+  }
+  .no-results.visible { display: block; }
+
+  /* PORTALS */
+  .portal-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(190px,1fr)); gap: 10px; }
+  .portal-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 4px;
+    padding: 14px 16px; text-decoration: none; display: flex; align-items: center; gap: 12px;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .portal-card:hover { border-color: var(--saffron); background: var(--card); }
+  .pi { font-size: 20px; flex-shrink: 0; }
+  .pn { font-size: 14px; font-weight: 500; color: var(--white); margin-bottom: 2px; }
+  .pn-hi { font-family: 'Tiro Devanagari Sanskrit', serif; font-size: 13px; color: var(--saffron); display: none; margin-bottom: 2px; }
+  .pd { font-size: 11.5px; color: var(--muted); line-height: 1.4; }
+
+  /* FOOTER */
+  footer { border-top: 1px solid var(--border); padding: 28px 20px; text-align: center; color: var(--muted); font-size: 13px; position: relative; z-index: 1; line-height: 1.8; }
+  footer .mantra { font-family: 'Tiro Devanagari Sanskrit', serif; font-size: 15px; color: var(--cream-dim); margin-bottom: 8px; }
+  footer strong { color: var(--saffron); font-weight: 500; }
+
+  @media (max-width: 600px) {
+    .grid { grid-template-columns: 1fr; }
+    .portal-grid { grid-template-columns: 1fr 1fr; }
+    .sec-tag { display: none; }
+    h1 { font-size: 30px; }
+  }
+
+  /* ── SOURCE PROTECTION ── */
+  body { -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
+  .card-desc, .card-desc-hi, .card-title, .card-source, .pd, .sec-desc { -webkit-user-select: text; -moz-user-select: text; user-select: text; }
+  @media print { body { display: none !important; } }
+</style>
+</head>
+<body>
+
+<div class="lang-bar">
+  <span class="lang-label">Language / भाषा</span>
+  <div class="lang-toggle">
+    <button class="lang-btn active" onclick="setLang('en',this)">EN</button>
+    <button class="lang-btn" onclick="setLang('hi',this)">हिंदी</button>
+  </div>
+</div>
+
+<header>
+  <span class="om">ॐ</span>
+  <h1>Hindu <em>Scripture</em> Hub</h1>
+  <p class="sub-en">Tradition-rooted texts &nbsp;·&nbsp; Ācārya translations &nbsp;·&nbsp; All traditions</p>
+  <p class="sub-hi">परम्परा-आधारित ग्रन्थ · आचार्य-अनुमोदित अनुवाद · सभी सम्प्रदाय</p>
+  <div class="rule"></div>
+</header>
+
+<div class="wrap">
+
+<div class="notice">
+  <span class="t-en"><strong>No colonial bias.</strong> Every source is from <strong>Indian ācāryas, sampradāya lineages, or Indian institutions</strong> — Internet Archive (Dr Tulsiram, Swami Nikhilananda / Ramakrishna Math), Prabhupāda (Gauḍīya), Swami Chinmayānanda, Gīta Press, IIT Kanpur. All links verified 2026.</span>
+  <span class="t-hi" style="display:none"><strong>कोई औपनिवेशिक पूर्वाग्रह नहीं।</strong> प्रत्येक स्रोत <strong>भारतीय आचार्यों, सम्प्रदायों या भारतीय संस्थाओं</strong> से है — इंटरनेट आर्काइव (डॉ. तुलसीराम, स्वामी निखिलानन्द / रामकृष्ण मठ), प्रभुपाद (गौड़ीय), स्वामी चिन्मयानन्द, गीताप्रेस, IIT कानपुर। सभी लिंक २०२६ में सत्यापित।</span>
+</div>
+
+<!-- FILTER ROW 1: Scripture type -->
+<div class="filter-group">
+  <div class="filter-label t-en">Scripture Type</div>
+  <div class="filter-label t-hi" style="display:none">ग्रन्थ-प्रकार</div>
+  <div class="tabs">
+    <button class="tab active" id="tab-all"     onclick="filterSection('all',this)">All Scripture</button>
+    <button class="tab"        id="tab-shruti"  onclick="filterSection('shruti',this)">Śruti</button>
+    <button class="tab"        id="tab-smriti"  onclick="filterSection('smriti',this)">Smṛti &amp; Itihāsa</button>
+    <button class="tab"        id="tab-purana"  onclick="filterSection('purana',this)">Purāṇas</button>
+    <button class="tab"        id="tab-darsana" onclick="filterSection('darsana',this)">Darśana &amp; Āgama</button>
+    <button class="tab"        id="tab-portals" onclick="filterSection('portals',this)">Full Portals</button>
+  </div>
+</div>
+
+<!-- FILTER ROW 2: Sampradāya -->
+<div class="filter-group">
+  <div class="filter-label t-en">Sampradāya / Tradition</div>
+  <div class="filter-label t-hi" style="display:none">सम्प्रदाय</div>
+  <div class="tabs trad-tabs">
+    <button class="tab active"        id="trad-all"       onclick="filterTrad('all',this)">All Traditions</button>
+    <button class="tab trad-vaishnava" id="trad-vaishnava" onclick="filterTrad('vaishnava',this)">Vaiṣṇavism</button>
+    <button class="tab trad-shaiva"    id="trad-shaiva"    onclick="filterTrad('shaiva',this)">Śaivism</button>
+    <button class="tab trad-shakta"    id="trad-shakta"    onclick="filterTrad('shakta',this)">Śāktism</button>
+    <button class="tab trad-smarta"    id="trad-smarta"    onclick="filterTrad('smarta',this)">Smārtism</button>
+    <button class="tab trad-shrauta"   id="trad-shrauta"   onclick="filterTrad('shrauta',this)">Śrautism</button>
+  </div>
+</div>
+
+<div class="no-results" id="no-results">
+  <span class="t-en">No texts match the current filters — try a different combination.</span>
+  <span class="t-hi" style="display:none">वर्तमान फ़िल्टर से कोई ग्रन्थ नहीं मिला — कृपया अन्य संयोजन आज़माएँ।</span>
+</div>
+
+<!-- ════ SHRUTI ════ -->
+<div class="section" data-s="shruti">
+  <div class="sec-head">
+    <h2><span class="t-en">Śruti</span><span class="t-hi" style="display:none">श्रुति</span></h2>
+    <div class="sec-line"></div>
+    <span class="sec-tag">Apauruṣeya — Eternal &amp; Revealed</span>
+  </div>
+  <p class="sec-desc t-en">The four Vedas and Upaniṣads — eternal sound heard by the ṛṣis, not composed by any person. The highest pramāṇa in all āstika darśanas.</p>
+  <p class="sec-desc t-hi" style="display:none">चारों वेद और उपनिषद् — ऋषियों द्वारा श्रुत अपौरुषेय ज्ञान। समस्त आस्तिक दर्शनों में सर्वोच्च प्रमाण।</p>
+  <div class="grid">
+
+    <a href="https://archive.org/details/wg868/mode/2up" target="_blank" class="card a-saffron" data-trad="shrauta smarta vaishnava shaiva shakta">
+      <span class="card-icon">🕉️</span>
+      <div class="card-title">Ṛg Veda</div>
+      <div class="card-title-hi">ऋग्वेद</div>
+      <div class="card-source">Internet Archive · Dr Tulsi Ram (Ārṣa tradition)</div>
+      <p class="card-desc">All 10 Maṇḍalas, 10,552 mantras — English translation in the Ārṣa tradition. The oldest of the four Vedas; foundational śruti of all āstika darśanas.</p>
+      <p class="card-desc-hi">सभी १० मण्डल, १०,५५२ मंत्र। डॉ. तुलसीराम कृत आर्ष परम्परा में अंग्रेजी अनुवाद। चारों वेदों में प्राचीनतम — समस्त आस्तिक दर्शनों का मूलाधार।</p>
+      <div class="badges"><span class="badge b-skt">संस्कृत</span><span class="badge b-eng">English</span><span class="badge b-trad-shrauta">श्रौत</span><span class="badge b-trad-smarta">स्मार्त</span><span class="badge b-trad-vaishnava">वैष्णव</span><span class="badge b-trad-shaiva">शैव</span><span class="badge b-trad-shakta">शाक्त</span></div>
+    </a>
+
+    <a href="https://archive.org/details/samaveda_202212" target="_blank" class="card a-saffron" data-trad="shrauta smarta vaishnava shaiva shakta">
+      <span class="card-icon">🎵</span>
+      <div class="card-title">Sāma Veda</div>
+      <div class="card-title-hi">सामवेद</div>
+      <div class="card-source">Internet Archive · Dr Tulsiram MA</div>
+      <p class="card-desc">The Veda of sacred chant — 1,875 mantras set to melody. English translation in the Ārṣa tradition. "Among the Vedas I am Sāmaveda" — Gītā 10.22.</p>
+      <p class="card-desc-hi">गान और संगीत का वेद — १,८७५ मंत्र। डॉ. तुलसीराम कृत आर्ष परम्परा में अंग्रेजी अनुवाद। "वेदानां सामवेदोऽस्मि" — गीता १०.२२।</p>
+      <div class="badges"><span class="badge b-skt">संस्कृत</span><span class="badge b-eng">English</span><span class="badge b-trad-shrauta">श्रौत</span><span class="badge b-trad-smarta">स्मार्त</span><span class="badge b-trad-vaishnava">वैष्णव</span><span class="badge b-trad-shaiva">शैव</span><span class="badge b-trad-shakta">शाक्त</span></div>
+    </a>
+
+    <a href="https://archive.org/details/wg866" target="_blank" class="card a-saffron" data-trad="shrauta smarta vaishnava shaiva shakta">
+      <span class="card-icon">🔥</span>
+      <div class="card-title">Yajur Veda</div>
+      <div class="card-title-hi">यजुर्वेद</div>
+      <div class="card-source">Internet Archive · Dr Tulsi Ram (2013)</div>
+      <p class="card-desc">The Veda of ritual formulas — Sanskrit with transliteration and English translation in the Ārṣa tradition of Maharishi Yaska and Swami Dayananda.</p>
+      <p class="card-desc-hi">यज्ञ-मंत्रों का वेद। मूल संस्कृत, लिप्यंतरण और महर्षि यास्क व स्वामी दयानन्द की आर्ष परम्परा में अंग्रेजी अनुवाद।</p>
+      <div class="badges"><span class="badge b-skt">संस्कृत</span><span class="badge b-eng">English</span><span class="badge b-trad-shrauta">श्रौत</span><span class="badge b-trad-smarta">स्मार्त</span><span class="badge b-trad-vaishnava">वैष्णव</span><span class="badge b-trad-shaiva">शैव</span><span class="badge b-trad-shakta">शाक्त</span></div>
+    </a>
+
+
+    <a href="https://archive.org/details/atharvaved-vol-1" target="_blank" class="card a-saffron" data-trad="shrauta smarta vaishnava shaiva shakta">
+      <span class="card-icon">🌿</span>
+      <div class="card-title">Atharva Veda</div>
+      <div class="card-title-hi">अथर्ववेद</div>
+      <div class="card-source">Internet Archive · Dr Tulsiram MA (Vol 1 &amp; 2)</div>
+      <p class="card-desc">Both volumes in English — healing, protection, and cosmological knowledge. The fourth Veda covering daily life and metaphysics, in the Ārṣa tradition.</p>
+      <p class="card-desc-hi">दोनों खण्ड अंग्रेजी में। चिकित्सा, रक्षा और ब्रह्माण्डविज्ञान — दैनिक जीवन और तत्त्वमीमांसा। डॉ. तुलसीराम कृत आर्ष परम्परा में अनुवाद।</p>
+      <div class="badges"><span class="badge b-skt">संस्कृत</span><span class="badge b-eng">English</span><span class="badge b-trad-shrauta">श्रौत</span><span class="badge b-trad-smarta">स्मार्त</span><span class="badge b-trad-vaishnava">वैष्णव</span><span class="badge b-trad-shaiva">शैव</span><span class="badge b-trad-shakta">शाक्त</span></div>
+    </a>
+
+    <a href="https://www.wisdomlib.org/hinduism/book/satapatha-brahmana-english" target="_blank" class="card a-saffron" data-trad="shrauta smarta vaishnava shaiva shakta">
+      <span class="card-icon">📿</span>
+      <div class="card-title">Śatapatha Brāhmaṇa</div>
+      <div class="card-title-hi">शतपथब्राह्मण</div>
+      <div class="card-source">Wisdomlib · Yājñavalkya · Śukla Yajurveda · Full English</div>
+      <p class="card-desc">The most complete of all Brāhmaṇas — 14 Kāṇḍas covering every major Śrauta rite, cosmology, and the Bṛhadāraṇyaka Upaniṣad (Kāṇḍa 14). Contains the Puruṣa-Nārāyaṇa section (ŚB 13.6) cited as Vaiṣṇava pramāṇa, the Śatarudrīya-related Rudra passages (ŚB 9.1) essential to Śaiva theology, and cosmological material foundational to all āstika darśanas including Śākta. The primary Vedic manual for Śrauta rites; Śaṅkarācārya, Rāmānuja, and Madhvācārya all cite it. Accepted as śruti-level pramāṇa across all five traditions. Full English text, fully searchable.</p>
+      <p class="card-desc-hi">सभी ब्राह्मण-ग्रन्थों में सर्वाधिक पूर्ण — १४ काण्ड, समस्त प्रमुख श्रौत यज्ञविधि, ब्रह्माण्डविज्ञान और बृहदारण्यक उपनिषद् (काण्ड १४) सहित। पुरुष-नारायण खण्ड (ŚB १३.६) — वैष्णव प्रमाण; शतरुद्रीय-सम्बद्ध रुद्र-खण्ड (ŚB ९.१) — शैव धर्मशास्त्र के लिए आवश्यक; शाक्त सहित समस्त आस्तिक दर्शनों का ब्रह्माण्डविज्ञान-आधार। शंकराचार्य, रामानुज और मध्वाचार्य — सभी ने इसे उद्धृत किया है। पाँचों परम्पराओं में श्रुति-तुल्य प्रमाण। पूर्ण अंग्रेजी पाठ, खोज-योग्य।</p>
+      <div class="badges"><span class="badge b-skt">संस्कृत</span><span class="badge b-eng">English</span><span class="badge b-srch">Searchable</span><span class="badge b-trad-shrauta">श्रौत</span><span class="badge b-trad-smarta">स्मार्त</span><span class="badge b-trad-vaishnava">वैष्णव</span><span class="badge b-trad-shaiva">शैव</span><span class="badge b-trad-shakta">शाक्त</span></div>
+    </a>
+
+    <a href="https://archive.org/details/upanishads.thevolume1swaminikhilanandar.k.mutt_202003_863_a" target="_blank" class="card a-red" data-trad="shrauta smarta shakta vaishnava shaiva">
+      <span class="card-icon">📜</span>
+      <div class="card-title">Upaniṣads Vol. 1</div>
+      <div class="card-title-hi">उपनिषद् — प्रथम खण्ड</div>
+      <div class="card-source">Internet Archive · Swami Nikhilananda, R.K. Mutt</div>
+      <p class="card-desc">Volume 1 of the 4-volume set by Swami Nikhilananda of Ramakrishna Math — the standard sampradāya-rooted English rendering of the principal Upaniṣads. English translation and commentary based on Śaṅkara's bhāṣya; no Sanskrit text in this edition.</p>
+      <p class="card-desc-hi">स्वामी निखिलानन्द, रामकृष्ण मठ कृत चार खण्डों में उपनिषद् — प्रथम खण्ड। सम्प्रदाय-परम्परा में प्रामाणिक अंग्रेजी अनुवाद। शंकराचार्य भाष्य-आधारित; इस संस्करण में संस्कृत पाठ नहीं है।</p>
+      <div class="badges"><span class="badge b-eng">English</span><span class="badge b-trad-shrauta">श्रौत</span><span class="badge b-trad-smarta">स्मार्त</span><span class="badge b-trad-shakta">शाक्त</span><span class="badge b-trad-vaishnava">वैष्णव</span><span class="badge b-trad-shaiva">शैव</span></div>
+    </a>
+
+    <a href="https://archive.org/details/upanishads.thevolume2swaminikhilanandar.k.mutt_202003_999_R" target="_blank" class="card a-red" data-trad="shrauta smarta shakta vaishnava shaiva">
+      <span class="card-icon">📜</span>
+      <div class="card-title">Upaniṣads Vol. 2</div>
+      <div class="card-title-hi">उपनिषद् — द्वितीय खण्ड</div>
+      <div class="card-source">Internet Archive · Swami Nikhilananda, R.K. Mutt</div>
+      <p class="card-desc">Volume 2 of Swami Nikhilananda's authoritative translation — Ramakrishna Math edition. Continues the principal Upaniṣads with Śaṅkara's commentary. English translation only; no Sanskrit text in this edition.</p>
+      <p class="card-desc-hi">स्वामी निखिलानन्द कृत उपनिषद् — द्वितीय खण्ड। रामकृष्ण मठ संस्करण। शंकराचार्य भाष्य-आधारित अंग्रेजी अनुवाद; इस संस्करण में संस्कृत पाठ नहीं है।</p>
+      <div class="badges"><span class="badge b-eng">English</span><span class="badge b-trad-shrauta">श्रौत</span><span class="badge b-trad-smarta">स्मार्त</span><span class="badge b-trad-shakta">शाक्त</span><span class="badge b-trad-vaishnava">वैष्णव</span><span class="badge b-trad-shaiva">शैव</span></div>
+    </a>
+
+    <a href="https://archive.org/details/upanishads.thevolume3swaminikhilanandar.k.mutt_202003_66_I" target="_blank" class="card a-red" data-trad="shrauta smarta shakta vaishnava shaiva">
+      <span class="card-icon">📜</span>
+      <div class="card-title">Upaniṣads Vol. 3</div>
+      <div class="card-title-hi">उपनिषद् — तृतीय खण्ड</div>
+      <div class="card-source">Internet Archive · Swami Nikhilananda, R.K. Mutt</div>
+      <p class="card-desc">Volume 3 of Swami Nikhilananda's complete Upaniṣad set — Ramakrishna Math. The Vedānta rendered from within the tradition, with Śaṅkara's commentary throughout. English translation only; no Sanskrit text in this edition.</p>
+      <p class="card-desc-hi">स्वामी निखिलानन्द कृत उपनिषद् — तृतीय खण्ड। रामकृष्ण मठ। परम्परा-आधारित वेदान्त, शंकराचार्य भाष्य सहित। इस संस्करण में संस्कृत पाठ नहीं है।</p>
+      <div class="badges"><span class="badge b-eng">English</span><span class="badge b-trad-shrauta">श्रौत</span><span class="badge b-trad-smarta">स्मार्त</span><span class="badge b-trad-shakta">शाक्त</span><span class="badge b-trad-vaishnava">वैष्णव</span><span class="badge b-trad-shaiva">शैव</span></div>
+    </a>
+
+    <a href="https://archive.org/details/upanishads.thevolume4swaminikhilanandar.k.mutt_202003_240_Z" target="_blank" class="card a-red" data-trad="shrauta smarta shakta vaishnava shaiva">
+      <span class="card-icon">📜</span>
+      <div class="card-title">Upaniṣads Vol. 4</div>
+      <div class="card-title-hi">उपनिषद् — चतुर्थ खण्ड</div>
+      <div class="card-source">Internet Archive · Swami Nikhilananda, R.K. Mutt</div>
+      <p class="card-desc">Volume 4 — the concluding volume of Swami Nikhilananda's Ramakrishna Math edition. Completes the principal Upaniṣads with Śaṅkara's sampradāya commentary. English translation only; no Sanskrit text in this edition.</p>
+      <p class="card-desc-hi">स्वामी निखिलानन्द कृत उपनिषद् — चतुर्थ खण्ड। रामकृष्ण मठ। प्रमुख उपनिषदों का सम्पूर्ण संग्रह, शंकराचार्य के सम्प्रदाय-भाष्य सहित। इस संस्करण में संस्कृत पाठ नहीं है।</p>
+      <div class="badges"><span class="badge b-eng">English</span><span class="badge b-trad-shrauta">श्रौत</span><span class="badge b-trad-smarta">स्मार्त</span><span class="badge b-trad-shakta">शाक्त</span><span class="badge b-trad-vaishnava">वैष्णव</span><span class="badge b-trad-shaiva">शैव</span></div>
+    </a>
+
+    <a href="https://archive.org/details/EightUpanishadsVol.1BySwamiGambhirananda" target="_blank" class="card a-red" data-trad="shrauta smarta vaishnava shaiva shakta">
+      <span class="card-icon">📜</span>
+      <div class="card-title">Eight Upaniṣads Vol. 1 — with Śaṅkara Bhāṣya</div>
+      <div class="card-title-hi">आठ उपनिषद् — प्रथम खण्ड (शांकर भाष्य सहित)</div>
+      <div class="card-source">Internet Archive · Swami Gambhirananda, Advaita Ashrama (R.K. Order)</div>
+      <p class="card-desc">Īśā, Kena, Kaṭha, and Taittirīya Upaniṣads — Devanāgarī Sanskrit text, Śaṅkara's complete bhāṣya translated word-for-word into English, with notes and Sanskrit index. The scholarly standard for serious Advaita study. Swami Gambhirananda was the 11th President of the Ramakrishna Mission.</p>
+      <p class="card-desc-hi">ईशा, केन, कठ और तैत्तिरीय उपनिषद् — देवनागरी संस्कृत पाठ, शंकराचार्य का सम्पूर्ण भाष्य शब्दशः अंग्रेजी अनुवाद सहित, टिप्पणी और संस्कृत सूची। अद्वैत अध्ययन का विद्वत्-मानक संस्करण। स्वामी गम्भीरानन्द रामकृष्ण मिशन के ११वें अध्यक्ष थे।</p>
+      <div class="badges"><span class="badge b-skt">संस्कृत</span><span class="badge b-eng">English</span><span class="badge b-vs">Verse-level</span><span class="badge b-trad-shrauta">श्रौत</span><span class="badge b-trad-smarta">स्मार्त</span><span class="badge b-trad-vaishnava">वैष्णव</span><span class="badge b-trad-shaiva">शैव</span><span class="badge b-trad-shakta">शाक्त</span></div>
+    </a>
+
+    <a href="https://archive.org/details/EightUpanishadsVol.2BySwamiGambhirananda" target="_blank" class="card a-red" data-trad="shrauta smarta vaishnava shaiva shakta">
+      <span class="card-icon">📜</span>
+      <div class="card-title">Eight Upaniṣads Vol. 2 — with Śaṅkara Bhāṣya</div>
+      <div class="card-title-hi">आठ उपनिषद् — द्वितीय खण्ड (शांकर भाष्य सहित)</div>
+      <div class="card-source">Internet Archive · Swami Gambhirananda, Advaita Ashrama (R.K. Order)</div>
+      <p class="card-desc">Aitareya, Muṇḍaka, Māṇḍūkya (with Gauḍapāda Kārikā), and Praśna Upaniṣads — Devanāgarī Sanskrit text, Śaṅkara's complete bhāṣya translated word-for-word into English, with notes and Sanskrit index. Includes the Māṇḍūkya with Gauḍapāda's Kārikā — essential for understanding the four states of consciousness and Advaita's philosophical foundations.</p>
+      <p class="card-desc-hi">ऐतरेय, मुण्डक, माण्डूक्य (गौडपाद कारिका सहित) और प्रश्न उपनिषद् — देवनागरी संस्कृत, शंकराचार्य भाष्य का शब्दशः अंग्रेजी अनुवाद, टिप्पणी और संस्कृत सूची। माण्डूक्य-गौडपाद कारिका — चेतना की चार अवस्थाओं और अद्वैत की दार्शनिक आधारशिला के लिए आवश्यक।</p>
+      <div class="badges"><span class="badge b-skt">संस्कृत</span><span class="badge b-eng">English</span><span class="badge b-vs">Verse-level</span><span class="badge b-trad-shrauta">श्रौत</span><span class="badge b-trad-smarta">स्मार्त</span><span class="badge b-trad-vaishnava">वैष्णव</span><span class="badge b-trad-shaiva">शैव</span><span class="badge b-trad-shakta">शाक्त</span></div>
+    </a>
+
+    <a href="https://vedabase.io/en/library/iso/" target="_blank" class="card a-red" data-trad="shrauta smarta vaishnava shaiva shakta">
+      <span class="card-icon">📘</span>
+      <div class="card-title">Īśopaniṣad</div>
+      <div class="card-title-hi">ईशोपनिषद्</div>
+      <div class="card-source">Vedabase · Prabhupāda (Gauḍīya Vaiṣṇava)</div>
+      <p class="card-desc">All 18 mantras — Sanskrit, transliteration, word-by-word, translation, and purport. Best verse-navigation UI of any Upaniṣad online.</p>
+      <p class="card-desc-hi">सभी १८ मंत्र — संस्कृत, लिप्यंतरण, अन्वय, अनुवाद और तात्पर्य। गौड़ीय वैष्णव सम्प्रदाय। सर्वोत्तम वर्स-नेविगेशन।</p>
+      <div class="badges"><span class="badge b-skt">संस्कृत</span><span class="badge b-eng">English</span><span class="badge b-vs">Verse-level</span><span class="badge b-trad-shrauta">श्रौत</span><span class="badge b-trad-smarta">स्मार्त</span><span class="badge b-trad-vaishnava">वैष्णव</span><span class="badge b-trad-shaiva">शैव</span><span class="badge b-trad-shakta">शाक्त</span></div>
+    </a>
+
+  </div>
+</div>
+
+<!-- ════ SMRITI ════ -->
+<div class="section" data-s="smriti">
+  <div class="sec-head">
+    <h2><span class="t-en">Smṛti &amp; Itihāsa</span><span class="t-hi" style="display:none">स्मृति और इतिहास</span></h2>
+    <div class="sec-line"></div>
+    <span class="sec-tag">Remembered Tradition</span>
+  </div>
+  <p class="sec-desc t-en">The Bhagavad Gītā (three sampradāya perspectives), Vālmīki Rāmāyaṇa, Rāmcaritmānas, Mahābhārata, and Dharmaśāstra — all from Indian and sampradāya sources.</p>
+  <p class="sec-desc t-hi" style="display:none">भगवद्गीता (तीन सम्प्रदायों के दृष्टिकोण), वाल्मीकि रामायण, रामचरितमानस, महाभारत और धर्मशास्त्र — सभी भारतीय और सम्प्रदाय-आधारित स्रोतों से।</p>
+  <div class="grid">
+
+    <a href="https://shlokam.org/bhagavad-gita/" target="_blank" class="card a-teal" data-trad="smarta vaishnava shaiva shakta">
+      <span class="card-icon">📖</span>
+      <div class="card-title">Bhagavad Gītā</div>
+      <div class="card-title-hi">भगवद्गीता</div>
+      <div class="card-source">Shlokam.org · Śaṅkarācārya + Chinmayānanda</div>
+      <p class="card-desc">All 18 chapters, 701 verses. Sanskrit + IAST + word-by-word + Śaṅkarācārya Advaita Bhāṣya + Swami Chinmayānanda commentary. Audio on every verse.</p>
+      <p class="card-desc-hi">सभी १८ अध्याय, ७०१ श्लोक। संस्कृत + IAST + अन्वय + शंकराचार्य का अद्वैत भाष्य + स्वामी चिन्मयानन्द की व्याख्या। प्रत्येक श्लोक पर ऑडियो।</p>
+      <div class="badges"><span class="badge b-skt">संस्कृत</span><span class="badge b-eng">English</span><span class="badge b-vs">Verse-level</span><span class="badge b-srch">Searchable</span><span class="badge b-trad-smarta">स्मार्त</span><span class="badge b-trad-vaishnava">वैष्णव</span><span class="badge b-trad-shaiva">शैव</span></div>
+    </a>
+
+    <a href="https://vedabase.io/en/library/bg/" target="_blank" class="card a-teal" data-trad="vaishnava smarta shaiva shakta">
+      <span class="card-icon">📘</span>
+      <div class="card-title">Bhagavad Gītā As It Is</div>
+      <div class="card-title-hi">यथारूप भगवद्गीता</div>
+      <div class="card-source">Vedabase · Prabhupāda (Gauḍīya Vaiṣṇava)</div>
+      <p class="card-desc">Every verse: Sanskrit, transliteration, synonyms, translation & purport. The most navigable Gītā online — Gauḍīya sampradāya perspective.</p>
+      <p class="card-desc-hi">प्रत्येक श्लोक — संस्कृत, लिप्यंतरण, अन्वय, अनुवाद और तात्पर्य। गौड़ीय वैष्णव सम्प्रदाय। सर्वाधिक नेविगेशन-योग्य।</p>
+      <div class="badges"><span class="badge b-skt">संस्कृत</span><span class="badge b-eng">English</span><span class="badge b-vs">Verse-level</span><span class="badge b-srch">Searchable</span><span class="badge b-trad-vaishnava">वैष्णव</span><span class="badge b-trad-smarta">स्मार्त</span><span class="badge b-trad-shaiva">शैव</span></div>
+    </a>
+
+    <a href="https://www.holy-bhagavad-gita.org/" target="_blank" class="card a-teal" data-trad="vaishnava smarta shaiva shakta">
+      <span class="card-icon">🌸</span>
+      <div class="card-title">Bhagavad Gītā</div>
+      <div class="card-title-hi">भगवद्गीता</div>
+      <div class="card-source">Swami Mukundananda · JKYog (Bhakti)</div>
+      <p class="card-desc">Sanskrit + Hindi + English on every verse. Swami Mukundananda's Bhakti tradition commentary. The most beginner-friendly Gītā site available.</p>
+      <p class="card-desc-hi">प्रत्येक श्लोक पर संस्कृत + हिंदी + अंग्रेजी। स्वामी मुकुन्दानन्द की भक्ति-परम्परा में व्याख्या। सर्वाधिक सुलभ और सरल।</p>
+      <div class="badges"><span class="badge b-skt">संस्कृत</span><span class="badge b-hin">हिंदी</span><span class="badge b-eng">English</span><span class="badge b-vs">Verse-level</span><span class="badge b-trad-vaishnava">वैष्णव</span><span class="badge b-trad-smarta">स्मार्त</span><span class="badge b-trad-shaiva">शैव</span></div>
+    </a>
+
+    <a href="https://www.valmikiramayan.net/" target="_blank" class="card a-blue" data-trad="vaishnava smarta shaiva shakta">
+      <span class="card-icon">🏹</span>
+      <div class="card-title">Vālmīki Rāmāyaṇa</div>
+      <div class="card-title-hi">वाल्मीकि रामायण</div>
+      <div class="card-source">valmikiramayan.net · K.M.K. Murthy (Indian)</div>
+      <p class="card-desc">All 7 Kāṇḍas sarga-by-sarga. Sanskrit + IAST + word meanings + English prose translation. Free of Orientalist framing throughout.</p>
+      <p class="card-desc-hi">सभी ७ काण्ड, सर्ग-दर-सर्ग। संस्कृत + IAST + शब्दार्थ + अंग्रेजी गद्यानुवाद। भारतीय विद्वान K.M.K. मूर्ति कृत। औपनिवेशिक पूर्वाग्रह-रहित।</p>
+      <div class="badges"><span class="badge b-skt">संस्कृत</span><span class="badge b-eng">English</span><span class="badge b-vs">Sarga-level</span><span class="badge b-trad-vaishnava">वैष्णव</span><span class="badge b-trad-smarta">स्मार्त</span></div>
+    </a>
+
+    <a href="https://www.valmiki.iitk.ac.in/" target="_blank" class="card a-blue" data-trad="vaishnava smarta shaiva shakta">
+      <span class="card-icon">📚</span>
+      <div class="card-title">Rāmāyaṇa — Critical Edition</div>
+      <div class="card-title-hi">रामायण — आलोचनात्मक संस्करण</div>
+      <div class="card-source">IIT Kanpur · Indian academic edition</div>
+      <p class="card-desc">IIT Kanpur's critical Sanskrit text with English translation. Based on the Baroda Critical Edition — India's most rigorous textual standard.</p>
+      <p class="card-desc-hi">IIT कानपुर का आलोचनात्मक संस्कृत संस्करण। बड़ौदा के मूल पाठ पर आधारित — भारत का सर्वोच्च पाठालोचन मानक। अंग्रेजी अनुवाद सहित।</p>
+      <div class="badges"><span class="badge b-skt">संस्कृत</span><span class="badge b-eng">English</span><span class="badge b-vs">Verse-level</span><span class="badge b-trad-vaishnava">वैष्णव</span><span class="badge b-trad-smarta">स्मार्त</span></div>
+    </a>
+
+    <a href="https://www.wisdomlib.org/hinduism/book/the-mahabharata-mohan" target="_blank" class="card a-blue" data-trad="smarta vaishnava shaiva shakta">
+      <span class="card-icon">⚔️</span>
+      <div class="card-title">Mahābhārata</div>
+      <div class="card-title-hi">महाभारत</div>
+      <div class="card-source">Wisdomlib · K.M. Ganguly (Calcutta, 1883–96)</div>
+      <p class="card-desc">Complete English translation of all 18 Parvas by Kisari Mohan Ganguly — the standard Indian scholarly edition. Section-by-section navigation, fully searchable.</p>
+      <p class="card-desc-hi">सभी १८ पर्वों का सम्पूर्ण अंग्रेजी अनुवाद — किशोरी मोहन गांगुली कृत भारतीय विद्वत्-संस्करण (कलकत्ता, १८८३–९६)। खण्ड-दर-खण्ड नेविगेशन। खोज योग्य।</p>
+      <div class="badges"><span class="badge b-eng">English</span><span class="badge b-srch">Searchable</span><span class="badge b-trad-vaishnava">वैष्णव</span><span class="badge b-trad-shaiva">शैव</span><span class="badge b-trad-shakta">शाक्त</span><span class="badge b-trad-smarta">स्मार्त</span></div>
+    </a>
+
+    <a href="https://archive.org/details/RamcharitmanasGitapressEnglish" target="_blank" class="card a-blue" data-trad="vaishnava smarta shaiva shakta">
+      <span class="card-icon">🏹</span>
+      <div class="card-title">Śrī Rāmcaritmānas</div>
+      <div class="card-title-hi">श्रीरामचरितमानस</div>
+      <div class="card-source">Internet Archive · Gītā Press Gorakhpur (Tulsīdāsa)</div>
+      <p class="card-desc">Goswāmī Tulsīdāsa's sacred Avadhī retelling of the Rāmāyaṇa — all 7 Kāṇḍas, ~12,800 lines. The living liturgical scripture of the Rāmānandī Vaiṣṇava sampradāya, recited daily across North India. Gītā Press edition: Avadhī + Hindi + English. Opens with the Śiva-Pārvatī dialogue (Bālakāṇḍa); Śiva is a central narrator and devotee of Rāma — making it integral to Śaiva and Śākta bhakti as well. The Śaiva frame narrative and Uma-Maheśvara dialogue give it standing across all four traditions.</p>
+      <p class="card-desc-hi">गोस्वामी तुलसीदास कृत अवधी भाषा में राम-कथा — सभी ७ काण्ड, लगभग १२,८०० पंक्तियाँ। रामानन्दी वैष्णव सम्प्रदाय का जीवित लोकाराध्य ग्रन्थ — उत्तर भारत में प्रतिदिन पठित। गीताप्रेस संस्करण: अवधी + हिंदी + अंग्रेजी। ग्रन्थ का आरम्भ शिव-पार्वती संवाद (बालकाण्ड) से होता है; शिव प्रमुख वक्ता और राम के भक्त हैं — जो इसे शैव और शाक्त भक्ति में भी महत्त्वपूर्ण बनाता है। उमा-महेश्वर संवाद इसे चारों परम्पराओं में स्थान देता है।</p>
+      <div class="badges"><span class="badge b-hin">अवधी</span><span class="badge b-eng">English</span><span class="badge b-trad-vaishnava">वैष्णव</span><span class="badge b-trad-smarta">स्मार्त</span><span class="badge b-trad-shaiva">शैव</span><span class="badge b-trad-shakta">शाक्त</span></div>
+    </a>
+
+    <a href="https://www.wisdomlib.org/hinduism/book/manusmriti-with-the-commentary-of-medhatithi" target="_blank" class="card a-blue" data-trad="smarta vaishnava shaiva shakta">
+      <span class="card-icon">⚖️</span>
+      <div class="card-title">Manusmṛti</div>
+      <div class="card-title-hi">मनुस्मृति</div>
+      <div class="card-source">Wisdomlib · Medhātithi Bhāṣya (Ganganātha Jhā, Motilal Banarsidass)</div>
+      <p class="card-desc">All 12 Adhyāyas with Medhātithi's traditional commentary — the primary Dharmaśāstra of the Smārta tradition. Governs varṇāśrama-dharma, rāja-dharma, and ācāra for all āstika householders. Most cited Smṛti in Śaṅkarācārya's commentaries and across Advaita literature. Searchable verse-by-verse.</p>
+      <p class="card-desc-hi">सभी १२ अध्याय — मेधातिथि के पारम्परिक भाष्य सहित। स्मार्त परम्परा का प्रमुख धर्मशास्त्र। वर्णाश्रम-धर्म, राजधर्म और आचार का विधान। शंकराचार्य के भाष्यों में सर्वाधिक उद्धृत स्मृति। श्लोकवार खोज-योग्य।</p>
+      <div class="badges"><span class="badge b-skt">संस्कृत</span><span class="badge b-eng">English</span><span class="badge b-vs">Verse-level</span><span class="badge b-srch">Searchable</span><span class="badge b-trad-smarta">स्मार्त</span><span class="badge b-trad-vaishnava">वैष्णव</span><span class="badge b-trad-shaiva">शैव</span><span class="badge b-trad-shakta">शाक्त</span></div>
+    </a>
+
+    <a href="https://www.wisdomlib.org/hinduism/book/harivamsha-purana-dutt" target="_blank" class="card a-blue" data-trad="vaishnava smarta">
+      <span class="card-icon">🦚</span>
+      <div class="card-title">Harivaṃśa</div>
+      <div class="card-title-hi">हरिवंश</div>
+      <div class="card-source">Wisdomlib · Manmatha Nāth Dutt (Calcutta, 1897) — Indian scholar</div>
+      <p class="card-desc">The Khila (appendix) to the Mahābhārata — ~16,000 verses across three Parvas (Harivaṃśa, Viṣṇu, and Bhaviṣya). The canonical genealogy of Kṛṣṇa and Balarāma; narrates the Yadu dynasty, Kṛṣṇa's early life, and cosmological lore. Cited by Rāmānuja, Madhvācārya, and Prabhupāda as a Vaiṣṇava pramāṇa. Essential for any complete study of Itihāsa and Vaiṣṇava theology. Full English text, searchable.</p>
+      <p class="card-desc-hi">महाभारत का खिल (परिशिष्ट) — तीन पर्वों में लगभग १६,००० श्लोक (हरिवंश, विष्णु, भविष्य)। कृष्ण-बलराम की वंशावली, यदु-वंश, कृष्ण-बाललीला और ब्रह्माण्डविज्ञान। रामानुज, मध्वाचार्य और प्रभुपाद द्वारा वैष्णव प्रमाण के रूप में उद्धृत। इतिहास और वैष्णव धर्मशास्त्र के सम्पूर्ण अध्ययन के लिए आवश्यक। पूर्ण अंग्रेजी पाठ, खोज-योग्य।</p>
+      <div class="badges"><span class="badge b-eng">English</span><span class="badge b-srch">Searchable</span><span class="badge b-trad-vaishnava">वैष्णव</span><span class="badge b-trad-smarta">स्मार्त</span></div>
+    </a>
+
+  </div>
+</div>
+
+<!-- ════ PURANAS ════ -->
+<div class="section" data-s="purana">
+  <div class="sec-head">
+    <h2><span class="t-en">Purāṇas</span><span class="t-hi" style="display:none">पुराण</span></h2>
+    <div class="sec-line"></div>
+    <span class="sec-tag">18 Mahāpurāṇas + Upapurāṇas</span>
+  </div>
+  <p class="sec-desc t-en">Cosmology, theology, and lineage of all Hindu traditions — the encyclopedic literature covering Sarga, Pratisarga, Vaṃśa, Manvantara, and Vaṃśānucarita.</p>
+  <p class="sec-desc t-hi" style="display:none">समस्त हिन्दू परम्पराओं की ब्रह्माण्डविद्या, देवशास्त्र और वंशावली — सर्ग, प्रतिसर्ग, वंश, मन्वन्तर और वंशानुचरित का विश्वकोश।</p>
+  <div class="grid">
+
+    <a href="https://vedabase.io/en/library/sb/" target="_blank" class="card a-purple" data-trad="vaishnava smarta">
+      <span class="card-icon">🌊</span>
+      <div class="card-title">Bhāgavata Purāṇa</div>
+      <div class="card-title-hi">भागवत पुराण</div>
+      <div class="card-source">Vedabase · Prabhupāda (Gauḍīya Vaiṣṇava)</div>
+      <p class="card-desc">All 12 Skandhas, every verse. Sanskrit + transliteration + word-by-word + purport. The most complete, navigable Bhāgavata online.</p>
+      <p class="card-desc-hi">सभी १२ स्कन्ध, प्रत्येक श्लोक। संस्कृत + लिप्यंतरण + अन्वय + तात्पर्य। गौड़ीय वैष्णव सम्प्रदाय। सर्वाधिक पूर्ण और नेविगेशन-योग्य।</p>
+      <div class="badges"><span class="badge b-skt">संस्कृत</span><span class="badge b-eng">English</span><span class="badge b-vs">Verse-level</span><span class="badge b-srch">Searchable</span><span class="badge b-trad-vaishnava">वैष्णव</span><span class="badge b-trad-smarta">स्मार्त</span></div>
+    </a>
+
+    <a href="https://www.wisdomlib.org/hinduism/book/devi-bhagavata-purana" target="_blank" class="card a-purple" data-trad="shakta smarta shaiva">
+      <span class="card-icon">🔱</span>
+      <div class="card-title">Devī Bhāgavata Purāṇa</div>
+      <div class="card-title-hi">देवी भागवत पुराण</div>
+      <div class="card-source">Wisdomlib · Swami Vijnanananda (Ramakrishna Math)</div>
+      <p class="card-desc">Complete Śākta Mahāpurāṇa — all 12 Skandhas. Swami Vijnanananda of Ramakrishna Math. Fully searchable by section.</p>
+      <p class="card-desc-hi">सम्पूर्ण शाक्त महापुराण — सभी १२ स्कन्ध। रामकृष्ण मठ के स्वामी विज्ञानानन्द कृत अंग्रेजी अनुवाद। खण्डवार खोज योग्य।</p>
+      <div class="badges"><span class="badge b-eng">English</span><span class="badge b-srch">Searchable</span><span class="badge b-trad-shakta">शाक्त</span><span class="badge b-trad-smarta">स्मार्त</span></div>
+    </a>
+
+    <a href="https://www.wisdomlib.org/hinduism/book/shiva-purana-english" target="_blank" class="card a-purple" data-trad="shaiva smarta shakta">
+      <span class="card-icon">🌙</span>
+      <div class="card-title">Śiva Purāṇa</div>
+      <div class="card-title-hi">शिव पुराण</div>
+      <div class="card-source">Wisdomlib · J.L. Shastri (AITM India series)</div>
+      <p class="card-desc">All 7 Saṃhitās. Ancient Indian Tradition & Mythology series — India's premier Sanskrit translation project. Fully searchable.</p>
+      <p class="card-desc-hi">सभी ७ संहिताएँ। Ancient Indian Tradition and Mythology श्रृंखला — भारत की प्रमुख संस्कृत अनुवाद परियोजना। पूर्णतः खोज योग्य।</p>
+      <div class="badges"><span class="badge b-eng">English</span><span class="badge b-srch">Searchable</span><span class="badge b-trad-shaiva">शैव</span><span class="badge b-trad-smarta">स्मार्त</span></div>
+    </a>
+
+    <a href="https://www.wisdomlib.org/hinduism/book/the-garuda-purana" target="_blank" class="card a-purple" data-trad="vaishnava smarta shaiva shakta">
+      <span class="card-icon">🦅</span>
+      <div class="card-title">Garuḍa Purāṇa</div>
+      <div class="card-title-hi">गरुड़ पुराण</div>
+      <div class="card-source">Wisdomlib · Manmatha Nāth Dutt (Calcutta, 1908)</div>
+      <p class="card-desc">Viṣṇu, dharma, and after-death cosmology — searchable by section. Full Purāṇa text by Indian Bengali scholar Manmatha Nāth Dutt. Essential for understanding Hindu eschatology, which is accepted across Vaiṣṇava, Śaiva, Śākta, and Smārta traditions as authoritative on death rites (antyeṣṭi), the journey of the jīva, and pre-mortem recitation.</p>
+      <p class="card-desc-hi">विष्णु, धर्म और परलोक का पुराण। भारतीय विद्वान मन्मथनाथ दत्त कृत पूर्ण अंग्रेजी अनुवाद (कलकत्ता, १९०८)। हिन्दू परलोकविज्ञान के लिए आवश्यक — मृत्यु-संस्कार (अन्त्येष्टि), जीव की यात्रा और मृत्युकालिक पाठ पर वैष्णव, शैव, शाक्त और स्मार्त — सभी इसे प्रामाणिक मानते हैं। खण्ड-दर-खण्ड खोज योग्य।</p>
+      <div class="badges"><span class="badge b-eng">English</span><span class="badge b-srch">Searchable</span><span class="badge b-trad-vaishnava">वैष्णव</span><span class="badge b-trad-smarta">स्मार्त</span><span class="badge b-trad-shaiva">शैव</span><span class="badge b-trad-shakta">शाक्त</span></div>
+    </a>
+
+    <a href="https://www.wisdomlib.org/hinduism/book/the-markandeya-purana" target="_blank" class="card a-purple" data-trad="shakta smarta shaiva vaishnava">
+      <span class="card-icon">🌺</span>
+      <div class="card-title">Mārkaṇḍeya Purāṇa</div>
+      <div class="card-title-hi">मार्कण्डेय पुराण</div>
+      <div class="card-source">Wisdomlib · F. Eden Pargiter (Asiatic Society of Bengal, 1904)</div>
+      <p class="card-desc">Contains the Devī Māhātmya (Durgā Saptaśatī) — the foundational Śākta scripture. Full text with English translation.</p>
+      <p class="card-desc-hi">देवी माहात्म्य (दुर्गासप्तशती) सहित — शाक्त परम्परा का मूलभूत ग्रन्थ। सम्पूर्ण पाठ अंग्रेजी अनुवाद के साथ।</p>
+      <div class="badges"><span class="badge b-eng">English</span><span class="badge b-srch">Searchable</span><span class="badge b-trad-shakta">शाक्त</span><span class="badge b-trad-shaiva">शैव</span><span class="badge b-trad-smarta">स्मार्त</span></div>
+    </a>
+
+    <a href="https://www.wisdomlib.org/hinduism/book/vishnu-purana-wilson" target="_blank" class="card a-purple" data-trad="vaishnava smarta">
+      <span class="card-icon">🌀</span>
+      <div class="card-title">Viṣṇu Purāṇa</div>
+      <div class="card-title-hi">विष्णु पुराण</div>
+      <div class="card-source">Wisdomlib · H.H. Wilson (Motilal Banarsidass ed.)</div>
+      <p class="card-desc">All 6 Aṃśas, 23,000 verses — the "Jewel of Purāṇas" (Purāṇaratna). The primary Vaiṣṇava Mahāpurāṇa: creation, Viṣṇu's avatāras, Kṛṣṇa's childhood, and the Pañcalakṣaṇa in its most complete form. Cited by Rāmānuja, Madhva, and Prabhupāda as foundational pramāṇa. Full English text searchable.</p>
+      <p class="card-desc-hi">सभी ६ अंश, २३,००० श्लोक — "पुराणरत्न"। वैष्णव परम्परा का प्रमुख महापुराण: सृष्टि, विष्णु के अवतार, कृष्ण-लीला और पञ्चलक्षण का सर्वाधिक पूर्ण निरूपण। रामानुज, माधव और प्रभुपाद द्वारा आधारभूत प्रमाण के रूप में उद्धृत। पूर्ण अंग्रेजी पाठ खोज-योग्य।</p>
+      <div class="badges"><span class="badge b-eng">English</span><span class="badge b-srch">Searchable</span><span class="badge b-trad-vaishnava">वैष्णव</span><span class="badge b-trad-smarta">स्मार्त</span></div>
+    </a>
+
+    <a href="https://www.wisdomlib.org/hinduism/book/the-linga-purana" target="_blank" class="card a-purple" data-trad="shaiva smarta">
+      <span class="card-icon">🌙</span>
+      <div class="card-title">Liṅga Purāṇa</div>
+      <div class="card-title-hi">लिङ्ग पुराण</div>
+      <div class="card-source">Wisdomlib · J.L. Shastri (AITM India series)</div>
+      <p class="card-desc">163 chapters across 2 Bhāgas — the Purāṇa entirely dedicated to the Liṅga and Śiva as Supreme. Cosmology, Liṅga worship, Yoga, tīrtha, and the Ardhānārīśvara doctrine. One of the six Tāmasika Mahāpurāṇas; essential for Śaiva theology and ritual. Full English, searchable.</p>
+      <p class="card-desc-hi">२ भागों में १६३ अध्याय — लिङ्ग और शिव को परब्रह्म के रूप में समर्पित पुराण। ब्रह्माण्डविज्ञान, लिङ्गपूजा, योग, तीर्थ और अर्धनारीश्वर सिद्धान्त। शैव धर्मशास्त्र के लिए आवश्यक षट्तामसिक महापुराणों में से एक। पूर्ण अंग्रेजी, खोज-योग्य।</p>
+      <div class="badges"><span class="badge b-eng">English</span><span class="badge b-srch">Searchable</span><span class="badge b-trad-shaiva">शैव</span><span class="badge b-trad-smarta">स्मार्त</span></div>
+    </a>
+
+    <a href="https://www.wisdomlib.org/hinduism/book/the-skanda-purana" target="_blank" class="card a-purple" data-trad="shaiva smarta shakta vaishnava">
+      <span class="card-icon">⚡</span>
+      <div class="card-title">Skanda Purāṇa</div>
+      <div class="card-title-hi">स्कन्द पुराण</div>
+      <div class="card-source">Wisdomlib · G.V. Tagare (Motilal Banarsidass, AITM series)</div>
+      <p class="card-desc">The longest of all 18 Mahāpurāṇas — 81,100 verses across 7 Khaṇḍas. The definitive encyclopedic source for all tīrtha-māhātmyas: Kāśī, Kāñcī, Ayodhyā, Śrīśaila, and hundreds more. Named for Skanda (Kārttikeya), son of Śiva. Indispensable for Śaiva and pilgrimage theology. Searchable.</p>
+      <p class="card-desc-hi">सभी १८ महापुराणों में सर्वाधिक विशाल — ७ खण्डों में ८१,१०० श्लोक। समस्त तीर्थ-माहात्म्यों का विश्वकोश: काशी, काञ्ची, अयोध्या, श्रीशैल आदि। शिव-पुत्र स्कन्द (कार्त्तिकेय) के नाम पर। शैव और तीर्थ-धर्मशास्त्र के लिए अपरिहार्य। खोज-योग्य।</p>
+      <div class="badges"><span class="badge b-eng">English</span><span class="badge b-srch">Searchable</span><span class="badge b-trad-shaiva">शैव</span><span class="badge b-trad-smarta">स्मार्त</span><span class="badge b-trad-shakta">शाक्त</span></div>
+    </a>
+
+    <a href="https://www.wisdomlib.org/hinduism/book/the-brahmanda-purana" target="_blank" class="card a-purple" data-trad="shakta smarta shaiva vaishnava">
+      <span class="card-icon">🌌</span>
+      <div class="card-title">Brahmāṇḍa Purāṇa</div>
+      <div class="card-title-hi">ब्रह्माण्ड पुराण</div>
+      <div class="card-source">Wisdomlib · G.V. Tagare (Motilal Banarsidass, AITM series)</div>
+      <p class="card-desc">One of the oldest Mahāpurāṇas — cosmology of the Brahmāṇḍa (cosmic egg), genealogies, and the Adhyātma Rāmāyaṇa. Its Uttara-khaṇḍa contains the Lalitopākhyāna, source of the Lalitā Sahasranāma — the supreme Śrīvidyā text. The Adhyātma Rāmāyaṇa embedded within it is an important Vaiṣṇava text; Madhvācārya and later Vaiṣṇava scholars reference the Brahmāṇḍa for cosmological and genealogical pramāṇa. Full English, searchable.</p>
+      <p class="card-desc-hi">प्राचीनतम महापुराणों में से एक — ब्रह्माण्ड की ब्रह्माण्डविद्या, वंशावली और अध्यात्म रामायण। इसके उत्तरखण्ड में ललितोपाख्यान — ललितासहस्रनाम का मूल स्रोत। इसमें अन्तर्निहित अध्यात्म रामायण एक महत्त्वपूर्ण वैष्णव ग्रन्थ है; मध्वाचार्य और परवर्ती वैष्णव विद्वान ब्रह्माण्डपुराण को ब्रह्माण्डविज्ञान-सम्बन्धी प्रमाण के रूप में उद्धृत करते हैं। पूर्ण अंग्रेजी, खोज-योग्य।</p>
+      <div class="badges"><span class="badge b-eng">English</span><span class="badge b-srch">Searchable</span><span class="badge b-trad-shakta">शाक्त</span><span class="badge b-trad-smarta">स्मार्त</span><span class="badge b-trad-shaiva">शैव</span><span class="badge b-trad-vaishnava">वैष्णव</span></div>
+    </a>
+
+    <a href="https://www.wisdomlib.org/purana" target="_blank" class="card a-purple" data-trad="smarta vaishnava shaiva shakta">
+      <span class="card-icon">📗</span>
+      <div class="card-title">All 18 Mahāpurāṇas</div>
+      <div class="card-title-hi">सभी १८ महापुराण</div>
+      <div class="card-source">Wisdomlib · Purāṇa Portal — Full Index</div>
+      <p class="card-desc">Agni, Brahma, Brahmaṇḍa, Brahma-vaivarta, Kūrma, Liṅga, Matsya, Nārada, Padma, Skanda, Viṣṇu — all searchable.</p>
+      <p class="card-desc-hi">अग्नि, ब्रह्म, ब्रह्माण्ड, ब्रह्मवैवर्त, कूर्म, लिंग, मत्स्य, नारद, पद्म, स्कन्द, विष्णु — सभी। खोज योग्य।</p>
+      <div class="badges"><span class="badge b-eng">English</span><span class="badge b-srch">Searchable</span><span class="badge b-trad-smarta">स्मार्त</span><span class="badge b-trad-vaishnava">वैष्णव</span><span class="badge b-trad-shaiva">शैव</span><span class="badge b-trad-shakta">शाक्त</span></div>
+    </a>
+
+  </div>
+</div>
+
+<!-- ════ DARSANA ════ -->
+<div class="section" data-s="darsana">
+  <div class="sec-head">
+    <h2><span class="t-en">Darśana &amp; Āgama</span><span class="t-hi" style="display:none">दर्शन और आगम</span></h2>
+    <div class="sec-line"></div>
+    <span class="sec-tag">Philosophy · Tantra · Yoga · Stotra</span>
+  </div>
+  <p class="sec-desc t-en">The six āstika darśanas, Āgamas, Yoga texts, Sahasranāmas, stotras, and the Dravida Veda — the philosophical, devotional, and tantric dimensions of Sanātana Dharma.</p>
+  <p class="sec-desc t-hi" style="display:none">षड् आस्तिक दर्शन, आगम, योगशास्त्र, सहस्रनाम, स्तोत्र और द्राविड-वेद — सनातन धर्म के दार्शनिक, भक्तिमय और तान्त्रिक आयाम।</p>
+  <div class="grid">
+
+    <a href="https://www.wisdomlib.org/hinduism/book/yoga-sutras-with-commentaries" target="_blank" class="card a-green" data-trad="smarta shakta vaishnava shaiva shrauta">
+      <span class="card-icon">🧘</span>
+      <div class="card-title">Yoga Sūtras of Patañjali</div>
+      <div class="card-title-hi">पातञ्जल योगसूत्र</div>
+      <div class="card-source">Wisdomlib · Vyāsa Bhāṣya + Vācaspati Miśra</div>
+      <p class="card-desc">All 196 sūtras — Sanskrit, IAST, word meanings, Vyāsa's classical Bhāṣya. The foundational Yoga Darśana text, sūtra-by-sūtra navigation. One of the six āstika darśanas; studied by Śrauta householders as part of the curriculum of the six darśanas.</p>
+      <p class="card-desc-hi">सभी १९६ सूत्र — संस्कृत, IAST, शब्दार्थ और व्यासभाष्य। योगदर्शन का मूल ग्रन्थ। सूत्र-दर-सूत्र नेविगेशन। षड् आस्तिक दर्शनों में से एक — श्रौत गृहस्थ भी षड्दर्शन-अध्ययन के अन्तर्गत इसे पढ़ते हैं।</p>
+      <div class="badges"><span class="badge b-skt">संस्कृत</span><span class="badge b-eng">English</span><span class="badge b-vs">Sūtra-level</span><span class="badge b-trad-smarta">स्मार्त</span><span class="badge b-trad-vaishnava">वैष्णव</span><span class="badge b-trad-shaiva">शैव</span><span class="badge b-trad-shakta">शाक्त</span><span class="badge b-trad-shrauta">श्रौत</span></div>
+    </a>
+
+    <a href="https://www.wisdomlib.org/hinduism/book/brahma-sutras" target="_blank" class="card a-green" data-trad="smarta vaishnava shaiva shakta shrauta">
+      <span class="card-icon">🌀</span>
+      <div class="card-title">Brahma Sūtras</div>
+      <div class="card-title-hi">ब्रह्मसूत्र</div>
+      <div class="card-source">Wisdomlib · Śaṅkarācārya Bhāṣya</div>
+      <p class="card-desc">All 4 Adhyāyas with Śaṅkara's Advaita commentary — the third text of the Prasthānatraya, synthesising the Upaniṣads. Accepted as one of the three canonical pramāṇa texts (Prasthānatraya) across all āstika traditions; Śrauta householders engage Vedānta as the culmination of Vedic study.</p>
+      <p class="card-desc-hi">सभी ४ अध्याय — शंकराचार्य के अद्वैत भाष्य सहित। प्रस्थानत्रयी का तृतीय ग्रन्थ। उपनिषदों का सम्यक् निरूपण। समस्त आस्तिक परम्पराओं में प्रस्थानत्रयी का एक प्रमुख प्रमाण-ग्रन्थ — श्रौत गृहस्थ वेदिक अध्ययन की परिणति के रूप में वेदान्त का अध्ययन करते हैं।</p>
+      <div class="badges"><span class="badge b-skt">संस्कृत</span><span class="badge b-eng">English</span><span class="badge b-vs">Sūtra-level</span><span class="badge b-trad-smarta">स्मार्त</span><span class="badge b-trad-vaishnava">वैष्णव</span><span class="badge b-trad-shaiva">शैव</span><span class="badge b-trad-shakta">शाक्त</span><span class="badge b-trad-shrauta">श्रौत</span></div>
+    </a>
+
+    <a href="https://archive.org/details/vivekachudamani-1970" target="_blank" class="card a-green" data-trad="smarta shaiva shakta">
+      <span class="card-icon">💎</span>
+      <div class="card-title">Vivekacūḍāmaṇi</div>
+      <div class="card-title-hi">विवेकचूडामणि</div>
+      <div class="card-source">Internet Archive · Swami Madhavananda, Advaita Ashrama (1970)</div>
+      <p class="card-desc">All 580 verses — Devanāgarī, word-for-word, English rendering and commentary. Attributed to Ādi Śaṅkarācārya. The foremost prakaraṇa-grantha of Advaita Vedānta — a master-disciple dialogue expounding viveka, vairāgya, and the direct realization of Tat tvam asi as the path to mokṣa.</p>
+      <p class="card-desc-hi">सभी ५८० श्लोक — देवनागरी, अन्वय, अंग्रेजी अनुवाद और टिप्पणी। आदि शंकराचार्य को आरोपित। अद्वैत वेदान्त का प्रमुख प्रकरण-ग्रन्थ — विवेक, वैराग्य और "तत् त्वम् असि" की साक्षात् अनुभूति को मोक्ष के मार्ग के रूप में निरूपित करने वाला गुरु-शिष्य संवाद।</p>
+      <div class="badges"><span class="badge b-skt">संस्कृत</span><span class="badge b-eng">English</span><span class="badge b-vs">Verse-level</span><span class="badge b-trad-smarta">स्मार्त</span><span class="badge b-trad-shaiva">शैव</span><span class="badge b-trad-shakta">शाक्त</span></div>
+    </a>
+
+    <a href="https://shlokam.org/vishnu-sahasranamam/" target="_blank" class="card a-green" data-trad="vaishnava smarta shaiva shakta">
+      <span class="card-icon">🌺</span>
+      <div class="card-title">Viṣṇu Sahasranāma</div>
+      <div class="card-title-hi">विष्णुसहस्रनाम</div>
+      <div class="card-source">Shlokam.org · Śaṅkarācārya commentary</div>
+      <p class="card-desc">All 1,000 names — Sanskrit, IAST, meaning of each name, Śaṅkara's commentary. From the Mahābhārata Anuśāsana Parva. Venerated across Vaiṣṇava, Smārta, Śaiva (Śiva-Viṣṇu abheda), and Śākta traditions.</p>
+      <p class="card-desc-hi">सभी १,००० नाम — संस्कृत, IAST, अर्थ और शंकराचार्य का भाष्य। महाभारत अनुशासन पर्व से। वैष्णव, स्मार्त, शैव (शिव-विष्णु-अभेद) और शाक्त — सभी परम्पराओं में आदृत।</p>
+      <div class="badges"><span class="badge b-skt">संस्कृत</span><span class="badge b-eng">English</span><span class="badge b-vs">Nāma-level</span><span class="badge b-trad-vaishnava">वैष्णव</span><span class="badge b-trad-smarta">स्मार्त</span><span class="badge b-trad-shaiva">शैव</span><span class="badge b-trad-shakta">शाक्त</span></div>
+    </a>
+
+    <a href="https://www.wisdomlib.org/hinduism/book/lalitopakhyana-lalita-mahatmya" target="_blank" class="card a-green" data-trad="shakta smarta shaiva">
+      <span class="card-icon">🌷</span>
+      <div class="card-title">Lalitā Sahasranāma</div>
+      <div class="card-title-hi">ललितासहस्रनाम</div>
+      <div class="card-source">Wisdomlib · Brahmāṇḍa Purāṇa · Bhāskararāya tradition</div>
+      <p class="card-desc">1,000 names of the Devī from the Brahmāṇḍa Purāṇa — Sanskrit, IAST, and traditional bhāṣya. The central text of Śrīvidyā upāsanā, which is a Śākta-Śaiva tradition (Tripurā-Sundari worship is inseparable from Śiva-Śakti tattva). Bhāskararāya Makhin's bhāṣya is the authoritative commentary. Recited across Śākta and Smārta traditions; essential to Kashmir Śaivism's Śrīvidyā lineage as well.</p>
+      <p class="card-desc-hi">ब्रह्माण्डपुराण से देवी के १,००० नाम। संस्कृत, IAST और पारम्परिक शाक्त भाष्य सहित। श्रीविद्या उपासना का मूल ग्रन्थ — जो शाक्त-शैव परम्परा (त्रिपुरसुन्दरी-उपासना और शिव-शक्ति-तत्त्व अभिन्न) है। भास्करराय मखिन का भाष्य प्रामाणिक है। काश्मीर शैव श्रीविद्या सम्प्रदाय सहित शाक्त और स्मार्त परम्पराओं में पठित।</p>
+      <div class="badges"><span class="badge b-skt">संस्कृत</span><span class="badge b-eng">English</span><span class="badge b-vs">Nāma-level</span><span class="badge b-trad-shakta">शाक्त</span><span class="badge b-trad-smarta">स्मार्त</span><span class="badge b-trad-shaiva">शैव</span></div>
+    </a>
+
+    <a href="https://www.himalayanacademy.com/saivite-scriptures/category/scripture/agamas/" target="_blank" class="card a-green" data-trad="shaiva smarta shakta">
+      <span class="card-icon">🏛️</span>
+      <div class="card-title">Śaiva Āgamas — Kāmika, Mṛgendra, Raurava &amp; More</div>
+      <div class="card-title-hi">शैव आगम — कामिक, मृगेन्द्र, रौरव आदि</div>
+      <div class="card-source">Himalayan Academy · Dr. S.P. Sabharathanam Sivacharyar (Ādiśaiva Sivacharya lineage)</div>
+      <p class="card-desc">The most authoritative online collection of Śaiva Siddhānta Āgamas in English — translated by Dr. S.P. Sabharathanam Sivacharyar, a hereditary Ādiśaiva priest (Sivacharya) trained in the Āgamic tradition from within the sampradāya, not an Orientalist. Includes: Kāmika Āgama (Pūrva &amp; Uttara Pāda, the most widely followed Āgama in South Indian Śiva temples), Mṛgendra Āgama (Vidyā Pāda), Raurava Āgama (Vidyā Pāda), Matanga Āgama (Vidyā Pāda), Pauskara Āgama (Vidyā Pāda), and Sarvajñānottara Āgama (Vidyā &amp; Yoga Pāda). All include Devanāgarī Sanskrit original, IAST transliteration, and English translation. The Kāmika Āgama is the primary liturgical authority for most Tamil Nadu Śiva temples. Essential for Śaiva Siddhānta, Kashmir Śaivism, and Smārta Śrīvidyā study.</p>
+      <p class="card-desc-hi">डॉ. एस.पी. सभारत्नम् शिवाचार्य द्वारा अनूदित शैव सिद्धान्त आगमों का सर्वाधिक प्रामाणिक ऑनलाइन संग्रह — वे एक वंशानुगत आदिशैव पुजारी (शिवाचार्य) हैं जो सम्प्रदाय के भीतर से आगमिक परम्परा में प्रशिक्षित हैं। इसमें सम्मिलित हैं: कामिकागम (पूर्व और उत्तर पाद), मृगेन्द्रागम (विद्यापाद), रौरवागम (विद्यापाद), मतंगागम (विद्यापाद), पौष्करागम (विद्यापाद) और सर्वज्ञानोत्तरागम (विद्या और योगपाद)। सभी में देवनागरी संस्कृत मूलपाठ, IAST लिप्यंतरण और अंग्रेजी अनुवाद है। कामिकागम अधिकांश तमिलनाडु शिव-मन्दिरों के लिए प्राथमिक लिटर्जिकल प्रमाण है।</p>
+      <div class="badges"><span class="badge b-skt">संस्कृत</span><span class="badge b-eng">English</span><span class="badge b-vs">Verse-level</span><span class="badge b-trad-shaiva">शैव</span><span class="badge b-trad-smarta">स्मार्त</span><span class="badge b-trad-shakta">शाक्त</span></div>
+    </a>
+
+    <a href="https://hindugallery.com/devotional-songs/hanuman-chalisa" target="_blank" class="card a-green" data-trad="vaishnava smarta">
+      <span class="card-icon">🐒</span>
+      <div class="card-title">Hanumān Cālīsā</div>
+      <div class="card-title-hi">हनुमान चालीसा</div>
+      <div class="card-source">HinduGallery · Tulsīdāsa (Rāmānandī tradition)</div>
+      <p class="card-desc">All 40 verses of Tulsīdāsa's Avadhī Hindi devotional hymn — Devanāgarī, IAST transliteration, and English meaning. Audio included.</p>
+      <p class="card-desc-hi">तुलसीदास कृत ४० चौपाइयाँ — देवनागरी, IAST लिप्यंतरण और अंग्रेजी अर्थ। ऑडियो सहित। रामानन्दी वैष्णव परम्परा का प्रमुख स्तोत्र।</p>
+      <div class="badges"><span class="badge b-hin">अवधी</span><span class="badge b-eng">English</span><span class="badge b-vs">Verse-level</span><span class="badge b-trad-vaishnava">वैष्णव</span><span class="badge b-trad-smarta">स्मार्त</span></div>
+    </a>
+
+    <a href="https://sanskritdocuments.org/doc_shiva/shivasuutra.html" target="_blank" class="card a-green" data-trad="shaiva smarta">
+      <span class="card-icon">🔱</span>
+      <div class="card-title">Śiva Sūtras of Vasugupta</div>
+      <div class="card-title-hi">शिवसूत्र — वसुगुप्त</div>
+      <div class="card-source">Sanskrit Documents · Kṣemarāja Vimarśinī tradition · Sanskrit + English</div>
+      <p class="card-desc">All 77 aphorisms revealed to Vasugupta — the foundational scripture of Kashmir Śaivism (Trika). Three chapters: Śāmbhavopāya, Śāktopāya, Āṇavopāya. Sanskrit text with English translation. Kṣemarāja's Vimarśinī commentary is the authoritative sampradāya bhāṣya. Also studied by Smārta Advaita scholars given the strong philosophical convergence between Kashmir Śaivism and Advaita Vedānta on the nature of consciousness (cit/caitanya).</p>
+      <p class="card-desc-hi">वसुगुप्त को प्रकाशित ७७ सूत्र — काश्मीर शैव-दर्शन (त्रिक) का मूलाधार। तीन अध्याय: शाम्भवोपाय, शाक्तोपाय, आणवोपाय। संस्कृत पाठ एवं अंग्रेजी अनुवाद। क्षेमराज की विमर्शिनी — सम्प्रदाय-आधारित प्रामाणिक भाष्य। चेतना (चित्/चैतन्य) की प्रकृति पर काश्मीर शैव-दर्शन और अद्वैत वेदान्त के दार्शनिक सामञ्जस्य के कारण स्मार्त अद्वैत विद्वानों द्वारा भी अध्ययनीय।</p>
+      <div class="badges"><span class="badge b-skt">संस्कृत</span><span class="badge b-eng">English</span><span class="badge b-vs">Sūtra-level</span><span class="badge b-trad-shaiva">शैव</span><span class="badge b-trad-smarta">स्मार्त</span></div>
+    </a>
+
+    <a href="https://www.gitasupersite.iitk.ac.in/narada_bhakti_sutra" target="_blank" class="card a-green" data-trad="vaishnava smarta shakta shaiva">
+      <span class="card-icon">🎵</span>
+      <div class="card-title">Nārada Bhakti Sūtras</div>
+      <div class="card-title-hi">नारद भक्तिसूत्र</div>
+      <div class="card-source">IIT Kanpur Gīta Supersite · Sanskrit + English</div>
+      <p class="card-desc">All 84 sūtras of Devarṣi Nārada defining the nature, practice, and supremacy of bhakti — authoritative across Vaiṣṇava, Smārta and Śaiva bhakti traditions. Sanskrit text with verse-by-verse English. Śrī Ramakrishna Paramahaṃsa held that the best path to God-realization in this age is the way of divine love as taught by Nārada.</p>
+      <p class="card-desc-hi">देवर्षि नारद के ८४ सूत्र — भक्ति की परिभाषा, साधना और श्रेष्ठता का निरूपण। वैष्णव, स्मार्त और शैव भक्ति-परम्पराओं में सर्वमान्य। संस्कृत पाठ सहित सूत्रवार अंग्रेजी अनुवाद। श्री रामकृष्ण परमहंस का मत था कि इस युग में ईश्वर-प्राप्ति का सर्वोत्तम मार्ग नारद-प्रतिपादित दिव्य प्रेम का मार्ग है। IIT कानपुर गीता सुपरसाइट।</p>
+      <div class="badges"><span class="badge b-skt">संस्कृत</span><span class="badge b-eng">English</span><span class="badge b-vs">Sūtra-level</span><span class="badge b-trad-vaishnava">वैष्णव</span><span class="badge b-trad-smarta">स्मार्त</span><span class="badge b-trad-shakta">शाक्त</span></div>
+    </a>
+
+    <a href="https://shlokam.org/saundaryalahari/" target="_blank" class="card a-green" data-trad="shakta smarta shaiva">
+      <span class="card-icon">🌊</span>
+      <div class="card-title">Soundarya Laharī</div>
+      <div class="card-title-hi">सौन्दर्यलहरी</div>
+      <div class="card-source">Shlokam.org · Ādi Śaṅkarācārya (Śrīvidyā tradition)</div>
+      <p class="card-desc">All 100 verses — Sanskrit, IAST, word-by-word meanings, and English translation. Ādi Śaṅkara's supreme Śākta stotra: Ānanda Laharī (vv. 1–41, Tantric/Kuṇḍalinī) + Soundarya Laharī (vv. 42–100, Devī's form). The pre-eminent text of Śrīvidyā upāsanā, alongside the Lalitā Sahasranāma.</p>
+      <p class="card-desc-hi">सभी १०० श्लोक — संस्कृत, IAST, शब्दार्थ और अंग्रेजी अनुवाद। आदि शंकराचार्य कृत परम शाक्त स्तोत्र: आनन्दलहरी (श्लोक १–४१, तान्त्रिक/कुण्डलिनी) + सौन्दर्यलहरी (श्लोक ४२–१००, देवी-रूप वर्णन)। ललितासहस्रनाम के साथ श्रीविद्या उपासना का मूल ग्रन्थ।</p>
+      <div class="badges"><span class="badge b-skt">संस्कृत</span><span class="badge b-eng">English</span><span class="badge b-vs">Verse-level</span><span class="badge b-trad-shakta">शाक्त</span><span class="badge b-trad-smarta">स्मार्त</span><span class="badge b-trad-shaiva">शैव</span></div>
+    </a>
+
+    <a href="https://www.wisdomlib.org/hinduism/book/tirumantiram-by-tirumular-english-translation" target="_blank" class="card a-green" data-trad="shaiva">
+      <span class="card-icon">🔱</span>
+      <div class="card-title">Tirumurai — Full 12 Volumes (Tevaram + Tirumantiram)</div>
+      <div class="card-title-hi">तिरुमुरै — सम्पूर्ण १२ खण्ड</div>
+      <div class="card-source">Wisdomlib · Dr B. Natarajan / Sri Ramakrishna Math (Tirumantiram); Shaivam.org (Tevaram)</div>
+      <p class="card-desc">The complete 12-volume Śaiva Siddhānta canon in Tamil — the Śaiva equivalent of the Nālāyira Divya Prabandham. Tevaram (Books 1–7): hymns of Sambandar, Appar, and Sundarar. Book 8: Tiruvācakam and Tirukkōvaiyār of Māṇikkavācakar. Book 10: Tirumantiram of Tirumūlar — the earliest full statement of Śaiva Siddhānta in Tamil, over 3,000 verses. Book 12: Periya Purāṇam (Nāyaṉār hagiographies). Sung daily in Śiva temples across Tamil Nadu and the Śaiva diaspora. This card links to the complete Tirumantiram — use the Shaivam.org portal for the full Tirumurai in Tamil + English.</p>
+      <p class="card-desc-hi">तमिल शैव सिद्धान्त का सम्पूर्ण १२-खण्ड कैनन — नालायिर दिव्यप्रबन्धम् का शैव समतुल्य। तेवारम् (खण्ड १–७): सम्बन्दर, अप्पर और सुन्दरर के स्तोत्र। खण्ड ८: माणिक्कवाचकर का तिरुवाचकम्। खण्ड १०: तिरुमूलर का तिरुमन्तिरम् — ३,००० से अधिक श्लोक, शैव सिद्धान्त का प्राचीनतम पूर्ण प्रतिपादन। खण्ड १२: पेरिय पुराणम्। तमिलनाडु के शिव मन्दिरों में प्रतिदिन गाया जाता है। यह कार्ड सम्पूर्ण तिरुमन्तिरम् से जुड़ता है।</p>
+      <div class="badges"><span class="badge b-hin">Tamil</span><span class="badge b-eng">English</span><span class="badge b-vs">Verse-level</span><span class="badge b-srch">Searchable</span><span class="badge b-trad-shaiva">शैव</span></div>
+    </a>
+
+    <a href="https://archive.org/details/NyayaSutrasOfGautama/mode/2up" target="_blank" class="card a-green" data-trad="smarta vaishnava shaiva shakta shrauta">
+      <span class="card-icon">🧠</span>
+      <div class="card-title">Nyāya Sūtras of Gautama</div>
+      <div class="card-title-hi">न्यायसूत्र — गौतम</div>
+      <div class="card-source">Internet Archive · Satīśa Candra Vidyābhūṣaṇa (Panini Office, Allahabad)</div>
+      <p class="card-desc">All 528 sūtras across 5 Books — Sanskrit text with full English translation and commentary. The foundational text of the Nyāya Darśana: the science of valid reasoning (pramāṇa), epistemology, and debate. The sixteen padārthas of Nyāya — including pratyakṣa, anumāna, upamāna, and śabda — form the logical backbone of all āstika darśanas. Vātsyāyana's Bhāṣya is the classical commentary. Indispensable for understanding the epistemological foundations of Vedānta, Mīmāṃsā, and Śaiva Siddhānta. Indian scholar (Mahāmahopādhyāya) edition.</p>
+      <p class="card-desc-hi">५ अध्यायों में ५२८ सूत्र — मूल संस्कृत, पूर्ण अंग्रेजी अनुवाद और भाष्य। न्यायदर्शन का मूलाधार: प्रमाण, ज्ञानशास्त्र और वाद-विद्या। न्याय के सोलह पदार्थ — प्रत्यक्ष, अनुमान, उपमान और शब्द — समस्त आस्तिक दर्शनों की तार्किक रीढ़। वात्स्यायन का भाष्य प्रामाणिक टीका है। वेदान्त, मीमांसा और शैव सिद्धान्त की ज्ञानमीमांसा के लिए अपरिहार्य।</p>
+      <div class="badges"><span class="badge b-skt">संस्कृत</span><span class="badge b-eng">English</span><span class="badge b-vs">Sūtra-level</span><span class="badge b-trad-smarta">स्मार्त</span><span class="badge b-trad-vaishnava">वैष्णव</span><span class="badge b-trad-shaiva">शैव</span><span class="badge b-trad-shakta">शाक्त</span><span class="badge b-trad-shrauta">श्रौत</span></div>
+    </a>
+
+    <a href="https://www.wisdomlib.org/hinduism/book/vaisheshika-sutra-commentary" target="_blank" class="card a-green" data-trad="smarta vaishnava shaiva shakta shrauta">
+      <span class="card-icon">⚛️</span>
+      <div class="card-title">Vaiśeṣika Sūtras of Kaṇāda</div>
+      <div class="card-title-hi">वैशेषिकसूत्र — कणाद</div>
+      <div class="card-source">Wisdomlib · Nandalal Sinha (Sacred Books of the Hindus) — Sanskrit + transliteration + 3 commentaries</div>
+      <p class="card-desc">All 10 Books — Sanskrit text, Unicode transliteration, word-for-word meanings, English translation, and three traditional commentaries: Upaskāra of Śaṅkara Miśra, Vivriti of Jayanārāyaṇa-Tarkapañcānana, and Bhāṣya of Candrakānta. Navigable sūtra by sūtra. The Vaiśeṣika Darśana: India's oldest systematic analysis of substance (dravya), quality (guṇa), action (karma), universals, particulars, and the theory of atoms (paramāṇu). Syncretic Nyāya-Vaiśeṣika forms the epistemological-ontological foundation of all classical Hindu philosophy. Full text searchable.</p>
+      <p class="card-desc-hi">सभी १० अध्याय — मूल संस्कृत, यूनिकोड लिप्यंतरण, शब्दार्थ, अंग्रेजी अनुवाद और तीन पारम्परिक टीकाएँ: शंकरमिश्र का उपस्कार, जयनारायण तर्कपञ्चानन की विवृति, चन्द्रकान्त का भाष्य। सूत्र-दर-सूत्र नेविगेशन। वैशेषिकदर्शन: द्रव्य, गुण, कर्म, सामान्य, विशेष और परमाणु-सिद्धान्त का प्राचीनतम व्यवस्थित विश्लेषण। न्याय-वैशेषिक — समस्त शास्त्रीय हिन्दू दर्शन की ज्ञानमीमांसा-तात्त्विक आधारशिला।</p>
+      <div class="badges"><span class="badge b-skt">संस्कृत</span><span class="badge b-eng">English</span><span class="badge b-vs">Sūtra-level</span><span class="badge b-srch">Searchable</span><span class="badge b-trad-smarta">स्मार्त</span><span class="badge b-trad-vaishnava">वैष्णव</span><span class="badge b-trad-shaiva">शैव</span><span class="badge b-trad-shakta">शाक्त</span><span class="badge b-trad-shrauta">श्रौत</span></div>
+    </a>
+
+    <a href="https://archive.org/details/the-samkhya-karika-of-ishvara-krishna/mode/2up" target="_blank" class="card a-green" data-trad="smarta vaishnava shaiva shakta shrauta">
+      <span class="card-icon">🌑</span>
+      <div class="card-title">Sāṃkhya Kārikā of Īśvara Kṛṣṇa</div>
+      <div class="card-title-hi">सांख्यकारिका — ईश्वरकृष्ण</div>
+      <div class="card-source">Internet Archive · Radhanath Phukan (Calcutta) — Indian scholar edition</div>
+      <p class="card-desc">All 72 kārikās — Sanskrit text with transliteration, English translation, and Gauḍapāda's Bhāṣya. The primary surviving text of Sāṃkhya Darśana (founded by Kapila): the 25-tattva cosmology of Prakṛti and Puruṣa that underlies Yoga, Vedānta, and Āyurveda. Directly presupposed by Patañjali's Yoga Sūtras; cited extensively in the Bhagavad Gītā (BG 2, 13, 18). One of the six āstika darśanas, it forms part of the foundational curriculum across all traditions including Śrauta study.</p>
+      <p class="card-desc-hi">७२ कारिकाएँ — संस्कृत, लिप्यंतरण, अंग्रेजी अनुवाद और गौडपाद भाष्य। कपिल-प्रतिष्ठित सांख्यदर्शन का प्रमुख उपलब्ध ग्रन्थ: प्रकृति-पुरुष और पञ्चविंशति-तत्त्व की ब्रह्माण्डविद्या — योग, वेदान्त और आयुर्वेद का आधार। पातञ्जल योगसूत्र का प्रत्यक्ष पूर्वाधार; भगवद्गीता (अध्याय २, १३, १८) में व्यापक उद्धरण। षड् आस्तिक दर्शनों में से एक।</p>
+      <div class="badges"><span class="badge b-skt">संस्कृत</span><span class="badge b-eng">English</span><span class="badge b-vs">Kārikā-level</span><span class="badge b-trad-smarta">स्मार्त</span><span class="badge b-trad-vaishnava">वैष्णव</span><span class="badge b-trad-shaiva">शैव</span><span class="badge b-trad-shakta">शाक्त</span><span class="badge b-trad-shrauta">श्रौत</span></div>
+    </a>
+
+    <a href="https://archive.org/details/dli.ernet.170066/mode/2up" target="_blank" class="card a-green" data-trad="smarta shrauta vaishnava shaiva shakta">
+      <span class="card-icon">🕯️</span>
+      <div class="card-title">Mīmāṃsā Sūtras of Jaimini</div>
+      <div class="card-title-hi">मीमांसासूत्र — जैमिनि</div>
+      <div class="card-source">Internet Archive · Mahāmahopādhyāya Ganganātha Jhā (Bharatiya Publishing House, Varanasi)</div>
+      <p class="card-desc">All 12 Books (Adhyāyas) with Śabara's Bhāṣya — English translation with original commentary. The foundational text of Pūrva Mīmāṃsā (Karma-kāṇḍa): the philosophical system that establishes the eternal validity (nitya), authorlessness (apauruṣeya), and obligatory nature of Vedic injunctions (vidhis). Accepted as pramāṇa by all āstika traditions — Śākta Tantric and Śaiva Siddhānta traditions engage extensively with Mīmāṃsā hermeneutics for establishing Āgamic authority on Vedic grounds. Mahāmahopādhyāya Ganganātha Jhā — the foremost 20th-century Indian Sanskrit scholar.</p>
+      <p class="card-desc-hi">सभी १२ अध्याय, शबर-भाष्य सहित — अंग्रेजी अनुवाद और भाष्य। पूर्व मीमांसा (कर्मकाण्ड) का मूलाधार। समस्त आस्तिक परम्पराओं द्वारा स्वीकृत — शाक्त तान्त्रिक और शैव सिद्धान्त परम्पराएँ आगमिक प्रामाण्य की वेद-आधारित स्थापना के लिए मीमांसा-व्याख्या पद्धति का उपयोग करती हैं। महामहोपाध्याय गंगानाथ झा — बीसवीं सदी के सर्वश्रेष्ठ भारतीय संस्कृत विद्वान।</p>
+      <div class="badges"><span class="badge b-skt">संस्कृत</span><span class="badge b-eng">English</span><span class="badge b-vs">Sūtra-level</span><span class="badge b-trad-smarta">स्मार्त</span><span class="badge b-trad-shrauta">श्रौत</span><span class="badge b-trad-vaishnava">वैष्णव</span><span class="badge b-trad-shaiva">शैव</span><span class="badge b-trad-shakta">शाक्त</span></div>
+    </a>
+
+    <a href="https://divyaprabandham.koyil.org/" target="_blank" class="card a-green" data-trad="vaishnava">
+      <span class="card-icon">🕊️</span>
+      <div class="card-title">Nālāyira Divya Prabandham</div>
+      <div class="card-title-hi">नालायिर दिव्यप्रबन्धम्</div>
+      <div class="card-source">divyaprabandham.koyil.org · Śrī Vaiṣṇava sampradāya (Koyil Trust)</div>
+      <p class="card-desc">All 4,000 Tamil pāsurams of the 12 Āḻvārs with pūrvācārya meanings in English — compiled by Nāthamuni. The Dravida Veda of Śrī Vaiṣṇavism, held equal to Śruti by Rāmānuja's Ubhaya Vedānta. Recited in all 108 Divya Dēsam temples daily. Tiruvaymoli (Nammāḻvār) is its crown.</p>
+      <p class="card-desc-hi">बारह आळ्वारों के सभी ४,००० तमिल पासुरम — पूर्वाचार्यों के अर्थसहित अंग्रेजी में। नाथमुनि द्वारा संकलित। श्री वैष्णव सम्प्रदाय का द्राविड-वेद — रामानुज के उभय वेदान्त में श्रुति-तुल्य। सभी १०८ दिव्य देशम् मन्दिरों में प्रतिदिन पठित। तिरुवायमोळि (नम्माळ्वार) इसका मुकुट-मणि।</p>
+      <div class="badges"><span class="badge b-hin">Tamil</span><span class="badge b-eng">English</span><span class="badge b-vs">Pāsuram-level</span><span class="badge b-srch">Searchable</span><span class="badge b-trad-vaishnava">वैष्णव</span></div>
+    </a>
+
+  </div>
+</div>
+
+<!-- ════ PORTALS ════ -->
+<div class="section" data-s="portals">
+  <div class="sec-head">
+    <h2><span class="t-en">Full Portals</span><span class="t-hi" style="display:none">सम्पूर्ण पोर्टल</span></h2>
+    <div class="sec-line"></div>
+    <span class="sec-tag">Start Here for Broad Study</span>
+  </div>
+  <p class="sec-desc t-en">Entire libraries in one place — verified working, tradition-rooted, and free. Best for broad exploration or if you are not sure where to start.</p>
+  <p class="sec-desc t-hi" style="display:none">एक स्थान पर सम्पूर्ण पुस्तकालय — सत्यापित, परम्परा-आधारित और निःशुल्क। व्यापक अध्ययन के लिए सर्वोत्तम।</p>
+
+  <div class="portal-grid">
+    <a href="https://vedicheritage.gov.in/" target="_blank" class="portal-card">
+      <span class="pi">🇮🇳</span>
+      <div class="pt">
+        <div class="pn t-en">Vedic Heritage Portal</div>
+        <div class="pn-hi t-hi" style="display:none">वैदिक हेरिटेज पोर्टल</div>
+        <div class="pd">Govt. of India · All 4 Vedas + Upaniṣads</div>
+      </div>
+    </a>
+    <a href="https://vedabase.io/en/library/" target="_blank" class="portal-card">
+      <span class="pi">📘</span>
+      <div class="pt">
+        <div class="pn t-en">Vedabase</div>
+        <div class="pn-hi t-hi" style="display:none">वेदाबेस</div>
+        <div class="pd">Gauḍīya · Gītā · Bhāgavata · Upaniṣads</div>
+      </div>
+    </a>
+    <a href="https://shlokam.org/" target="_blank" class="portal-card">
+      <span class="pi">🔤</span>
+      <div class="pt">
+        <div class="pn t-en">Shlokam.org</div>
+        <div class="pn-hi t-hi" style="display:none">श्लोकम्</div>
+        <div class="pd">Gītā · Upaniṣads · Sūtras · Stotras · Audio</div>
+      </div>
+    </a>
+    <a href="https://www.gitapress.org/" target="_blank" class="portal-card">
+      <span class="pi">📕</span>
+      <div class="pt">
+        <div class="pn t-en">Gīta Press Gorakhpur</div>
+        <div class="pn-hi t-hi" style="display:none">गीताप्रेस गोरखपुर</div>
+        <div class="pd">World's largest Hindu publisher · Books &amp; eBooks</div>
+      </div>
+    </a>
+    <a href="https://sanskritdocuments.org/" target="_blank" class="portal-card">
+      <span class="pi">🗃️</span>
+      <div class="pt">
+        <div class="pn t-en">Sanskrit Documents</div>
+        <div class="pn-hi t-hi" style="display:none">संस्कृत डॉक्युमेंट्स</div>
+        <div class="pd">Raw Sanskrit · GRETIL · Digital Library of India</div>
+      </div>
+    </a>
+    <a href="https://www.wisdomlib.org/hinduism" target="_blank" class="portal-card">
+      <span class="pi">🔍</span>
+      <div class="pt">
+        <div class="pn t-en">Wisdomlib — Hinduism</div>
+        <div class="pn-hi t-hi" style="display:none">विज्डमलिब — हिन्दू धर्म</div>
+        <div class="pd">Purāṇas · Āgamas · Dharmaśāstras · Searchable</div>
+      </div>
+    </a>
+  </div>
+</div>
+
+</div><!-- /wrap -->
+
+<footer>
+  <div class="wrap">
+    <p class="mantra">सर्वे भवन्तु सुखिनः · सर्वे सन्तु निरामयाः</p>
+    <p>All sources from <strong>Indian ācāryas, sampradāya lineages &amp; Indian institutions</strong>. No Orientalist translations. All links verified 2026.</p>
+  </div>
+</footer>
+
+<script>
+  // ── LANGUAGE TOGGLE ──
+  const sectionTabLabels = {
+    'tab-all':     ['All Scripture',    'सभी ग्रन्थ'],
+    'tab-shruti':  ['Śruti',           'श्रुति'],
+    'tab-smriti':  ['Smṛti & Itihāsa', 'स्मृति और इतिहास'],
+    'tab-purana':  ['Purāṇas',         'पुराण'],
+    'tab-darsana': ['Darśana & Āgama', 'दर्शन और आगम'],
+    'tab-portals': ['Full Portals',    'सम्पूर्ण पोर्टल'],
+  };
+  const tradTabLabels = {
+    'trad-all':       ['All Traditions',  'सभी सम्प्रदाय'],
+    'trad-vaishnava': ['Vaiṣṇavism',     'वैष्णव सम्प्रदाय'],
+    'trad-shaiva':    ['Śaivism',         'शैव सम्प्रदाय'],
+    'trad-shakta':    ['Śāktism',         'शाक्त सम्प्रदाय'],
+    'trad-smarta':    ['Smārtism',        'स्मार्त सम्प्रदाय'],
+    'trad-shrauta':   ['Śrautism',        'श्रौत सम्प्रदाय'],
+  };
+
+  function setLang(lang, btn) {
+    document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const hi = lang === 'hi';
+
+    document.querySelectorAll('.t-en').forEach(el => el.style.display = hi ? 'none' : '');
+    document.querySelectorAll('.t-hi').forEach(el => el.style.display = hi ? '' : 'none');
+
+    document.querySelectorAll('.card-title').forEach(el => el.style.display = hi ? 'none' : '');
+    document.querySelectorAll('.card-title-hi').forEach(el => el.style.display = hi ? 'block' : 'none');
+
+    document.querySelectorAll('.card-desc').forEach(el => el.style.display = hi ? 'none' : '');
+    document.querySelectorAll('.card-desc-hi').forEach(el => el.style.display = hi ? 'block' : 'none');
+
+    document.querySelectorAll('.sub-en').forEach(el => el.style.display = hi ? 'none' : '');
+    document.querySelectorAll('.sub-hi').forEach(el => el.style.display = hi ? '' : 'none');
+
+    for (const [id, [en, h]] of Object.entries(sectionTabLabels)) {
+      const el = document.getElementById(id);
+      if (el) el.textContent = hi ? h : en;
+    }
+    for (const [id, [en, h]] of Object.entries(tradTabLabels)) {
+      const el = document.getElementById(id);
+      if (el) el.textContent = hi ? h : en;
+    }
+  }
+
+  // ── FILTER STATE ──
+  let activeSection = 'all';
+  let activeTrad    = 'all';
+
+  function applyFilters() {
+    let anyVisible = false;
+
+    document.querySelectorAll('.section').forEach(sec => {
+      const sMatch = activeSection === 'all' || sec.dataset.s === activeSection;
+
+      // Portals section has no card-level trad tags — pass through
+      if (sec.dataset.s === 'portals') {
+        sec.classList.toggle('hidden', !sMatch);
+        if (sMatch) anyVisible = true;
+        return;
+      }
+
+      if (!sMatch) { sec.classList.add('hidden'); return; }
+
+      let secHasVisible = false;
+      sec.querySelectorAll('.card').forEach(card => {
+        const trads = (card.dataset.trad || '').split(' ');
+        const tMatch = activeTrad === 'all' || trads.includes(activeTrad);
+        card.classList.toggle('card-hidden', !tMatch);
+        if (tMatch) { secHasVisible = true; anyVisible = true; }
+      });
+
+      sec.classList.toggle('hidden', !secHasVisible);
+    });
+
+    document.getElementById('no-results').classList.toggle('visible', !anyVisible);
+  }
+
+  // ── SECTION FILTER ──
+  function filterSection(key, btn) {
+    document.querySelectorAll('.tabs:not(.trad-tabs) .tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    activeSection = key;
+    applyFilters();
+  }
+
+  // ── TRADITION FILTER ──
+  function filterTrad(key, btn) {
+    document.querySelectorAll('.trad-tabs .tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    activeTrad = key;
+    applyFilters();
+  }
+</script>
+<!-- ── SOURCE PROTECTION ── -->
+<script>
+  // Disable right-click context menu
+  document.addEventListener('contextmenu', function(e){ e.preventDefault(); });
+
+  // Disable common keyboard shortcuts for viewing/saving source
+  document.addEventListener('keydown', function(e){
+    // Ctrl/Cmd + U  (view-source)
+    // Ctrl/Cmd + S  (save page)
+    // Ctrl/Cmd + A  (select all)
+    // Ctrl/Cmd + C  (copy — allow on text fields but block blanket)
+    // F12, Ctrl+Shift+I/J/C (DevTools)
+    var ctrl = e.ctrlKey || e.metaKey;
+    if (ctrl && (e.key==='u'||e.key==='U'||e.key==='s'||e.key==='S'||e.key==='a'||e.key==='A')) { e.preventDefault(); return false; }
+    if (e.key==='F12') { e.preventDefault(); return false; }
+    if (ctrl && e.shiftKey && (e.key==='I'||e.key==='i'||e.key==='J'||e.key==='j'||e.key==='C'||e.key==='c')) { e.preventDefault(); return false; }
+  });
+
+  // Disable drag on images / page elements
+  document.addEventListener('dragstart', function(e){ e.preventDefault(); });
+
+  // Detect DevTools open via size heuristic and blur content
+  (function devToolsGuard(){
+    var threshold = 160;
+    function check(){
+      if (window.outerWidth - window.innerWidth > threshold || window.outerHeight - window.innerHeight > threshold){
+        document.body.style.filter = 'blur(8px)';
+      } else {
+        document.body.style.filter = '';
+      }
+    }
+    window.addEventListener('resize', check);
+  })();
+</script>
+
+</body>
+</html>
