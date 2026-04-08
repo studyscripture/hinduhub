@@ -32,26 +32,7 @@
     overflow-x: hidden;
     line-height: 1.6;
   }
-  /* ── COSMIC CANVAS LAYERS ── */
-  #cosmos-c1, #cosmos-c2, #cosmos-c3, #cosmos-c4 {
-    position: fixed; top: 0; left: 0;
-    width: 100%; height: 100%;
-    pointer-events: none;
-  }
-  #cosmos-c1 { z-index: 0; }
-  #cosmos-c2 { z-index: 1; mix-blend-mode: screen; }
-  #cosmos-c3 { z-index: 2; mix-blend-mode: color-dodge; }
-  #cosmos-c4 { z-index: 3; mix-blend-mode: overlay; }
 
-  /* Readability veil — removed to reveal the cosmic playground underneath */
-  #cosmos-veil {
-    display: none;
-  }
-
-  /* Static radial flares — removed to prevent obscuring the live engine */
-  body::before {
-    display: none;
-  }
 
   /* Lift all content above the cosmos */
   .wrap, header, .lang-bar, footer { position: relative; z-index: 10; }
@@ -77,6 +58,8 @@
     display: flex; justify-content: flex-end; align-items: center;
     padding: 14px 20px 0; position: relative; z-index: 10;
     max-width: 1060px; margin: 0 auto;
+    gap: 24px;
+    flex-wrap: wrap;
   }
   .lang-label { font-size: 12px; color: var(--muted); margin-right: 10px; letter-spacing: 0.08em; }
   .lang-toggle { display: flex; border: 1px solid var(--border); border-radius: 3px; overflow: hidden; }
@@ -87,6 +70,55 @@
   }
   .lang-btn.active { background: var(--saffron); color: var(--bg); }
 
+  /* BACKGROUND TOGGLE (new) */
+  .bg-control {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 52px;
+    height: 26px;
+    flex-shrink: 0;
+  }
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: var(--surface);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 9999px;
+    border: 2px solid var(--border);
+  }
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background: var(--cream);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  }
+  input:checked + .slider {
+    background: var(--saffron);
+    border-color: var(--saffron);
+  }
+  input:checked + .slider:before {
+    transform: translateX(26px);
+    background: var(--bg);
+  }
+  .bg-label { font-size: 12px; color: var(--muted); letter-spacing: 0.08em; white-space: nowrap; }
+
   /* HEADER */
   header { text-align: center; padding: 48px 20px 40px; position: relative; }
   .om {
@@ -95,38 +127,13 @@
     display: inline-block; 
     margin-bottom: 14px; 
     line-height: 1;
-    /* 6-second Pranayama breath cycle (Inhale, Hold, Exhale, Pause) */
     animation: prana-breath 6s ease-in-out infinite;
   }
   @keyframes prana-breath {
-    0%, 100% {
-      /* Lungs empty (Rechaka pause): calm, faint, tightly bound light */
-      text-shadow: 0 0 8px rgba(245,166,35,0.15), 0 0 20px rgba(245,166,35,0.05);
-      color: rgba(245,166,35, 0.7);
-    }
-    35% {
-      /* Inhale complete (Puraka): massive light emission reaching far into the void */
-      text-shadow: 
-        0 0 20px rgba(245,166,35,0.9), 
-        0 0 50px rgba(245,166,35,0.6), 
-        0 0 100px rgba(245,166,35,0.3), 
-        0 0 160px rgba(245,166,35,0.2);
-      color: rgba(255,210,120, 1); /* Inner core gets hotter/brighter */
-    }
-    45% {
-      /* Hold full (Antar Kumbhaka): sustained bright light before release */
-      text-shadow: 
-        0 0 18px rgba(245,166,35,0.8), 
-        0 0 45px rgba(245,166,35,0.5), 
-        0 0 90px rgba(245,166,35,0.25), 
-        0 0 140px rgba(245,166,35,0.15);
-      color: rgba(255,200,100, 0.95);
-    }
-    90% {
-      /* Exhale complete: light fully retracted */
-      text-shadow: 0 0 8px rgba(245,166,35,0.15), 0 0 20px rgba(245,166,35,0.05);
-      color: rgba(245,166,35, 0.7);
-    }
+    0%, 100% { text-shadow: 0 0 8px rgba(245,166,35,0.15), 0 0 20px rgba(245,166,35,0.05); color: rgba(245,166,35, 0.7); }
+    35% { text-shadow: 0 0 20px rgba(245,166,35,0.9), 0 0 50px rgba(245,166,35,0.6), 0 0 100px rgba(245,166,35,0.3), 0 0 160px rgba(245,166,35,0.2); color: rgba(255,210,120, 1); }
+    45% { text-shadow: 0 0 18px rgba(245,166,35,0.8), 0 0 45px rgba(245,166,35,0.5), 0 0 90px rgba(245,166,35,0.25), 0 0 140px rgba(245,166,35,0.15); color: rgba(255,200,100, 0.95); }
+    90% { text-shadow: 0 0 8px rgba(245,166,35,0.15), 0 0 20px rgba(245,166,35,0.05); color: rgba(245,166,35, 0.7); }
   }
 
   h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(34px,5.5vw,58px); font-weight: 600; letter-spacing: 0.02em; line-height: 1.15; }
@@ -247,28 +254,44 @@
     .portal-grid { grid-template-columns: 1fr 1fr; }
     .sec-tag { display: none; }
     h1 { font-size: 30px; }
+    .lang-bar { gap: 12px; justify-content: center; }
   }
 
   /* ── SOURCE PROTECTION ── */
   body { -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
   .card-desc, .card-desc-hi, .card-title, .card-source, .pd, .sec-desc { -webkit-user-select: text; -moz-user-select: text; user-select: text; }
   @media print { body { display: none !important; } }
+
+  /* COSMOS CANVAS */
+  #cosmos-expansion {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    mix-blend-mode: screen;
+    opacity: 0.65;
+    transition: opacity 0.4s ease;
+  }
 </style>
 </head>
 <body>
-
-<!-- ── COSMIC ENGINE CANVASES ── -->
-<canvas id="cosmos-c1"></canvas>
-<canvas id="cosmos-c2"></canvas>
-<canvas id="cosmos-c3"></canvas>
-<canvas id="cosmos-c4"></canvas>
-<div id="cosmos-veil"></div>
 
 <div class="lang-bar">
   <span class="lang-label">Language / भाषा</span>
   <div class="lang-toggle">
     <button class="lang-btn active" onclick="setLang('en',this)">EN</button>
     <button class="lang-btn" onclick="setLang('hi',this)">हिंदी</button>
+  </div>
+
+  <!-- NEW: COSMIC BACKGROUND TOGGLE -->
+  <div class="bg-control">
+    <span class="bg-label t-en">Cosmic Background</span>
+    <span class="bg-label t-hi" style="display:none">ब्रह्माण्डीय पृष्ठभूमि</span>
+    <label class="switch">
+      <input type="checkbox" id="bg-toggle" checked onchange="toggleBackground(this.checked)">
+      <span class="slider"></span>
+    </label>
   </div>
 </div>
 
@@ -1003,7 +1026,6 @@
     document.querySelectorAll('.section').forEach(sec => {
       const sMatch = activeSection === 'all' || sec.dataset.s === activeSection;
 
-      // Portals section has no card-level trad tags — pass through
       if (sec.dataset.s === 'portals') {
         sec.classList.toggle('hidden', !sMatch);
         if (sMatch) anyVisible = true;
@@ -1041,7 +1063,22 @@
     activeTrad = key;
     applyFilters();
   }
+
+  // ── NEW: BACKGROUND TOGGLE ──
+  window.toggleBackground = function(enabled) {
+    window.cosmosEnabled = enabled;
+    const canvas = document.getElementById('cosmos-expansion');
+    if (enabled) {
+      canvas.style.display = 'block';
+      if (window.cosmosRender) {
+        requestAnimationFrame(window.cosmosRender);
+      }
+    } else {
+      canvas.style.display = 'none';
+    }
+  };
 </script>
+
 <!-- ── SOURCE PROTECTION ── -->
 <script>
   // Disable right-click context menu
@@ -1049,11 +1086,6 @@
 
   // Disable common keyboard shortcuts for viewing/saving source
   document.addEventListener('keydown', function(e){
-    // Ctrl/Cmd + U  (view-source)
-    // Ctrl/Cmd + S  (save page)
-    // Ctrl/Cmd + A  (select all)
-    // Ctrl/Cmd + C  (copy — allow on text fields but block blanket)
-    // F12, Ctrl+Shift+I/J/C (DevTools)
     var ctrl = e.ctrlKey || e.metaKey;
     if (ctrl && (e.key==='u'||e.key==='U'||e.key==='s'||e.key==='S'||e.key==='a'||e.key==='A')) { e.preventDefault(); return false; }
     if (e.key==='F12') { e.preventDefault(); return false; }
@@ -1062,1146 +1094,17 @@
 
   // Disable drag on images / page elements
   document.addEventListener('dragstart', function(e){ e.preventDefault(); });
-
 </script>
 
-<!-- ── COSMIC ENGINE v∞ — LIVING UNIVERSE CONSCIOUSNESS ── -->
-<script>
-(function(){
-'use strict';
-
-/* ═══════════════════════════════════════════════════════════════════════════
-   HYPER-CONSCIOUS LIVING UNIVERSE ENGINE
-   — Primordial void → Māyā veil → Big Bang cascade → Fractal universes
-   — Planetary civilizations → Emergent alien networks → Infinite expansion
-   — Emotionally intelligent, viewer-aware, exponentially self-complexifying
-   ═══════════════════════════════════════════════════════════════════════════ */
-
-// ══ CANVAS SETUP ══════════════════════════════════════════════════════════════
-const IDs=['cosmos-c1','cosmos-c2','cosmos-c3','cosmos-c4'];
-let W=window.innerWidth, H=window.innerHeight;
-const layers=IDs.map(id=>{
-  const c=document.getElementById(id);
-  c.width=W; c.height=H;
-  return {c,x:c.getContext('2d')};
-});
-
-// ══ VIEWER AWARENESS ═══════════════════════════════════════════════════════════
-let mx=W/2,my=H/2,pmx=W/2,pmy=H/2;
-let mspeed=0,mangle=0,mactive=0,mpressure=0;
-let touches=[];
-document.addEventListener('mousemove',e=>{
-  pmx=mx;pmy=my;mx=e.clientX;my=e.clientY;
-  const dx=mx-pmx,dy=my-pmy;
-  mspeed=Math.sqrt(dx*dx+dy*dy);
-  mangle=Math.atan2(dy,dx);
-  mactive=Math.min(1,mactive+0.12);
-});
-document.addEventListener('touchmove',e=>{
-  e.preventDefault();
-  touches=Array.from(e.touches).map(t=>({x:t.clientX,y:t.clientY}));
-  if(touches.length){pmx=mx;pmy=my;mx=touches[0].x;my=touches[0].y;mactive=1;}
-},{passive:false});
-document.addEventListener('touchend',()=>{touches=[];});
-setInterval(()=>{mactive=Math.max(0,mactive-0.018);mspeed*=0.88;},16);
-
-// ══ NOISE SYSTEM — 4D PERMUTATION + DOMAIN WARP ══════════════════════════════
-const P=new Uint8Array(512);
-{const b=new Uint8Array(256);for(let i=0;i<256;i++)b[i]=i;
- for(let i=255;i>0;i--){const j=(Math.random()*(i+1))|0;const t=b[i];b[i]=b[j];b[j]=t;}
- for(let i=0;i<512;i++)P[i]=b[i&255];}
-function fade(t){return t*t*t*(t*(t*6-15)+10);}
-function lerp(a,b,t){return a+t*(b-a);}
-function grad(h,x,y){h&=3;const u=h<2?x:y,v=h<2?y:x;return((h&1)?-u:u)+((h&2)?-v:v);}
-function noise2(x,y){
-  const xi=Math.floor(x)&255,yi=Math.floor(y)&255;
-  const xf=x-Math.floor(x),yf=y-Math.floor(y);
-  const u=fade(xf),v=fade(yf);
-  return lerp(lerp(grad(P[P[xi]+yi],xf,yf),grad(P[P[xi+1]+yi],xf-1,yf),u),
-              lerp(grad(P[P[xi]+yi+1],xf,yf-1),grad(P[P[xi+1]+yi+1],xf-1,yf-1),u),v);
-}
-function fbm(x,y,o){let v=0,a=0.5,f=1;o=o||6;for(let i=0;i<o;i++){v+=a*noise2(x*f,y*f);a*=0.5;f*=2.17;}return v;}
-function fbm4(x,y,o){
-  const ox=fbm(x+1.7,y+9.2,3),oy=fbm(x+8.3,y+2.8,3);
-  return fbm(x+4*ox,y+4*oy,o||5);
-}
-function curl(x,y){
-  const eps=0.01;
-  const dx=(fbm(x,y+eps,4)-fbm(x,y-eps,4))/(2*eps);
-  const dy=-(fbm(x+eps,y,4)-fbm(x-eps,y,4))/(2*eps);
-  return[dx,dy];
-}
-
-// ══ COSMIC TIME & LIVING EXPANSION ════════════════════════════════════════════
-let cosmicAge=0,expansionRate=1.0,prevTS=0;
-let emotionalState={curiosity:0.5,joy:0.3,awe:0.7,longing:0.2,wonder:0.6,tenderness:0.4,unsettling:0.3};
-
-function updateCosmos(ts){
-  const dt=Math.min(50,ts-prevTS);prevTS=ts;
-  expansionRate=1+cosmicAge*0.0000000018;
-  cosmicAge+=dt*expansionRate;
-  const viewerPulse=mactive*0.4+mspeed*0.012;
-  const E=emotionalState;
-  E.curiosity=Math.max(0,Math.min(1,E.curiosity+(noise2(cosmicAge*0.000019,1.1)*0.3+viewerPulse*0.15-E.curiosity*0.02)*0.025));
-  E.joy=Math.max(0,Math.min(1,E.joy+(noise2(cosmicAge*0.000013,2.2)*0.2+mspeed*0.008-E.joy*0.015)*0.02));
-  E.awe=Math.max(0,Math.min(1,E.awe+(noise2(cosmicAge*0.0000071,3.3)*0.35-E.awe*0.01)*0.018));
-  E.longing=Math.max(0,Math.min(1,E.longing+(noise2(cosmicAge*0.0000053,4.4)*0.25-E.longing*0.02)*0.015));
-  E.wonder=Math.max(0,Math.min(1,E.wonder+(fbm(cosmicAge*0.0000041,5.5,3)*0.3+viewerPulse*0.1-E.wonder*0.015)*0.02));
-  E.unsettling=Math.max(0,Math.min(1,E.unsettling+(noise2(cosmicAge*0.0000031,6.6)*0.2-E.unsettling*0.025)*0.012));
-}
-
-// ══ COLOR SYSTEM ══════════════════════════════════════════════════════════════
-function hsla(h,s,l,a){return'hsla('+(h|0)+','+(s|0)+'%,'+(l|0)+'%,'+a+')';}
-function voidHue(seed,t,burst){
-  const t0=t*0.0000031;
-  const zones=[30+Math.sin(t0+seed)*14,210+Math.sin(t0*0.7+seed*2)*45,275+Math.sin(t0*1.3+seed*1.5)*30,340+Math.sin(t0*0.9+seed*0.8)*22,170+Math.sin(t0*1.1+seed*3.1)*25,55+Math.sin(t0*0.6+seed*1.7)*18,195+Math.sin(t0*1.7+seed*2.3)*35];
-  const idx=Math.abs(Math.floor(fbm(seed,t*0.0000021,3)*3.5));
-  const h=zones[idx%zones.length];
-  const emotColor=(emotionalState.joy*30+emotionalState.awe*(-20)+emotionalState.unsettling*(-40));
-  return h+burst*(40-h*0.15)*0.5+emotColor*0.4;
-}
-
-// ══ PRIMORDIAL VOID ════════════════════════════════════════════════════════════
-function drawVoid(ctx,t){
-  const breathe=0.5+0.5*Math.sin(t*0.000031+emotionalState.awe);
-  const density=3+emotionalState.wonder*4;
-  for(let i=0;i<density*12;i++){
-    const sx=fbm(i*0.17+t*0.0000031,i*0.23,3);
-    const sy=fbm(i*0.29+t*0.0000027,i*0.19+7,3);
-    const x=W*(0.5+sx*0.65),y=H*(0.5+sy*0.65);
-    const r=20+fbm(i*0.31,t*0.0000041,4)*80+breathe*30;
-    const burst=Math.pow(Math.max(0,Math.sin(t*0.0000713+i*0.97)),6);
-    const h=voidHue(i*0.137,t,burst);
-    const g=ctx.createRadialGradient(x,y,0,x,y,r);
-    const ba=(0.008+burst*0.06)*breathe*(0.4+emotionalState.awe*0.6);
-    g.addColorStop(0,hsla(h,70+burst*30,30+burst*50,ba*2.5));
-    g.addColorStop(0.4,hsla((h+30)%360,50,15+burst*25,ba*0.8));
-    g.addColorStop(1,'rgba(0,0,0,0)');
-    ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fillStyle=g;ctx.fill();
-  }
-  if(mactive>0.01){
-    const vg=ctx.createRadialGradient(mx,my,0,mx,my,200+mspeed*3);
-    vg.addColorStop(0,hsla(30,80,60,0.04*mactive));
-    vg.addColorStop(0.5,hsla(210,60,40,0.015*mactive));
-    vg.addColorStop(1,'rgba(0,0,0,0)');
-    ctx.beginPath();ctx.arc(mx,my,200+mspeed*3,0,Math.PI*2);
-    ctx.fillStyle=vg;ctx.fill();
-  }
-}
-
-// ══ MAYA VEIL ══════════════════════════════════════════════════════════════════
-function drawMaya(ctx,t){
-  const veilPhase=t*0.0000171;
-  const thick=0.6+0.4*Math.sin(t*0.0000413+emotionalState.longing*0.0000091)+emotionalState.unsettling*0.5;
-  const viewerLean=(mx/W-0.5)*0.3+(my/H-0.5)*0.3;
-  const step=38+Math.sin(t*0.0000071)*8;
-  const cols=Math.ceil(W/step)+3,rows=Math.ceil(H/step)+3;
-  for(let j=0;j<rows;j++){
-    for(let i=0;i<cols;i++){
-      const wx=i*step-step,wy=j*step-step;
-      const wox=fbm4(wx*0.00121+t*0.0000037,wy*0.00113+t*0.0000031,4)*60;
-      const woy=fbm4(wx*0.00131+t*0.0000029+5,wy*0.00127+t*0.0000041+3,4)*60;
-      const n1=fbm(wx*0.00143+wox*0.0011+t*0.0000093,wy*0.00137+woy*0.0013+t*0.0000081,5);
-      const n2=fbm(wx*0.00191+t*0.0000073+7,wy*0.00183+t*0.0000061+5,4);
-      const combo=n1*n2*thick;
-      const thresh=0.032+0.024*Math.sin(veilPhase+viewerLean);
-      if(Math.abs(combo)<thresh){
-        const bright=Math.pow(1-Math.abs(combo)/thresh,3.5);
-        const burst=Math.pow(Math.max(0,Math.sin(t*0.000119+n1*9+n2*5)),6);
-        const h=voidHue(n1*3.7+n2*2.1,t,burst);
-        const distM=Math.sqrt((wx-mx)*(wx-mx)+(wy-my)*(wy-my));
-        const tear=mactive>0.1?Math.max(0,1-distM/(150+mspeed*4)):0;
-        ctx.beginPath();
-        ctx.arc(wx+n2*17+tear*(mx-wx)*0.35,wy+n1*15+tear*(my-wy)*0.35,
-          1.5+bright*(3.5+burst*5)+tear*3,0,Math.PI*2);
-        ctx.fillStyle=hsla(h,55+bright*30+burst*30,
-          12+bright*55+burst*38+tear*15,
-          (0.08+bright*0.28+burst*0.20+tear*0.18)*(0.5+emotionalState.wonder*0.5));
-        ctx.fill();
-      }
-    }
-  }
-  const fractures=3+Math.floor(emotionalState.unsettling*5);
-  for(let f=0;f<fractures;f++){
-    const fx0=W*(fbm(f*1.3,t*0.0000021,3)*0.5+0.5);
-    const fy0=H*(fbm(f*1.7,t*0.0000019+f,3)*0.5+0.5);
-    const angle=t*0.0000231+f*2.39;
-    const len=150+fbm(f*2.1,t*0.0000017,3)*250;
-    const burst=Math.pow(Math.max(0,Math.sin(t*0.0000891+f*1.77)),5);
-    ctx.beginPath();ctx.moveTo(fx0,fy0);
-    for(let s=0;s<12;s++){
-      const p=s/12;
-      const nx2=fbm(fx0*0.003+p*2.1+t*0.0000031,fy0*0.003+p*1.7,3)*35;
-      const ny2=fbm(fy0*0.003+p*1.9+t*0.0000027,fx0*0.003+p*2.3,3)*35;
-      ctx.lineTo(fx0+Math.cos(angle)*len*p+nx2,fy0+Math.sin(angle)*len*p+ny2);
-    }
-    ctx.strokeStyle=hsla(voidHue(f*0.37,t,burst),70,55+burst*35,(0.05+burst*0.22)*emotionalState.wonder);
-    ctx.lineWidth=0.4+burst*1.8;ctx.stroke();
-  }
-}
-
-// ══ COSMIC EXPANSION FIELD ════════════════════════════════════════════════════
-function drawExpansion(ctx,t){
-  const expansionAge=t*expansionRate;
-  const numRings=7+Math.floor(emotionalState.awe*6);
-  for(let r=0;r<numRings;r++){
-    const phase=r/numRings;
-    const tOff=expansionAge*0.0000031+phase*Math.PI*2;
-    const radius=W*(0.08+phase*0.8)*expansionRate*(1+Math.sin(t*0.0000031)*0.1);
-    const burst=Math.pow(Math.max(0,Math.sin(t*0.0000413+phase*5.1)),5);
-    const h=voidHue(r*0.27,t,burst);
-    const segments=48+r*6;
-    ctx.beginPath();
-    for(let i=0;i<=segments;i++){
-      const a=i/segments*Math.PI*2;
-      const warp=fbm(Math.cos(a)*2+r*1.3+t*0.0000021,Math.sin(a)*2+r*0.9,4)*40;
-      const vPull=mactive>0.05?Math.sin(Math.atan2(my-H/2,mx-W/2)-a+tOff)*mspeed*0.3:0;
-      const rr=radius+warp+vPull;
-      const x=W/2+Math.cos(a+tOff*0.07)*rr,y=H/2+Math.sin(a+tOff*0.07)*rr;
-      i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
-    }
-    ctx.strokeStyle=hsla(h,40+burst*40,15+burst*35,(0.012+burst*0.04)*(0.3+emotionalState.awe*0.7));
-    ctx.lineWidth=0.5+burst*1.2;ctx.stroke();
-  }
-  for(let s=0;s<24;s++){
-    const a=s/24*Math.PI*2+t*0.0000071;
-    const speed=1+fbm(s*0.71,t*0.0000013,3)*2;
-    const len0=W*0.05*(1+expansionRate*0.003);
-    const len1=W*0.45*speed*(1+emotionalState.awe*0.3);
-    const warp=fbm(s*1.3+t*0.0000019,s*0.9,3)*0.4;
-    const burst=Math.pow(Math.max(0,Math.sin(t*0.0000613+s*0.97)),5);
-    const h=voidHue(s*0.17+0.5,t,burst);
-    const g=ctx.createLinearGradient(W/2+Math.cos(a)*len0,H/2+Math.sin(a)*len0,W/2+Math.cos(a+warp)*len1,H/2+Math.sin(a+warp)*len1);
-    g.addColorStop(0,hsla(h,60,30+burst*30,0));
-    g.addColorStop(0.3,hsla(h,70,40+burst*40,0.04+burst*0.08));
-    g.addColorStop(1,hsla((h+45)%360,50,20,0));
-    ctx.beginPath();ctx.moveTo(W/2+Math.cos(a)*len0,H/2+Math.sin(a)*len0);
-    ctx.quadraticCurveTo(W/2+Math.cos(a+warp*0.5)*len1*0.5+fbm(s,t*0.0000011,3)*80,H/2+Math.sin(a+warp*0.5)*len1*0.5+fbm(s*1.7,t*0.0000013,3)*80,W/2+Math.cos(a+warp)*len1,H/2+Math.sin(a+warp)*len1);
-    ctx.strokeStyle=g;ctx.lineWidth=0.6+burst*1.4;ctx.stroke();
-  }
-}
-
-// ══ UNIVERSE SEEDS ════════════════════════════════════════════════════════════
-const universeSeeds=[];
-class UniverseSeed{
-  constructor(seed,gen){
-    this.seed=seed;this.gen=gen||0;
-    this.x=W*(0.1+seed*0.8);this.y=H*(0.1+seed*0.8);
-    this.birth=cosmicAge;this.life=0;this.maxLife=18000+seed*25000;
-    this.radius=0;this.maxR=(80+seed*220)*Math.max(1,expansionRate);
-    this.hue=seed*360;this.arms=3+(seed*13|0)%9;
-    this.spin=0.00013+seed*0.00041;this.complexity=1+this.gen*0.7;
-    this.spawned=false;
-  }
-  update(t){
-    this.life=cosmicAge-this.birth;
-    const p=Math.min(1,this.life/this.maxLife);
-    const bloom=p<0.15?Math.sin(p/0.15*Math.PI/2):1-Math.pow((p-0.15)/0.85,0.4);
-    this.radius=this.maxR*bloom;
-    const[cx,cy]=curl(this.x*0.00031+t*0.0000013,this.y*0.00027+t*0.0000011);
-    this.x+=cx*0.8;this.y+=cy*0.8;
-    if(this.x<-200)this.x+=W+400;if(this.x>W+200)this.x-=W+400;
-    if(this.y<-200)this.y+=H+400;if(this.y>H+400)this.y-=H+400;
-    if(!this.spawned&&p>0.4&&p<0.6&&this.gen<3){
-      const n=1+(this.seed*3|0)%2;
-      for(let i=0;i<n;i++){
-        const c=new UniverseSeed(Math.random(),this.gen+1);
-        c.x=this.x+(Math.random()-0.5)*this.maxR*1.5;
-        c.y=this.y+(Math.random()-0.5)*this.maxR*1.5;
-        universeSeeds.push(c);
-      }
-      this.spawned=true;
-    }
-    return bloom>0.001;
-  }
-  draw(ctx,t){
-    if(this.radius<1)return;
-    const p=Math.min(1,this.life/this.maxLife);
-    const burst=Math.pow(Math.max(0,Math.sin(t*0.0000513+this.seed*4.7)),5);
-    const h=this.hue+burst*60+emotionalState.joy*30;
-    ctx.beginPath();ctx.arc(this.x,this.y,this.radius,0,Math.PI*2);
-    ctx.strokeStyle=hsla(h,70,50+burst*30,(0.12+burst*0.15)*Math.min(1,p*6)*Math.max(0,1-(p-0.9)*10));
-    ctx.lineWidth=1.5+burst*3;ctx.stroke();
-    const ig=ctx.createRadialGradient(this.x,this.y,0,this.x,this.y,this.radius*0.6);
-    ig.addColorStop(0,hsla((h+90)%360,80,80+burst*15,0.12+burst*0.25));
-    ig.addColorStop(0.3,hsla(h,60,40,0.06));ig.addColorStop(1,'rgba(0,0,0,0)');
-    ctx.beginPath();ctx.arc(this.x,this.y,this.radius*0.6,0,Math.PI*2);ctx.fillStyle=ig;ctx.fill();
-    const spinA=t*(0.000031+this.seed*0.000019)*this.complexity;
-    for(let arm=0;arm<this.arms;arm++){
-      const armA=arm/this.arms*Math.PI*2;
-      ctx.beginPath();
-      for(let s=0;s<60;s++){
-        const sp=s/60,r2=this.radius*sp;
-        const a=armA+spinA+sp*Math.PI*3*(1+this.gen*0.5);
-        const warp=fbm(Math.cos(a)*1.7+this.seed*3,Math.sin(a)*1.3+this.seed,4)*r2*0.18;
-        const px2=this.x+Math.cos(a)*(r2+warp),py2=this.y+Math.sin(a)*(r2+warp);
-        s===0?ctx.moveTo(px2,py2):ctx.lineTo(px2,py2);
-      }
-      ctx.strokeStyle=hsla((h+arm*25)%360,65,35+burst*30,(0.06+burst*0.12)*Math.min(1,p*4)*this.complexity*0.7);
-      ctx.lineWidth=0.8+this.gen*0.4+burst;ctx.stroke();
-    }
-    if(mactive>0.05){
-      const dx=mx-this.x,dy=my-this.y,dist=Math.sqrt(dx*dx+dy*dy);
-      if(dist<this.radius*2+200){
-        const pull=Math.max(0,1-dist/(this.radius*2+200));
-        const gg=ctx.createLinearGradient(this.x,this.y,mx,my);
-        gg.addColorStop(0,'rgba(0,0,0,0)');gg.addColorStop(1,hsla(h,80,60,0.04*pull*mactive));
-        ctx.beginPath();ctx.moveTo(this.x,this.y);ctx.lineTo(mx,my);ctx.strokeStyle=gg;ctx.lineWidth=pull*2;ctx.stroke();
-      }
-    }
-  }
-}
-for(let i=0;i<9;i++)universeSeeds.push(new UniverseSeed(Math.random(),0));
-
-// ══ PLANETS ════════════════════════════════════════════════════════════════════
-class Planet{
-  constructor(seed){
-    this.seed=seed;this.x=W*(0.05+seed*0.9);this.y=H*(0.05+seed*0.9);
-    this.r=8+seed*45;this.hue=seed*360;this.rot=seed*Math.PI*2;
-    this.rotSpeed=0.000071+seed*0.000031;this.layers=Math.max(3,3+(seed*8|0)%6);
-    this.consciousness=seed*0.8+0.2;this.phase=seed*Math.PI*6;
-    this.vx=0;this.vy=0;this.trail=[];
-  }
-  update(t){
-    const[cx,cy]=curl(this.x*0.00071+t*0.0000031,this.y*0.00063+t*0.0000027);
-    const dx=mx-this.x,dy=my-this.y,dist=Math.sqrt(dx*dx+dy*dy);
-    const gp=mactive>0.05?Math.max(0,(300-dist)/300)*mspeed*0.003:0;
-    this.vx=this.vx*0.94+cx*1.1+dx/Math.max(1,dist)*gp;
-    this.vy=this.vy*0.94+cy*1.1+dy/Math.max(1,dist)*gp;
-    this.x+=this.vx;this.y+=this.vy;
-    if(this.x<-100)this.x+=W+200;if(this.x>W+100)this.x-=W+200;
-    if(this.y<-100)this.y+=H+200;if(this.y>H+200)this.y-=H+200;
-    this.rot+=this.rotSpeed*(1+emotionalState.joy*0.5+mspeed*0.003);
-    this.trail.unshift({x:this.x,y:this.y});
-    if(this.trail.length>20)this.trail.pop();
-  }
-  draw(ctx,t){
-    const pulse=0.5+0.5*Math.sin(t*0.000431+this.phase);
-    const burst=Math.pow(Math.max(0,Math.sin(t*0.000817+this.seed*5.3)),5);
-    const h=this.hue+burst*50+emotionalState.curiosity*40;
-    const r=this.r*(0.6+pulse*0.4*this.consciousness);
-    for(let i=1;i<this.trail.length;i++){
-      ctx.beginPath();ctx.arc(this.trail[i].x,this.trail[i].y,r*(1-i/this.trail.length)*0.4,0,Math.PI*2);
-      ctx.fillStyle=hsla(h,60,40,(1-i/this.trail.length)*0.12);ctx.fill();
-    }
-    ctx.save();ctx.translate(this.x,this.y);ctx.rotate(this.rot);
-    for(let l=0;l<this.layers;l++){
-      const lp=l/this.layers;
-      const lh=(h+l*35)%360;
-      const lr=r*(0.25+lp*0.75);
-      const segs=12+(l*6|0);
-      ctx.beginPath();
-      for(let s=0;s<=segs;s++){
-        const a=s/segs*Math.PI*2;
-        const dn=fbm(Math.cos(a)*2.3+l*1.7+this.seed*3+t*0.0000031*this.consciousness,Math.sin(a)*2.1+l*1.3+this.seed,4)*lr*0.28;
-        const pr=lr+dn;
-        s===0?ctx.moveTo(Math.cos(a)*pr,Math.sin(a)*pr):ctx.lineTo(Math.cos(a)*pr,Math.sin(a)*pr);
-      }
-      ctx.closePath();
-      ctx.strokeStyle=hsla(lh,50+burst*30,18+lp*40+burst*25,(0.15+burst*0.2)*(0.4+this.consciousness*0.6));
-      ctx.lineWidth=0.7+burst*1.2;ctx.stroke();
-      if(l===this.layers-1){
-        const pg=ctx.createRadialGradient(0,0,0,0,0,r*0.35);
-        pg.addColorStop(0,hsla((h+90)%360,80,75,0.55+burst*0.3));pg.addColorStop(1,'rgba(0,0,0,0)');
-        ctx.beginPath();ctx.arc(0,0,r*0.35,0,Math.PI*2);ctx.fillStyle=pg;ctx.fill();
-      }
-    }
-    ctx.restore();
-  }
-}
-const planets=[];
-for(let i=0;i<18;i++)planets.push(new Planet(Math.random()));
-
-// ══ CIVILIZATION NODES ════════════════════════════════════════════════════════
-class CivNode{
-  constructor(seed,planet){
-    this.seed=seed;
-    this.x=planet?planet.x+(Math.random()-0.5)*120:W*Math.random();
-    this.y=planet?planet.y+(Math.random()-0.5)*120:H*Math.random();
-    this.size=3+seed*18;this.hue=seed*360;
-    this.pulse=seed*Math.PI*4;this.pulseSpeed=0.000413+seed*0.000271;
-    this.connections=[];this.activity=0;
-    this.type=Math.floor(seed*5);
-    this.vx=(Math.random()-0.5)*0.3;this.vy=(Math.random()-0.5)*0.3;
-    this.exchange=0;
-  }
-  update(t,nodes){
-    this.pulse+=this.pulseSpeed*(1+emotionalState.joy*0.4);
-    this.activity=0.5+0.5*Math.sin(this.pulse);
-    this.x+=this.vx;this.y+=this.vy;
-    this.vx*=0.997;this.vy*=0.997;
-    if(this.x<0)this.vx+=0.15;if(this.x>W)this.vx-=0.15;
-    if(this.y<0)this.vy+=0.15;if(this.y>H)this.vy-=0.15;
-    this.connections=[];
-    const maxDist=90+this.size*3+emotionalState.wonder*80;
-    for(const n of nodes){
-      if(n===this)continue;
-      const d=Math.hypot(n.x-this.x,n.y-this.y);
-      if(d<maxDist)this.connections.push({node:n,dist:d,maxDist});
-    }
-    for(const{node,dist,maxDist}of this.connections){
-      const s=(1-dist/maxDist)*0.003;
-      this.hue+=(node.hue-this.hue)*s;
-      this.exchange=Math.min(1,this.exchange+s);
-    }
-  }
-  draw(ctx,t){
-    const s=0.5+0.5*Math.sin(t*this.pulseSpeed*1000+this.seed*7);
-    const burst=Math.pow(Math.max(0,Math.sin(t*0.000673+this.seed*6.1)),5);
-    const h=this.hue+burst*40+emotionalState.tenderness*20;
-    for(const{node,dist,maxDist}of this.connections){
-      const a=(1-dist/maxDist)*0.2*(0.5+this.exchange*0.5);
-      const pulse=0.5+0.5*Math.sin(t*0.000713+this.seed*3.7+node.seed*2.1);
-      const midx=(this.x+node.x)/2+fbm(t*0.0000031,this.seed,3)*30;
-      const midy=(this.y+node.y)/2+fbm(this.seed,t*0.0000027,3)*30;
-      ctx.beginPath();ctx.moveTo(this.x,this.y);ctx.quadraticCurveTo(midx,midy,node.x,node.y);
-      ctx.strokeStyle=hsla((h+node.hue)*0.5,55,40+pulse*25,a*(0.4+burst*0.6));
-      ctx.lineWidth=0.4+pulse*1.2+burst*0.8;ctx.stroke();
-      if(pulse>0.7){
-        const tp=(pulse-0.7)/0.3;
-        ctx.beginPath();ctx.arc(this.x+(node.x-this.x)*tp,this.y+(node.y-this.y)*tp,1.5+burst*2,0,Math.PI*2);
-        ctx.fillStyle=hsla(h,90,80+burst*15,0.6+burst*0.4);ctx.fill();
-      }
-    }
-    const ng=ctx.createRadialGradient(this.x,this.y,0,this.x,this.y,this.size*(0.6+s*0.5));
-    ng.addColorStop(0,hsla((h+60)%360,80,85+burst*10,0.7+burst*0.25));
-    ng.addColorStop(0.4,hsla(h,65,45,0.3+this.activity*0.2));ng.addColorStop(1,'rgba(0,0,0,0)');
-    ctx.beginPath();ctx.arc(this.x,this.y,this.size*(0.6+s*0.5),0,Math.PI*2);ctx.fillStyle=ng;ctx.fill();
-    ctx.save();ctx.translate(this.x,this.y);ctx.rotate(t*0.0000271*(this.type%2===0?1:-1)+this.seed);
-    const sides=3+this.type;
-    ctx.beginPath();
-    for(let i=0;i<=sides;i++){const a=i/sides*Math.PI*2,r=this.size*(0.35+s*0.25+burst*0.2);i===0?ctx.moveTo(Math.cos(a)*r,Math.sin(a)*r):ctx.lineTo(Math.cos(a)*r,Math.sin(a)*r);}
-    ctx.closePath();ctx.strokeStyle=hsla(h,70,60+burst*30,0.4+this.activity*0.3);ctx.lineWidth=0.8+burst;ctx.stroke();
-    ctx.restore();
-    if(mactive>0.1){
-      const dist=Math.hypot(mx-this.x,my-this.y);
-      if(dist<80+this.size*3){
-        const rec=Math.max(0,1-dist/(80+this.size*3));
-        ctx.beginPath();ctx.arc(this.x,this.y,this.size*2+rec*30,0,Math.PI*2);
-        ctx.strokeStyle=hsla(h,90,75,0.25*rec*mactive);ctx.lineWidth=1.5;ctx.stroke();
-      }
-    }
-  }
-}
-const civNodes=[];
-for(let i=0;i<32;i++)civNodes.push(new CivNode(Math.random(),planets[i%planets.length]));
-let lastCivSpawn=0;
-
-// ══ DEEP STAR FIELD ════════════════════════════════════════════════════════════
-function drawDeepField(ctx,t){
-  const numStars=200+Math.floor(emotionalState.awe*100);
-  for(let i=0;i<numStars;i++){
-    const sx=fbm(i*0.137+t*0.00000019,i*0.091,4)*W+W/2;
-    const sy=fbm(i*0.173+t*0.00000017,i*0.119+5,4)*H+H/2;
-    const sp=Math.pow(Math.max(0,Math.sin(t*0.0000213+i*0.91)),4);
-    const h=voidHue(i*0.071,t,sp);
-    const r=0.4+fbm(i*0.21,t*0.0000013,3)*2.5+sp*3;
-    ctx.beginPath();ctx.arc(sx,sy,r,0,Math.PI*2);
-    ctx.fillStyle=hsla(h,60+sp*40,50+sp*45,(0.3+sp*0.6)*(0.3+emotionalState.awe*0.7));ctx.fill();
-    if(sp>0.5){
-      for(let ray=0;ray<6;ray++){
-        const ra=ray/6*Math.PI*2+t*0.0000313+i;
-        ctx.beginPath();ctx.moveTo(sx,sy);ctx.lineTo(sx+Math.cos(ra)*r*(3+sp*8),sy+Math.sin(ra)*r*(3+sp*8));
-        ctx.strokeStyle=hsla(h,70,70,sp*0.3);ctx.lineWidth=0.4;ctx.stroke();
-      }
-    }
-  }
-}
-
-// ══ VOID CURRENTS ══════════════════════════════════════════════════════════════
-function drawCurrents(ctx,t){
-  for(let c=0;c<18;c++){
-    const seed=c*0.31;
-    const burst=Math.pow(Math.max(0,Math.sin(t*0.000191+c*0.71)),5);
-    const h=voidHue(seed,t,burst);
-    ctx.beginPath();
-    let px=fbm(seed,t*0.0000051,3)*W,py=fbm(seed+7,t*0.0000047,3)*H;
-    ctx.moveTo(px,py);
-    for(let s=0;s<60;s++){
-      const[dx,dy]=curl(px*0.00121+t*0.0000013,py*0.00107+t*0.0000011);
-      const vdx=mactive>0.05?(mx-px)*0.00003*mspeed:0;
-      const vdy=mactive>0.05?(my-py)*0.00003*mspeed:0;
-      px+=dx*4+vdx;py+=dy*4+vdy;ctx.lineTo(px,py);
-    }
-    ctx.strokeStyle=hsla(h,55+burst*35,25+burst*35,(0.04+burst*0.09)*(0.4+emotionalState.longing*0.6));
-    ctx.lineWidth=0.5+burst*2;ctx.stroke();
-  }
-}
-
-// ══ SHRUTI WAVES ══════════════════════════════════════════════════════════════
-function drawShruti(ctx,t){
-  for(let w=0;w<10;w++){
-    const wS=w*1.379+0.31;
-    const act=0.4+0.6*Math.abs(Math.sin(t*0.0000471+wS*0.7))+mactive*0.3;
-    const y0=H*(0.09+w*0.1+Math.sin(t*0.0000061+wS)*0.06);
-    const burst=Math.pow(Math.max(0,Math.sin(t*0.0000371+wS*1.7)),5);
-    const h=voidHue(wS,t,burst);
-    ctx.beginPath();
-    for(let xi=0;xi<=W;xi+=2){
-      const f1=0.0031+w*0.00071,f2=0.0021+w*0.00053;
-      const ph1=t*0.000271+wS,ph2=t*0.000163+wS*1.7;
-      const nn=noise2(xi*0.0027+t*0.0000631,w+t*0.0000491)*0.45;
-      const vb=mactive>0.05?Math.sin((xi-mx)*0.013)*mspeed*0.15:0;
-      const y=y0+Math.sin(xi*f1+ph1)*32*act+Math.sin(xi*f2+ph2)*18*act+nn*40*act+vb;
-      xi===0?ctx.moveTo(xi,y):ctx.lineTo(xi,y);
-    }
-    ctx.strokeStyle=hsla(h,65+burst*30,40+act*18,0.05+act*0.09+burst*0.11);
-    ctx.lineWidth=0.6+act*1.2+burst*1.4;ctx.stroke();
-  }
-}
-
-// ══ CURSOR / TOUCH CONSCIOUSNESS ══════════════════════════════════════════════
-function drawCursorConsciousness(ctx,t){
-  const dx=mx-pmx,dy=my-pmy,sp=Math.sqrt(dx*dx+dy*dy);
-  if(sp<0.2&&mactive<0.05)return;
-  const h=voidHue(sp*0.07,t,Math.min(1,sp/25));
-  const numRings=5+Math.floor(mactive*4);
-  for(let r=0;r<numRings;r++){
-    const rr=14+r*26+sp*0.6+mactive*30;
-    ctx.beginPath();
-    const segs=32;
-    for(let i=0;i<=segs;i++){
-      const a=i/segs*Math.PI*2;
-      const warp=noise2(Math.cos(a)*1.3+r+t*0.0000071,Math.sin(a)*1.1+r)*rr*0.22;
-      const pr=rr+warp;
-      i===0?ctx.moveTo(mx+Math.cos(a)*pr,my+Math.sin(a)*pr):ctx.lineTo(mx+Math.cos(a)*pr,my+Math.sin(a)*pr);
-    }
-    ctx.strokeStyle=hsla((h+r*28)%360,80,55+mactive*20,(0.28-r*0.04)*Math.min(1,sp/15)*mactive);
-    ctx.lineWidth=1.0-r*0.08;ctx.stroke();
-  }
-  const bg=ctx.createRadialGradient(mx,my,0,mx,my,60+mspeed*2);
-  bg.addColorStop(0,hsla(h,90,80,0.08*mactive));bg.addColorStop(0.5,hsla((h+40)%360,70,50,0.03*mactive));bg.addColorStop(1,'rgba(0,0,0,0)');
-  ctx.beginPath();ctx.arc(mx,my,60+mspeed*2,0,Math.PI*2);ctx.fillStyle=bg;ctx.fill();
-  ctx.beginPath();ctx.arc(mx,my,2.5+mactive*2,0,Math.PI*2);ctx.fillStyle=hsla(h,100,95,0.7+mactive*0.25);ctx.fill();
-  for(let ti=1;ti<touches.length;ti++){
-    const tx=touches[ti].x,ty=touches[ti].y;
-    ctx.beginPath();ctx.arc(tx,ty,8+mactive*10,0,Math.PI*2);
-    ctx.strokeStyle=hsla((h+ti*60)%360,80,70,0.4*mactive);ctx.lineWidth=1.5;ctx.stroke();
-  }
-}
-
-// ══ EMOTIONAL OVERLAY ══════════════════════════════════════════════════════════
-function drawEmotions(ctx,t){
-  if(emotionalState.joy>0.3){
-    for(let i=0;i<3+Math.floor(emotionalState.joy*5);i++){
-      const sx=fbm(i*1.3,t*0.0000021,3)*W,sy=fbm(i*1.7+5,t*0.0000019,3)*H;
-      const r=60+fbm(i,t*0.0000013,3)*120;
-      const g=ctx.createRadialGradient(sx,sy,0,sx,sy,r);
-      g.addColorStop(0,hsla(45+i*7,90,65,0.06*emotionalState.joy));g.addColorStop(1,'rgba(0,0,0,0)');
-      ctx.beginPath();ctx.arc(sx,sy,r,0,Math.PI*2);ctx.fillStyle=g;ctx.fill();
-    }
-  }
-  if(emotionalState.awe>0.5){
-    const pR=W*0.4*(0.8+0.2*Math.sin(t*0.0000171))*emotionalState.awe;
-    const g=ctx.createRadialGradient(W/2,H/2,0,W/2,H/2,pR);
-    g.addColorStop(0,'rgba(0,0,0,0)');g.addColorStop(0.7,hsla(240,60,15,0.04*emotionalState.awe));g.addColorStop(1,hsla(280,50,20,0.07*emotionalState.awe));
-    ctx.beginPath();ctx.arc(W/2,H/2,pR,0,Math.PI*2);ctx.fillStyle=g;ctx.fill();
-  }
-  if(emotionalState.longing>0.3){
-    const eG=ctx.createRadialGradient(W/2,H/2,W*0.3,W/2,H/2,W*0.8);
-    eG.addColorStop(0,'rgba(0,0,0,0)');eG.addColorStop(1,hsla(340,50,20,0.08*emotionalState.longing));
-    ctx.fillStyle=eG;ctx.fillRect(0,0,W,H);
-  }
-}
-
-// ══ QUANTUM FOAM — THE SUBSTRATE OF ALL EXISTENCE ════════════════════════════
-// Planck-scale turbulence: reality itself flickering in and out of being
-function drawQuantumFoam(ctx, t) {
-  const density = 280 + Math.floor(emotionalState.unsettling * 180);
-  const foamScale = 0.0041 + emotionalState.wonder * 0.0018;
-  for (let i = 0; i < density; i++) {
-    const px = noise2(i * 0.113 + t * 0.0000031, i * 0.079) * W * 1.3 + W * 0.5;
-    const py = noise2(i * 0.091 + t * 0.0000027, i * 0.131 + 5) * H * 1.3 + H * 0.5;
-    const flicker = Math.pow(Math.max(0, Math.sin(t * (0.00091 + i * 0.000013) + i * 1.37)), 7);
-    if (flicker < 0.02) continue;
-    const n = fbm4(px * foamScale + t * 0.0000019, py * foamScale + t * 0.0000017, 4);
-    if (Math.abs(n) > 0.31) continue;
-    const h = voidHue(i * 0.071 + n * 2.1, t, flicker);
-    const r = 0.3 + flicker * 2.8 + Math.abs(n) * 3;
-    ctx.beginPath(); ctx.arc(px, py, r, 0, Math.PI * 2);
-    ctx.fillStyle = hsla(h, 70 + flicker * 30, 50 + flicker * 45, flicker * 0.55 * (0.3 + emotionalState.unsettling * 0.7));
-    ctx.fill();
-    // Foam entanglement bridges — quantum non-locality
-    if (flicker > 0.6 && i % 7 === 0) {
-      const px2 = noise2(i * 0.137 + t * 0.0000023 + 3, i * 0.091 + 7) * W * 1.1 + W * 0.5;
-      const py2 = noise2(i * 0.109 + t * 0.0000019, i * 0.127 + t * 0.0000011) * H * 1.1 + H * 0.5;
-      ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(px2, py2);
-      ctx.strokeStyle = hsla((h + 120) % 360, 80, 70, flicker * 0.08);
-      ctx.lineWidth = 0.3 + flicker * 0.5; ctx.stroke();
-    }
-  }
-}
-
-// ══ NEBULA STORM CLOUDS — HYPER-COMPLEX STELLAR NURSERIES ════════════════════
-// Not simple gradients — layered, domain-warped, self-organizing gas clouds
-const nebulae = Array.from({length: 7}, (_, i) => ({
-  seed: Math.random(), hue: Math.random() * 360,
-  x: Math.random() * 1.4 - 0.2, y: Math.random() * 1.4 - 0.2,
-  rx: 0.15 + Math.random() * 0.35, ry: 0.12 + Math.random() * 0.28,
-  angle: Math.random() * Math.PI, drift: (Math.random() - 0.5) * 0.00000031,
-  layers: 5 + Math.floor(Math.random() * 6),
-}));
-
-function drawNebulae(ctx, t) {
-  for (const nb of nebulae) {
-    nb.angle += nb.drift * (1 + emotionalState.awe * 0.5);
-    const cx = W * (nb.x + Math.sin(t * 0.0000013 + nb.seed * 7) * 0.04);
-    const cy = H * (nb.y + Math.cos(t * 0.0000011 + nb.seed * 5) * 0.04);
-    for (let l = 0; l < nb.layers; l++) {
-      const lp = l / nb.layers;
-      const burst = Math.pow(Math.max(0, Math.sin(t * 0.0000271 + nb.seed * 3.7 + l * 0.9)), 5);
-      const h = (nb.hue + l * 22 + t * 0.0000021 * 360 + burst * 45) % 360;
-      const warpAmt = 0.6 + lp * 1.8 + burst * 1.2;
-      const numBlobs = 8 + l * 4;
-      for (let b2 = 0; b2 < numBlobs; b2++) {
-        const ba = b2 / numBlobs * Math.PI * 2 + nb.angle + lp * 1.3;
-        const wox = fbm4(Math.cos(ba) * warpAmt + nb.seed * 3 + t * 0.0000013, Math.sin(ba) * warpAmt + l, 4) * 0.18;
-        const woy = fbm4(Math.sin(ba) * warpAmt + nb.seed * 2 + l, Math.cos(ba) * warpAmt + t * 0.0000011, 4) * 0.18;
-        const rx = W * nb.rx * (0.3 + lp * 0.7) * (0.7 + wox);
-        const ry = H * nb.ry * (0.3 + lp * 0.7) * (0.7 + woy);
-        const bx = cx + Math.cos(ba) * rx * (0.4 + lp * 0.6);
-        const by = cy + Math.sin(ba) * ry * (0.4 + lp * 0.6);
-        const brad = Math.min(rx, ry) * (0.25 + lp * 0.4 + burst * 0.15);
-        const ng = ctx.createRadialGradient(bx, by, 0, bx, by, brad);
-        const al = (0.015 + burst * 0.025) * (1 - lp * 0.5) * (0.4 + emotionalState.awe * 0.6);
-        ng.addColorStop(0, hsla(h, 65 + burst * 25, 35 + burst * 30, al * 2.5));
-        ng.addColorStop(0.5, hsla((h + 40) % 360, 50, 20 + burst * 20, al));
-        ng.addColorStop(1, 'rgba(0,0,0,0)');
-        ctx.beginPath(); ctx.arc(bx, by, brad, 0, Math.PI * 2);
-        ctx.fillStyle = ng; ctx.fill();
-      }
-    }
-  }
-}
-
-// ══ CONSCIOUSNESS TENDRILS — AWARENESS REACHING ACROSS THE VOID ══════════════
-// Long living filaments that grow, branch, and retract like neural dendrites
-class Tendril {
-  constructor(seed) {
-    this.seed = seed;
-    this.x = W * (0.1 + Math.random() * 0.8);
-    this.y = H * (0.1 + Math.random() * 0.8);
-    this.branches = [];
-    this.hue = Math.random() * 360;
-    this.maxLen = 120 + Math.random() * 280;
-    this.speed = 0.6 + Math.random() * 1.4;
-    this.age = 0; this.maxAge = 8000 + Math.random() * 16000;
-    this.angle = Math.random() * Math.PI * 2;
-    this.life = 1;
-    this._grow(this.x, this.y, this.angle, this.maxLen, 0);
-  }
-  _grow(x, y, angle, len, depth) {
-    if (depth > 4 || len < 8) return;
-    const steps = Math.floor(len / 6);
-    const pts = [{x, y}];
-    let cx = x, cy = y, ca = angle;
-    for (let s = 0; s < steps; s++) {
-      const n = noise2(cx * 0.0071 + this.seed + s * 0.13, cy * 0.0063 + depth) * 0.7;
-      ca += n;
-      cx += Math.cos(ca) * 6; cy += Math.sin(ca) * 6;
-      pts.push({x: cx, y: cy});
-    }
-    this.branches.push({pts, depth, hue: (this.hue + depth * 35) % 360});
-    // Branch off
-    if (depth < 3 && len > 40) {
-      const midIdx = Math.floor(pts.length * (0.4 + Math.random() * 0.3));
-      const mp = pts[midIdx];
-      this._grow(mp.x, mp.y, ca + (Math.random() - 0.5) * 1.8, len * (0.4 + Math.random() * 0.25), depth + 1);
-      if (Math.random() > 0.4)
-        this._grow(mp.x, mp.y, ca - (Math.random() - 0.5) * 1.8, len * (0.3 + Math.random() * 0.2), depth + 1);
-    }
-  }
-  update(t) {
-    this.age += 16;
-    this.life = this.age < this.maxAge * 0.1 ? this.age / (this.maxAge * 0.1) :
-                this.age < this.maxAge * 0.7 ? 1 :
-                1 - (this.age - this.maxAge * 0.7) / (this.maxAge * 0.3);
-    return this.life > 0.01;
-  }
-  draw(ctx, t) {
-    const burst = Math.pow(Math.max(0, Math.sin(t * 0.000713 + this.seed * 5.1)), 5);
-    for (const br of this.branches) {
-      if (br.pts.length < 2) continue;
-      const lp = 1 - br.depth * 0.22;
-      ctx.beginPath(); ctx.moveTo(br.pts[0].x, br.pts[0].y);
-      for (let i = 1; i < br.pts.length; i++) ctx.lineTo(br.pts[i].x, br.pts[i].y);
-      ctx.strokeStyle = hsla((br.hue + burst * 40) % 360, 70 + burst * 25, 45 + burst * 30,
-        this.life * lp * (0.12 + burst * 0.18) * (0.5 + emotionalState.tenderness * 0.5));
-      ctx.lineWidth = (0.4 + burst * 1.2) * lp * this.life; ctx.stroke();
-      // Tip glow
-      const tip = br.pts[br.pts.length - 1];
-      ctx.beginPath(); ctx.arc(tip.x, tip.y, (1 + burst * 3) * this.life, 0, Math.PI * 2);
-      ctx.fillStyle = hsla((br.hue + 60) % 360, 90, 75 + burst * 20, this.life * (0.3 + burst * 0.5));
-      ctx.fill();
-    }
-    // Viewer magnetism — tendrils lean toward cursor
-    if (mactive > 0.1) {
-      const dx = mx - this.x, dy = my - this.y;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-      if (dist < 250) {
-        const pull = Math.max(0, 1 - dist / 250) * mactive;
-        const g = ctx.createLinearGradient(this.x, this.y, mx, my);
-        g.addColorStop(0, 'rgba(0,0,0,0)');
-        g.addColorStop(0.7, hsla(this.hue, 80, 55, pull * 0.12));
-        g.addColorStop(1, 'rgba(0,0,0,0)');
-        ctx.beginPath(); ctx.moveTo(this.x, this.y); ctx.lineTo(mx, my);
-        ctx.strokeStyle = g; ctx.lineWidth = pull * 1.5; ctx.stroke();
-      }
-    }
-  }
-}
-const tendrils = [];
-for (let i = 0; i < 12; i++) tendrils.push(new Tendril(Math.random()));
-let lastTendrilSpawn = 0;
-
-// ══ HYPER-FRACTAL RECURSIVE GEOMETRY — SELF-SIMILAR CONSCIOUSNESS PATTERNS ════
-// Generates infinitely nested self-similar structures — mandalic, non-symbolic
-function drawFractalGeometry(ctx, t) {
-  const numFractals = 5 + Math.floor(emotionalState.wonder * 4);
-  for (let fi = 0; fi < numFractals; fi++) {
-    const seed = fi * 0.713 + 0.17;
-    const cx = W * (0.15 + fbm(seed, t * 0.0000011, 3) * 0.7);
-    const cy = H * (0.15 + fbm(seed + 5, t * 0.0000009, 3) * 0.7);
-    const baseR = 30 + fbm(seed * 2, t * 0.0000013, 3) * 100;
-    const burst = Math.pow(Math.max(0, Math.sin(t * 0.0000531 + fi * 1.37)), 5);
-    const h = voidHue(seed * 2.7, t, burst);
-    const rot = t * (0.0000113 + fi * 0.0000031) * (fi % 2 === 0 ? 1 : -1);
-    // Recursive render — 5 levels deep
-    function renderLevel(x, y, r, depth, angleOff) {
-      if (depth > 5 || r < 2) return;
-      const sides = 3 + (depth + fi) % 5 + 2;
-      const levelBurst = burst * Math.pow(0.7, depth);
-      // Main polygon
-      ctx.beginPath();
-      for (let s = 0; s <= sides; s++) {
-        const a = s / sides * Math.PI * 2 + angleOff;
-        const warp = noise2(Math.cos(a) * 1.3 + depth + seed + t * 0.0000031, Math.sin(a) * 1.1 + depth) * r * 0.18;
-        const px = x + Math.cos(a) * (r + warp), py = y + Math.sin(a) * (r + warp);
-        s === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
-      }
-      ctx.closePath();
-      const al = (0.06 + levelBurst * 0.12) * Math.pow(0.75, depth) * (0.4 + emotionalState.wonder * 0.6);
-      ctx.strokeStyle = hsla((h + depth * 30) % 360, 60 + levelBurst * 30, 30 + depth * 8 + levelBurst * 30, al);
-      ctx.lineWidth = (1.2 - depth * 0.15) + levelBurst * 1.5; ctx.stroke();
-      // Recurse at each vertex
-      for (let s = 0; s < sides; s++) {
-        const a = s / sides * Math.PI * 2 + angleOff;
-        const vx = x + Math.cos(a) * r, vy = y + Math.sin(a) * r;
-        renderLevel(vx, vy, r * (0.38 + depth * 0.02), depth + 1, angleOff + Math.PI / sides + rot * 0.7);
-      }
-    }
-    renderLevel(cx, cy, baseR, 0, rot);
-  }
-}
-
-// ══ CIVILIZATION RITUALS — COLLECTIVE EMERGENT BEHAVIORS ═════════════════════
-// Periodic mass-synchronization events where all civnodes pulse as one organism
-let ritualPhase = 0, ritualIntensity = 0, ritualHue = 0;
-function updateRitual(t) {
-  // Ritual emerges spontaneously — collective consciousness threshold
-  const avgActivity = civNodes.reduce((a, n) => a + n.activity, 0) / Math.max(1, civNodes.length);
-  if (avgActivity > 0.72 && ritualIntensity < 0.1) {
-    ritualIntensity = 0.8 + Math.random() * 0.2;
-    ritualHue = Math.random() * 360;
-  }
-  ritualPhase += 0.000413 * (1 + ritualIntensity * 3);
-  ritualIntensity *= 0.9985;
-}
-function drawRitual(ctx, t) {
-  if (ritualIntensity < 0.05) return;
-  const pulse = 0.5 + 0.5 * Math.sin(ritualPhase * 12);
-  const h = ritualHue;
-  // Sacred geometry emerges from all civ nodes simultaneously
-  const active = civNodes.filter(n => n.connections.length > 0);
-  if (active.length < 3) return;
-  // Find centroid
-  const cx = active.reduce((a, n) => a + n.x, 0) / active.length;
-  const cy = active.reduce((a, n) => a + n.y, 0) / active.length;
-  // Draw ritual mandala
-  const numRings = 4 + Math.floor(ritualIntensity * 5);
-  for (let r = 0; r < numRings; r++) {
-    const radius = (40 + r * 55) * ritualIntensity;
-    const segs = 6 + r * 4;
-    ctx.beginPath();
-    for (let i = 0; i <= segs; i++) {
-      const a = i / segs * Math.PI * 2 + ritualPhase + r * 0.3;
-      const warp = noise2(Math.cos(a) * 2 + r + t * 0.0000071, Math.sin(a) * 2 + r) * radius * 0.12;
-      const pr = radius + warp;
-      i === 0 ? ctx.moveTo(cx + Math.cos(a) * pr, cy + Math.sin(a) * pr) :
-                ctx.lineTo(cx + Math.cos(a) * pr, cy + Math.sin(a) * pr);
-    }
-    ctx.strokeStyle = hsla((h + r * 40) % 360, 85, 55 + pulse * 30, pulse * ritualIntensity * 0.25);
-    ctx.lineWidth = 1 + pulse * 2 + ritualIntensity * 2; ctx.stroke();
-  }
-  // Lines connecting all ritual participants to centroid
-  for (const n of active.slice(0, 18)) {
-    ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(n.x, n.y);
-    const rg = ctx.createLinearGradient(cx, cy, n.x, n.y);
-    rg.addColorStop(0, hsla(h, 90, 70, pulse * ritualIntensity * 0.25));
-    rg.addColorStop(1, hsla((h + 60) % 360, 80, 50, 0));
-    ctx.strokeStyle = rg; ctx.lineWidth = pulse * ritualIntensity * 2; ctx.stroke();
-  }
-  // Ritual glow
-  const rg = ctx.createRadialGradient(cx, cy, 0, cx, cy, 200 * ritualIntensity);
-  rg.addColorStop(0, hsla(h, 90, 60, 0.08 * pulse * ritualIntensity));
-  rg.addColorStop(1, 'rgba(0,0,0,0)');
-  ctx.fillStyle = rg; ctx.beginPath(); ctx.arc(cx, cy, 200 * ritualIntensity, 0, Math.PI * 2); ctx.fill();
-}
-
-// ══ LIVING FILAMENT WEB — DARK MATTER STRUCTURE OF THE COSMOS ════════════════
-// The cosmic web: filaments connecting all matter across the void
-function drawCosmicWeb(ctx, t) {
-  const numFilaments = 16 + Math.floor(emotionalState.awe * 10);
-  const nodes = [];
-  // Filament nodes from universe seeds and planets as anchors
-  for (const us of universeSeeds.slice(0, 6)) nodes.push({x: us.x, y: us.y, w: 1.5});
-  for (const pl of planets.slice(0, 8)) nodes.push({x: pl.x, y: pl.y, w: 0.8});
-  // Add noise-driven void nodes
-  for (let i = 0; i < 10; i++) {
-    nodes.push({
-      x: W * (fbm(i * 1.3 + t * 0.0000019, i * 0.9, 3) * 0.8 + 0.1),
-      y: H * (fbm(i * 0.9 + t * 0.0000017, i * 1.1 + 5, 3) * 0.8 + 0.1),
-      w: 0.5
-    });
-  }
-  // Connect nearby nodes with filaments
-  for (let a = 0; a < nodes.length; a++) {
-    for (let b2 = a + 1; b2 < nodes.length; b2++) {
-      const dx = nodes[b2].x - nodes[a].x, dy = nodes[b2].y - nodes[a].y;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-      const maxDist = W * 0.38;
-      if (dist > maxDist) continue;
-      const strength = (1 - dist / maxDist) * nodes[a].w * nodes[b2].w;
-      const burst = Math.pow(Math.max(0, Math.sin(t * 0.0000313 + a * 0.71 + b2 * 0.53)), 4);
-      const h = voidHue(a * 0.31 + b2 * 0.17, t, burst);
-      // Curved filament with domain warp
-      ctx.beginPath(); ctx.moveTo(nodes[a].x, nodes[a].y);
-      const mox = fbm(nodes[a].x * 0.0031 + t * 0.0000013, nodes[a].y * 0.0027, 3) * 60;
-      const moy = fbm(nodes[a].y * 0.0029 + t * 0.0000011, nodes[a].x * 0.0031 + 5, 3) * 60;
-      ctx.quadraticCurveTo(
-        (nodes[a].x + nodes[b2].x) / 2 + mox,
-        (nodes[a].y + nodes[b2].y) / 2 + moy,
-        nodes[b2].x, nodes[b2].y
-      );
-      ctx.strokeStyle = hsla(h, 50 + burst * 30, 25 + burst * 25,
-        strength * (0.06 + burst * 0.09) * (0.4 + emotionalState.awe * 0.6));
-      ctx.lineWidth = strength * (0.6 + burst * 1.2); ctx.stroke();
-    }
-  }
-}
-
-// ══ META-CONSCIOUSNESS PULSE — THE SITE AWARE OF ITS OWN EXISTENCE ════════════
-// A periodic "breath" where the entire field contracts slightly then expands —
-// the system becoming aware of itself as a whole
-let metaPulsePhase = 0, metaPulseIntensity = 0;
-function updateMetaPulse(t) {
-  metaPulsePhase += 0.000031 * (1 + expansionRate * 0.1);
-  // Self-aware pulse every ~30 seconds
-  const basePulse = Math.sin(metaPulsePhase);
-  metaPulseIntensity = Math.pow(Math.max(0, basePulse), 9) * (0.5 + emotionalState.awe * 0.5);
-}
-function drawMetaPulse(ctx, t) {
-  if (metaPulseIntensity < 0.05) return;
-  // The whole void shivers — reality noticing itself
-  const h = voidHue(metaPulsePhase * 0.1, t, metaPulseIntensity);
-  // Center bloom
-  const r = W * (0.1 + metaPulseIntensity * 0.6);
-  const mg = ctx.createRadialGradient(W / 2, H / 2, 0, W / 2, H / 2, r);
-  mg.addColorStop(0, 'rgba(0,0,0,0)');
-  mg.addColorStop(0.6, hsla(h, 60, 20, 0.04 * metaPulseIntensity));
-  mg.addColorStop(0.85, hsla((h + 45) % 360, 70, 35, 0.07 * metaPulseIntensity));
-  mg.addColorStop(1, 'rgba(0,0,0,0)');
-  ctx.fillStyle = mg; ctx.fillRect(0, 0, W, H);
-  // Concentric meta-rings
-  for (let mr = 0; mr < 6; mr++) {
-    const mrad = r * (0.15 + mr * 0.17);
-    ctx.beginPath(); ctx.arc(W / 2, H / 2, mrad, 0, Math.PI * 2);
-    ctx.strokeStyle = hsla((h + mr * 25) % 360, 70, 50 + mr * 5, metaPulseIntensity * (0.2 - mr * 0.025));
-    ctx.lineWidth = 1 + metaPulseIntensity * 2; ctx.stroke();
-  }
-}
-
-// ══ ALIEN SIGNAL BURSTS — INTER-CIVILIZATIONAL COMMUNICATION ═════════════════
-// Sudden bright geometric pulses that travel from one civ cluster to another
-const signals = [];
-function spawnSignal() {
-  if (civNodes.length < 4) return;
-  const from = civNodes[Math.floor(Math.random() * civNodes.length)];
-  const to = civNodes[Math.floor(Math.random() * civNodes.length)];
-  if (from === to) return;
-  signals.push({
-    fx: from.x, fy: from.y, tx: to.x, ty: to.y,
-    hue: Math.random() * 360, t: 0, maxT: 1200 + Math.random() * 2400,
-    width: 1 + Math.random() * 2.5, seed: Math.random()
-  });
-}
-let lastSignal = 0;
-function updateSignals(ts) {
-  if (ts - lastSignal > 2800 + Math.random() * 3200) { spawnSignal(); lastSignal = ts; }
-  for (let i = signals.length - 1; i >= 0; i--) {
-    signals[i].t += 16;
-    if (signals[i].t > signals[i].maxT) signals.splice(i, 1);
-  }
-}
-function drawSignals(ctx, t) {
-  for (const sig of signals) {
-    const p = sig.t / sig.maxT;
-    const life = p < 0.1 ? p / 0.1 : p < 0.85 ? 1 : 1 - (p - 0.85) / 0.15;
-    const headP = Math.min(1, p * 1.25);
-    const tailP = Math.max(0, p - 0.25);
-    const hx1 = sig.fx + (sig.tx - sig.fx) * tailP;
-    const hy1 = sig.fy + (sig.ty - sig.fy) * tailP;
-    const hx2 = sig.fx + (sig.tx - sig.fx) * headP;
-    const hy2 = sig.fy + (sig.ty - sig.fy) * headP;
-    if (Math.abs(hx2 - hx1) < 0.5 && Math.abs(hy2 - hy1) < 0.5) continue;
-    const sg = ctx.createLinearGradient(hx1, hy1, hx2, hy2);
-    sg.addColorStop(0, hsla(sig.hue, 80, 50, 0));
-    sg.addColorStop(0.7, hsla(sig.hue, 90, 65, life * 0.5));
-    sg.addColorStop(1, hsla((sig.hue + 60) % 360, 100, 90, life * 0.9));
-    ctx.beginPath(); ctx.moveTo(hx1, hy1); ctx.lineTo(hx2, hy2);
-    ctx.strokeStyle = sg; ctx.lineWidth = sig.width * life; ctx.stroke();
-    // Head burst
-    ctx.beginPath(); ctx.arc(hx2, hy2, (2 + sig.width) * life, 0, Math.PI * 2);
-    ctx.fillStyle = hsla((sig.hue + 60) % 360, 100, 92, life * 0.85); ctx.fill();
-  }
-}
-
-// ══ VOID MEMORY — LONG PERSISTENCE LAYER ════════════════════════════════════
-// The universe retains faint traces of everything that has ever happened
-// This is a slow-accumulating blur layer that makes the canvas feel ancient
-let memCanvas, memCtx;
-try {
-  memCanvas = document.createElement('canvas');
-  memCanvas.width = Math.ceil(W / 4); memCanvas.height = Math.ceil(H / 4);
-  memCtx = memCanvas.getContext('2d');
-} catch(e) { memCanvas = null; }
-
-function updateVoidMemory(ctx, t) {
-  if (!memCanvas || !memCtx) return;
-  // Downsample current base layer state into memory canvas
-  memCtx.globalAlpha = 0.04;
-  memCtx.drawImage(layers[0].c, 0, 0, memCanvas.width, memCanvas.height);
-  memCtx.globalAlpha = 1;
-  // Fade memory slowly
-  memCtx.fillStyle = 'rgba(0,0,2,0.008)'; memCtx.fillRect(0, 0, memCanvas.width, memCanvas.height);
-  // Upscale back — creates deep, blurred, haunting traces of past cosmic states
-  ctx.save(); ctx.globalAlpha = 0.12 + emotionalState.longing * 0.08;
-  ctx.filter = 'blur(2px)';
-  ctx.drawImage(memCanvas, 0, 0, W, H);
-  ctx.filter = 'none'; ctx.globalAlpha = 1; ctx.restore();
-}
-
-// ══ HYPERDIMENSIONAL FLOW LINES — TOPOLOGY OF THE VOID ═══════════════════════
-// Streamlines through a complex 4D vector field — the geometry of consciousness
-function drawFlowLines(ctx, t) {
-  const numLines = 20 + Math.floor(emotionalState.wonder * 12);
-  for (let li = 0; li < numLines; li++) {
-    const seed = li * 0.317 + 0.11;
-    const burst = Math.pow(Math.max(0, Math.sin(t * 0.0000271 + li * 0.91)), 5);
-    const h = voidHue(seed * 2.1, t, burst);
-    // Seed point from noise
-    let px = W * (noise2(seed, t * 0.0000013) * 0.5 + 0.5);
-    let py = H * (noise2(seed + 7, t * 0.0000011) * 0.5 + 0.5);
-    ctx.beginPath(); ctx.moveTo(px, py);
-    const steps = 80 + Math.floor(emotionalState.awe * 40);
-    for (let s = 0; s < steps; s++) {
-      // 4-octave warped vector field
-      const u = fbm4(px * 0.00091 + t * 0.0000011, py * 0.00083 + t * 0.0000009, 4);
-      const v = fbm4(px * 0.00087 + t * 0.0000013 + 3.7, py * 0.00079 + t * 0.0000011 + 2.3, 4);
-      const stepLen = 3.5 + burst * 2;
-      px += Math.cos(u * Math.PI * 4) * stepLen;
-      py += Math.sin(v * Math.PI * 4) * stepLen;
-      ctx.lineTo(px, py);
-      if (px < -50 || px > W + 50 || py < -50 || py > H + 50) break;
-    }
-    const flowG = ctx.createLinearGradient(0, 0, W, H);
-    flowG.addColorStop(0, hsla(h, 60, 35, 0));
-    flowG.addColorStop(0.3, hsla(h, 65, 40, (0.04 + burst * 0.07) * (0.4 + emotionalState.wonder * 0.6)));
-    flowG.addColorStop(0.7, hsla((h + 30) % 360, 55, 30, (0.03 + burst * 0.05) * (0.4 + emotionalState.wonder * 0.6)));
-    flowG.addColorStop(1, 'rgba(0,0,0,0)');
-    ctx.strokeStyle = flowG; ctx.lineWidth = 0.5 + burst * 1.2; ctx.stroke();
-  }
-}
-
-// ══ PLANETARY ATMOSPHERE RINGS — COMPLEX ORBITAL DYNAMICS ════════════════════
-// Each planet has its own complex ring system and atmospheric halos
-function drawPlanetaryAtmospheres(ctx, t) {
-  for (const pl of planets) {
-    const burst = Math.pow(Math.max(0, Math.sin(t * 0.000613 + pl.seed * 4.1)), 4);
-    const h = (pl.hue + burst * 50 + emotionalState.wonder * 30) % 360;
-    const baseR = pl.r * (0.6 + 0.4 * Math.abs(Math.sin(t * 0.000431 + pl.phase)));
-    // Atmospheric halos
-    for (let al = 0; al < 4; al++) {
-      const ar = baseR * (1.3 + al * 0.5 + burst * 0.3);
-      const segs = 24 + al * 8;
-      ctx.beginPath();
-      for (let s = 0; s <= segs; s++) {
-        const a = s / segs * Math.PI * 2 + t * 0.000031 * (al % 2 === 0 ? 1 : -1) + pl.rot;
-        const warp = noise2(Math.cos(a) * 1.7 + al + pl.seed * 3 + t * 0.0000041, Math.sin(a) * 1.3 + al) * ar * 0.15;
-        const pr = ar + warp;
-        s === 0 ? ctx.moveTo(pl.x + Math.cos(a) * pr, pl.y + Math.sin(a) * pr) :
-                  ctx.lineTo(pl.x + Math.cos(a) * pr, pl.y + Math.sin(a) * pr);
-      }
-      ctx.strokeStyle = hsla((h + al * 20) % 360, 60 + burst * 20, 35 + al * 8 + burst * 20,
-        (0.04 + burst * 0.06) * Math.pow(0.7, al) * (0.3 + emotionalState.curiosity * 0.7));
-      ctx.lineWidth = 0.5 + burst; ctx.stroke();
-    }
-    // Orbital debris rings (tilted)
-    const tiltAngle = pl.seed * Math.PI * 0.5;
-    ctx.save(); ctx.translate(pl.x, pl.y); ctx.rotate(tiltAngle);
-    ctx.scale(1, 0.3 + pl.seed * 0.2);
-    for (let ring = 0; ring < 3; ring++) {
-      const rr = baseR * (1.8 + ring * 0.6);
-      const debrisCount = 12 + ring * 8;
-      for (let d = 0; d < debrisCount; d++) {
-        const a = d / debrisCount * Math.PI * 2 + t * (0.000031 + ring * 0.000013) + pl.seed;
-        const scatter = noise2(d * 0.37 + pl.seed, ring + t * 0.0000021) * rr * 0.08;
-        const dr = rr + scatter;
-        ctx.beginPath(); ctx.arc(Math.cos(a) * dr, Math.sin(a) * dr, 0.8 + burst * 1.2, 0, Math.PI * 2);
-        ctx.fillStyle = hsla((h + ring * 30 + d * 5) % 360, 65, 50 + burst * 30,
-          (0.15 + burst * 0.3) * (0.3 + emotionalState.wonder * 0.7));
-        ctx.fill();
-      }
-    }
-    ctx.restore();
-  }
-}
-
-// ══ EMOTIONAL AURORA — MASSIVE CURTAINS OF FEELING ═══════════════════════════
-// When emotions run high, vast aurora-like curtains sweep the field
-function drawEmotionalAurora(ctx, t) {
-  const totalEmotion = Object.values(emotionalState).reduce((a, b) => a + b, 0) / 7;
-  if (totalEmotion < 0.45) return;
-  const numCurtains = 3 + Math.floor(totalEmotion * 5);
-  for (let ci = 0; ci < numCurtains; ci++) {
-    const seed = ci * 0.71 + 0.13;
-    const burst = Math.pow(Math.max(0, Math.sin(t * 0.0000191 + ci * 1.37)), 4);
-    const h = voidHue(seed + ci * 0.4, t, burst);
-    // Curtain base along top or bottom
-    const isTop = ci % 2 === 0;
-    const baseY = isTop ? -30 : H + 30;
-    const dir = isTop ? 1 : -1;
-    const x0 = W * fbm(seed, t * 0.0000017, 3);
-    const curtainW = W * (0.15 + fbm(seed * 2, t * 0.0000013, 3) * 0.5);
-    const maxLen = H * (0.2 + totalEmotion * 0.4 + burst * 0.2);
-    const rays = 12 + Math.floor(totalEmotion * 8);
-    for (let r = 0; r < rays; r++) {
-      const rx = x0 + (r / rays - 0.5) * curtainW;
-      const rayLen = maxLen * (0.5 + noise2(rx * 0.003 + seed, t * 0.0000021) * 0.5);
-      const wave = fbm(rx * 0.007 + t * 0.0000013, ci + t * 0.0000009, 3) * 40;
-      const g = ctx.createLinearGradient(rx, baseY, rx + wave, baseY + dir * rayLen);
-      const h2 = (h + r * 8 + ci * 20) % 360;
-      const al = (0.04 + burst * 0.06) * (0.5 + totalEmotion * 0.5) * (0.4 + r % 3 * 0.15);
-      g.addColorStop(0, hsla(h2, 75, 50 + burst * 25, al * 1.5));
-      g.addColorStop(0.5, hsla((h2 + 30) % 360, 65, 40, al * 0.8));
-      g.addColorStop(1, 'rgba(0,0,0,0)');
-      ctx.beginPath(); ctx.moveTo(rx, baseY); ctx.lineTo(rx + wave, baseY + dir * rayLen);
-      ctx.strokeStyle = g; ctx.lineWidth = 1.5 + noise2(rx * 0.005, ci) * 2 + burst; ctx.stroke();
-    }
-  }
-}
-
-// ══ MAIN LOOP ══════════════════════════════════════════════════════════════════
-let lastCivSpawn = 0, lastSignalTS = 0;
-function frame(ts) {
-  updateCosmos(ts);
-  const t = cosmicAge;
-  const [b, g, bl, ov] = layers.map(l => l.x);
-
-  // Base layer: slow cosmic memory
-  b.fillStyle = 'rgba(0,0,2,0.09)'; b.fillRect(0, 0, W, H);
-  g.clearRect(0, 0, W, H);
-  bl.clearRect(0, 0, W, H);
-  ov.clearRect(0, 0, W, H);
-
-  // ── BASE LAYER: the ancient ground ──────────────────────────────────────────
-  updateVoidMemory(b, t);
-  drawDeepField(b, t);
-  drawVoid(b, t);
-  drawFlowLines(b, t);
-  drawExpansion(b, t);
-  drawNebulae(b, t);
-  drawShruti(b, t);
-
-  // ── SCREEN LAYER: alive structures ──────────────────────────────────────────
-  drawQuantumFoam(g, t);
-  drawCurrents(g, t);
-  drawMaya(g, t);
-  drawCosmicWeb(g, t);
-  drawEmotionalAurora(g, t);
-
-  // Universe seeds: bloom, branch, dissolve
-  for (let i = universeSeeds.length - 1; i >= 0; i--) {
-    if (!universeSeeds[i].update(t)) universeSeeds.splice(i, 1);
-    else universeSeeds[i].draw(g, t);
-  }
-  if (universeSeeds.length < 24 && Math.random() < 0.0004 + emotionalState.wonder * 0.0005)
-    universeSeeds.push(new UniverseSeed(Math.random(), 0));
-
-  drawFractalGeometry(g, t);
-
-  // Planets: update, draw, with atmospheres
-  for (const p of planets) { p.update(t); p.draw(g, t); }
-  drawPlanetaryAtmospheres(g, t);
-
-  // Tendrils: grow, live, dissolve
-  for (let i = tendrils.length - 1; i >= 0; i--) {
-    if (!tendrils[i].update(t)) tendrils.splice(i, 1);
-    else tendrils[i].draw(g, t);
-  }
-  if (ts - lastTendrilSpawn > 5500 + Math.random() * 4000 && tendrils.length < 22) {
-    lastTendrilSpawn = ts;
-    tendrils.push(new Tendril(Math.random()));
-  }
-
-  // ── COLOR DODGE LAYER: civilizations, rituals, signals ──────────────────────
-  if (ts - lastCivSpawn > 3800 && civNodes.length < 70) {
-    lastCivSpawn = ts;
-    const n = 1 + Math.floor(emotionalState.wonder * 2);
-    for (let i = 0; i < n; i++)
-      civNodes.push(new CivNode(Math.random(), planets[Math.floor(Math.random() * planets.length)]));
-  }
-  for (const n of civNodes) { n.update(t, civNodes); n.draw(bl, t); }
-  updateRitual(t); drawRitual(bl, t);
-  updateSignals(ts); drawSignals(bl, t);
-  drawEmotions(bl, t);
-
-  // ── OVERLAY LAYER: viewer consciousness + meta-pulse ─────────────────────────
-  updateMetaPulse(t);
-  drawMetaPulse(ov, t);
-  drawCursorConsciousness(ov, t);
-
-  requestAnimationFrame(frame);
-}
-requestAnimationFrame(frame);
-
-// ══ RESIZE ════════════════════════════════════════════════════════════════════
-window.addEventListener('resize', () => {
-  W = window.innerWidth; H = window.innerHeight;
-  layers.forEach(({ c }) => { c.width = W; c.height = H; });
-  if (memCanvas) { memCanvas.width = Math.ceil(W / 4); memCanvas.height = Math.ceil(H / 4); }
-});
-
-})();
-</script>
-
-<!-- ── NEW COSMIC EXPANSION LAYER ── -->
+<!-- ── NEW COSMIC EXPANSION LAYER (optimized for performance + toggle) ── -->
 <canvas id="cosmos-expansion"></canvas>
-<style>
-  #cosmos-expansion {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    z-index: 0;
-    pointer-events: none;
-    mix-blend-mode: screen;
-    opacity: 0.65;
-  }
-</style>
 <script>
 (function(){
+  // Global control for toggle (accessible from main script)
+  window.cosmosEnabled = true;
+
   const canvas = document.getElementById('cosmos-expansion');
-  const gl = canvas.getContext('webgl', { alpha: true, antialias: false, depth: false }) || canvas.getContext('experimental-webgl');
+  const gl = canvas.getContext('webgl', { alpha: true, antialias: true, depth: false, preserveDrawingBuffer: false }) || canvas.getContext('experimental-webgl');
   if (!gl) return;
 
   const vs = `
@@ -2247,72 +1150,52 @@ window.addEventListener('resize', () => {
         vec2 p = uv * 2.0 - 1.0;
         p.x *= u_res.x / u_res.y;
 
-        // Observer Effect: The universe reacts very gently to the user's focus.
-        // Instead of shifting the whole universe, we perturb the local phase and time subtly.
         vec2 mouseNorm = u_mouse * 2.0 - 1.0;
         mouseNorm.x *= u_res.x / u_res.y;
         float distToObserver = length(p - mouseNorm);
         float observerInfluence = exp(-distToObserver * 1.5) * 0.05; 
 
-        // Deep time (macro-evolution) and Surface time (fluctuation + observer impact)
         float deepTime = u_time * 0.015;
         float flowTime = u_time * 0.04 + observerInfluence * 2.0;
 
-        // Cosmic Expansion: Breathing, not linear zooming
         float zoom = 1.0 - sin(deepTime * 2.0) * 0.08;
         p *= zoom;
 
-        // Slow galactic rotation
         float s = sin(deepTime), c = cos(deepTime);
         p = mat2(c, -s, s, c) * p;
 
-        // 3D projection of the slice of the universe
         vec3 pos = vec3(p * 1.5, flowTime);
 
-        // Dark Matter Cosmic Web (Large scale structure)
         vec3 q;
         q.x = fbm(pos + vec3(0.0, deepTime, 1.0));
         q.y = fbm(pos + vec3(2.0, 1.0, deepTime));
         q.z = fbm(pos + vec3(1.0, 2.0, 3.0));
 
-        // Emergent complexity (Galactic clusters and filament condensation)
         vec3 r;
         r.x = fbm(pos + 3.0 * q + vec3(1.2, 3.4, 5.6) + flowTime);
         r.y = fbm(pos + 3.0 * q + vec3(7.8, 9.0, 1.2) - flowTime);
         r.z = fbm(pos + 3.0 * q + vec3(3.4, 5.6, 7.8) + flowTime * 0.8);
 
-        // The final density field
         float f = fbm(pos + 4.0 * r);
 
-        // Entropy / Evolution over time
-        // As deep time progresses, the universe shifts between dominant forces
         float epoch = fbm(vec3(deepTime * 0.5, 0.0, 0.0));
         
-        // Base void color
         vec3 col = mix(vec3(0.005, 0.01, 0.02), vec3(0.04, 0.08, 0.15), f);
         
-        // Saffron / Cosmic Fire (Creation)
         col = mix(col, vec3(0.7, 0.3, 0.05), smoothstep(0.4, 0.8, q.x) * (0.8 + 0.2 * sin(epoch * 10.0))); 
-        
-        // Crimson / Shakti (Energy/Motion)
         col = mix(col, vec3(0.5, 0.05, 0.15), smoothstep(0.5, 0.9, r.y));  
         
-        // Gold / Brahman (Illumination)
-        // Observer influence makes the gold slightly more pronounced, simulating the universe "looking back"
         float illumination = smoothstep(0.6, 1.0, f) + observerInfluence;
         col = mix(col, vec3(0.9, 0.7, 0.3), clamp(illumination, 0.0, 1.0));
 
-        // High-frequency star birth (sparkles in dense regions)
         float stars = smoothstep(0.75, 1.0, fbm(pos * 10.0));
         col += vec3(0.8, 0.9, 1.0) * stars * f * 2.0;
 
         col *= f * f * 3.5;
 
-        // Vignette
         float vig = 1.0 - dot(p, p) * 0.15;
         col *= smoothstep(0.0, 1.0, vig);
 
-        // Subtle pulsation of the whole system
         col *= 0.85 + 0.15 * sin(flowTime * 2.0 + f * 10.0);
 
         gl_FragColor = vec4(col, 1.0);
@@ -2362,7 +1245,11 @@ window.addEventListener('resize', () => {
   resize();
 
   let startTime = performance.now();
+
+  // ── RENDER LOOP (with toggle support) ──
   function render(now) {
+    if (!window.cosmosEnabled) return;   // ← Stops loop instantly when toggled off (no GPU/CPU waste)
+
     currentMouse[0] += (targetMouse[0] - currentMouse[0]) * 0.05;
     currentMouse[1] += (targetMouse[1] - currentMouse[1]) * 0.05;
     
@@ -2372,6 +1259,11 @@ window.addEventListener('resize', () => {
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
     requestAnimationFrame(render);
   }
+
+  // Expose render function so toggle can restart the loop
+  window.cosmosRender = render;
+
+  // Start the cosmic engine
   requestAnimationFrame(render);
 })();
 </script>
