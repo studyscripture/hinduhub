@@ -33,7 +33,6 @@
     line-height: 1.6;
   }
 
-
   /* Lift all content above the cosmos */
   .wrap, header, .lang-bar, footer { position: relative; z-index: 10; }
 
@@ -41,7 +40,7 @@
   .card {
     backdrop-filter: blur(4px);
     -webkit-backdrop-filter: blur(4px);
-    background: rgba(20,14,7,0.75) !important; /* Slightly more transparent to let the cosmos shine */
+    background: rgba(20,14,7,0.75) !important;
   }
   .card:hover { background: rgba(20,14,7,0.92) !important; box-shadow: 0 10px 48px rgba(0,0,0,0.85), 0 0 40px rgba(245,166,35,0.07) !important; }
   .notice { backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); background: rgba(23,16,10,0.85) !important; }
@@ -92,42 +91,53 @@
     display: inline-block; 
     margin-bottom: 14px; 
     line-height: 1;
-    /* 6-second Pranayama breath cycle (Inhale, Hold, Exhale, Pause) */
     animation: prana-breath 6s ease-in-out infinite;
   }
   @keyframes prana-breath {
-    0%, 100% {
-      /* Lungs empty (Rechaka pause): calm, faint, tightly bound light */
-      text-shadow: 0 0 8px rgba(245,166,35,0.15), 0 0 20px rgba(245,166,35,0.05);
-      color: rgba(245,166,35, 0.7);
-    }
-    35% {
-      /* Inhale complete (Puraka): massive light emission reaching far into the void */
-      text-shadow: 
-        0 0 20px rgba(245,166,35,0.9), 
-        0 0 50px rgba(245,166,35,0.6), 
-        0 0 100px rgba(245,166,35,0.3), 
-        0 0 160px rgba(245,166,35,0.2);
-      color: rgba(255,210,120, 1); /* Inner core gets hotter/brighter */
-    }
-    45% {
-      /* Hold full (Antar Kumbhaka): sustained bright light before release */
-      text-shadow: 
-        0 0 18px rgba(245,166,35,0.8), 
-        0 0 45px rgba(245,166,35,0.5), 
-        0 0 90px rgba(245,166,35,0.25), 
-        0 0 140px rgba(245,166,35,0.15);
-      color: rgba(255,200,100, 0.95);
-    }
-    90% {
-      /* Exhale complete: light fully retracted */
-      text-shadow: 0 0 8px rgba(245,166,35,0.15), 0 0 20px rgba(245,166,35,0.05);
-      color: rgba(245,166,35, 0.7);
-    }
+    0%, 100% { text-shadow: 0 0 8px rgba(245,166,35,0.15), 0 0 20px rgba(245,166,35,0.05); color: rgba(245,166,35, 0.7); }
+    35% { text-shadow: 0 0 20px rgba(245,166,35,0.9), 0 0 50px rgba(245,166,35,0.6), 0 0 100px rgba(245,166,35,0.3), 0 0 160px rgba(245,166,35,0.2); color: rgba(255,210,120, 1); }
+    45% { text-shadow: 0 0 18px rgba(245,166,35,0.8), 0 0 45px rgba(245,166,35,0.5), 0 0 90px rgba(245,166,35,0.25), 0 0 140px rgba(245,166,35,0.15); color: rgba(255,200,100, 0.95); }
+    90% { text-shadow: 0 0 8px rgba(245,166,35,0.15), 0 0 20px rgba(245,166,35,0.05); color: rgba(245,166,35, 0.7); }
   }
 
   h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(34px,5.5vw,58px); font-weight: 600; letter-spacing: 0.02em; line-height: 1.15; }
   h1 em { color: var(--saffron); font-style: italic; }
+
+  /* ── SACRED FLICKER SUBTITLE (very dim red + occasional abandoned light flicker) ── */
+  .sub-en, .sub-hi {
+    animation: sacred-flicker 9s ease-in-out infinite;
+    text-shadow: 
+      0 0 5px rgba(165, 35, 35, 0.22),
+      0 0 11px rgba(247, 208, 96, 0.09);
+  }
+  @keyframes sacred-flicker {
+    0%, 100%, 62%, 78% {  /* long calm / "abandoned" periods */
+      text-shadow: 
+        0 0 4px rgba(165, 35, 35, 0.14),
+        0 0 9px rgba(247, 208, 96, 0.07);
+    }
+    18% {  /* occasional gentle red pulse */
+      text-shadow: 
+        0 0 11px rgba(165, 35, 35, 0.38),
+        0 0 19px rgba(247, 208, 96, 0.16);
+    }
+    37% {
+      text-shadow: 
+        0 0 6px rgba(165, 35, 35, 0.19),
+        0 0 12px rgba(247, 208, 96, 0.09);
+    }
+    49% {  /* another rare flicker */
+      text-shadow: 
+        0 0 13px rgba(165, 35, 35, 0.33),
+        0 0 21px rgba(247, 208, 96, 0.14);
+    }
+    81% {
+      text-shadow: 
+        0 0 5px rgba(165, 35, 35, 0.16),
+        0 0 10px rgba(247, 208, 96, 0.08);
+    }
+  }
+
   .sub-en { margin-top: 10px; font-size: 13px; color: var(--muted); letter-spacing: 0.14em; text-transform: uppercase; }
   .sub-hi { margin-top: 10px; font-family: 'Tiro Devanagari Sanskrit', serif; font-size: 17px; color: var(--muted); display: none; }
   .rule { width: 100px; height: 1px; background: linear-gradient(90deg,transparent,var(--saffron),transparent); margin: 24px auto 0; }
@@ -259,7 +269,7 @@
     z-index: 0;
     pointer-events: none;
     mix-blend-mode: screen;
-    opacity: 0.65;
+    opacity: 0;
     transition: opacity 0.6s ease;
   }
 </style>
@@ -365,7 +375,6 @@
       <p class="card-desc-hi">यज्ञ-मंत्रों का वेद। मूल संस्कृत, लिप्यंतरण और महर्षि यास्क व स्वामी दयानन्द की आर्ष परम्परा में अंग्रेजी अनुवाद।</p>
       <div class="badges"><span class="badge b-skt">संस्कृत</span><span class="badge b-eng">English</span><span class="badge b-trad-shrauta">श्रौत</span><span class="badge b-trad-smarta">स्मार्त</span><span class="badge b-trad-vaishnava">वैष्णव</span><span class="badge b-trad-shaiva">शैव</span><span class="badge b-trad-shakta">शाक्त</span></div>
     </a>
-
 
     <a href="https://archive.org/details/atharvaved-vol-1" target="_blank" class="card a-saffron" data-trad="shrauta smarta vaishnava shaiva shakta">
       <span class="card-icon">🌿</span>
@@ -1008,7 +1017,6 @@
     document.querySelectorAll('.section').forEach(sec => {
       const sMatch = activeSection === 'all' || sec.dataset.s === activeSection;
 
-      // Portals section has no card-level trad tags — pass through
       if (sec.dataset.s === 'portals') {
         sec.classList.toggle('hidden', !sMatch);
         if (sMatch) anyVisible = true;
@@ -1031,7 +1039,6 @@
     document.getElementById('no-results').classList.toggle('visible', !anyVisible);
   }
 
-  // ── SECTION FILTER ──
   function filterSection(key, btn) {
     document.querySelectorAll('.tabs:not(.trad-tabs) .tab').forEach(t => t.classList.remove('active'));
     btn.classList.add('active');
@@ -1039,7 +1046,6 @@
     applyFilters();
   }
 
-  // ── TRADITION FILTER ──
   function filterTrad(key, btn) {
     document.querySelectorAll('.trad-tabs .tab').forEach(t => t.classList.remove('active'));
     btn.classList.add('active');
@@ -1047,41 +1053,28 @@
     applyFilters();
   }
 </script>
+
 <!-- ── SOURCE PROTECTION ── -->
 <script>
-  // Disable right-click context menu
-  document.addEventListener('contextmenu', function(e){ e.preventDefault(); });
-
-  // Disable common keyboard shortcuts for viewing/saving source
-  document.addEventListener('keydown', function(e){
-    // Ctrl/Cmd + U  (view-source)
-    // Ctrl/Cmd + S  (save page)
-    // Ctrl/Cmd + A  (select all)
-    // Ctrl/Cmd + C  (copy — allow on text fields but block blanket)
-    // F12, Ctrl+Shift+I/J/C (DevTools)
-    var ctrl = e.ctrlKey || e.metaKey;
-    if (ctrl && (e.key==='u'||e.key==='U'||e.key==='s'||e.key==='S'||e.key==='a'||e.key==='A')) { e.preventDefault(); return false; }
-    if (e.key==='F12') { e.preventDefault(); return false; }
-    if (ctrl && e.shiftKey && (e.key==='I'||e.key==='i'||e.key==='J'||e.key==='j'||e.key==='C'||e.key==='c')) { e.preventDefault(); return false; }
+  document.addEventListener('contextmenu', e => e.preventDefault());
+  document.addEventListener('keydown', e => {
+    const ctrl = e.ctrlKey || e.metaKey;
+    if (ctrl && (e.key === 'u' || e.key === 'U' || e.key === 's' || e.key === 'S' || e.key === 'a' || e.key === 'A')) { e.preventDefault(); return false; }
+    if (e.key === 'F12') { e.preventDefault(); return false; }
+    if (ctrl && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j' || e.key === 'C' || e.key === 'c')) { e.preventDefault(); return false; }
   });
+  document.addEventListener('dragstart', e => e.preventDefault());
 
-  // Disable drag on images / page elements
-  document.addEventListener('dragstart', function(e){ e.preventDefault(); });
-
-  // COSMOS TOGGLE
   function toggleCosmos(btn) {
     const canvas = document.getElementById('cosmos-expansion');
     const isOff = btn.classList.toggle('cosmos-off');
-    canvas.style.opacity = isOff ? '0' : '';
-    canvas.style.pointerEvents = 'none';
+    canvas.style.opacity = isOff ? '0' : '0.65';
     btn.querySelector('.bg-toggle-label').textContent = isOff ? 'Cosmos' : 'Cosmos';
   }
-
 </script>
 
-
-<!-- ── NEW COSMIC EXPANSION LAYER ── -->
-<canvas id="cosmos-expansion" style="opacity:0;"></canvas>
+<!-- ── COSMIC EXPANSION LAYER (default OFF) ── -->
+<canvas id="cosmos-expansion"></canvas>
 <style>
   #cosmos-expansion {
     position: fixed;
@@ -1090,161 +1083,74 @@
     z-index: 0;
     pointer-events: none;
     mix-blend-mode: screen;
-    opacity: 0.65;
+    opacity: 0;
     transition: opacity 0.6s ease;
   }
 </style>
 <script>
 (function(){
   const canvas = document.getElementById('cosmos-expansion');
-
-  // Request high-performance GPU and disable unused WebGL features
-  const gl = canvas.getContext('webgl', {
-    alpha: true,
-    antialias: false,
-    depth: false,
-    stencil: false,
-    preserveDrawingBuffer: false,
-    powerPreference: 'high-performance'
-  }) || canvas.getContext('experimental-webgl');
+  const gl = canvas.getContext('webgl', { alpha:true, antialias:false, depth:false, stencil:false, preserveDrawingBuffer:false, powerPreference:'high-performance' }) || canvas.getContext('experimental-webgl');
   if (!gl) return;
 
-  const vs = `
-    attribute vec2 position;
-    void main() {
-      gl_Position = vec4(position, 0.0, 1.0);
-    }
-  `;
+  const vs = `attribute vec2 position; void main(){ gl_Position=vec4(position,0.0,1.0); }`;
 
-  // ── SHADER OPTIMISATIONS (zero visual change) ──────────────────────────────
-  // 1. exp(-d*1.5) replaced with a cheap polynomial approximation:
-  //      1.0 / (1.0 + d*d*2.25)
-  //    This produces nearly identical soft-falloff at GPU cost of 1 mul+add vs
-  //    a full transcendental exp().
-  // 2. The star layer previously called fbm(pos*10.0) — a full 5-octave fbm
-  //    evaluated at 10× frequency, by far the single most expensive sample.
-  //    Replaced with a 2-octave micro-noise (starNoise) that is visually
-  //    indistinguishable from the original at normal viewing distance.
-  // 3. epoch fbm(vec3(deepTime*0.5,0,0)) collapses to a 1D fbm with a constant
-  //    y/z — the vec3 wrapper was doing nothing. Replaced with a direct 2-octave
-  //    1D fbm which is cheaper and gives the same slowly-evolving scalar.
-  // 4. All constant vec3 offsets promoted to compile-time literals so the driver
-  //    can fold them during shader compilation rather than computing them per frame.
-  // ──────────────────────────────────────────────────────────────────────────
   const fs = `
     precision highp float;
     uniform vec2 u_res;
     uniform float u_time;
     uniform vec2 u_mouse;
 
-    float hash(float n) { return fract(sin(n) * 43758.5453123); }
-
-    float noise(vec3 x) {
-        vec3 p = floor(x);
-        vec3 f = fract(x);
-        f = f * f * (3.0 - 2.0 * f);
-        float n = p.x + p.y * 57.0 + 113.0 * p.z;
-        return mix(
-          mix(mix(hash(n+0.0),  hash(n+1.0),   f.x),
-              mix(hash(n+57.0), hash(n+58.0),  f.x), f.y),
-          mix(mix(hash(n+113.0),hash(n+114.0), f.x),
-              mix(hash(n+170.0),hash(n+171.0), f.x), f.y), f.z);
+    float hash(float n){ return fract(sin(n)*43758.5453123); }
+    float noise(vec3 x){
+      vec3 p=floor(x), f=fract(x); f=f*f*(3.0-2.0*f);
+      float n=p.x+p.y*57.0+113.0*p.z;
+      return mix(mix(mix(hash(n),hash(n+1.0),f.x), mix(hash(n+57.0),hash(n+58.0),f.x),f.y),
+                 mix(mix(hash(n+113.0),hash(n+114.0),f.x), mix(hash(n+170.0),hash(n+171.0),f.x),f.y),f.z);
     }
-
-    // Rotation matrix — constant, compiled in by driver
-    mat3 m3 = mat3(0.00, 0.80, 0.60, -0.80, 0.36, -0.48, -0.60, -0.48, 0.64);
-
-    // Full 5-octave fbm — used for the main nebula structure
-    float fbm(vec3 p) {
-        float f = 0.0;
-        f += 0.5000 * noise(p); p = m3 * p * 2.02;
-        f += 0.2500 * noise(p); p = m3 * p * 2.03;
-        f += 0.1250 * noise(p); p = m3 * p * 2.01;
-        f += 0.0625 * noise(p); p = m3 * p * 2.05;
-        f += 0.03125 * noise(p);
-        return f;
+    mat3 m3=mat3(0.0,0.8,0.6,-0.8,0.36,-0.48,-0.6,-0.48,0.64);
+    float fbm(vec3 p){
+      float f=0.0; f+=0.5*noise(p); p=m3*p*2.02;
+      f+=0.25*noise(p); p=m3*p*2.03; f+=0.125*noise(p); p=m3*p*2.01;
+      f+=0.0625*noise(p); p=m3*p*2.05; f+=0.03125*noise(p); return f;
     }
+    float fbm2(vec3 p){ float f=0.5*noise(p); p=m3*p*2.02; f+=0.25*noise(p); return f; }
 
-    // 2-octave fbm — used only for cheap scalar epoch and star sparkle
-    float fbm2(vec3 p) {
-        float f = 0.5000 * noise(p); p = m3 * p * 2.02;
-        f += 0.2500 * noise(p);
-        return f;
-    }
+    void main(){
+      vec2 uv=gl_FragCoord.xy/u_res.xy;
+      vec2 p=uv*2.0-1.0; p.x*=u_res.x/u_res.y;
+      vec2 mouseNorm=u_mouse*2.0-1.0; mouseNorm.x*=u_res.x/u_res.y;
+      float d2=dot(p-mouseNorm,p-mouseNorm);
+      float observerInfluence=1.0/(1.0+d2*2.25)*0.05;
 
-    void main() {
-        vec2 uv = gl_FragCoord.xy / u_res.xy;
-        vec2 p = uv * 2.0 - 1.0;
-        p.x *= u_res.x / u_res.y;
+      float deepTime=u_time*0.015;
+      float flowTime=u_time*0.04+observerInfluence*2.0;
+      float zoom=1.0-sin(deepTime*2.0)*0.08; p*=zoom;
+      float s=sin(deepTime), c=cos(deepTime); p=mat2(c,-s,s,c)*p;
 
-        // Observer Effect — cheap polynomial instead of exp()
-        vec2 mouseNorm = u_mouse * 2.0 - 1.0;
-        mouseNorm.x *= u_res.x / u_res.y;
-        float d2 = dot(p - mouseNorm, p - mouseNorm);
-        float observerInfluence = (1.0 / (1.0 + d2 * 2.25)) * 0.05;
+      vec3 pos=vec3(p*1.5,flowTime);
+      vec3 q,qOff,r;
+      q.x=fbm(pos+vec3(0.0,deepTime,1.0));
+      q.y=fbm(pos+vec3(2.0,1.0,deepTime));
+      q.z=fbm(pos+vec3(1.0,2.0,3.0));
+      qOff=3.0*q;
+      r.x=fbm(pos+qOff+vec3(1.2,3.4,5.6)+flowTime);
+      r.y=fbm(pos+qOff+vec3(7.8,9.0,1.2)-flowTime);
+      r.z=fbm(pos+qOff+vec3(3.4,5.6,7.8)+flowTime*0.8);
+      float f=fbm(pos+4.0*r);
+      float epoch=fbm2(vec3(deepTime*0.5,0.0,0.0));
 
-        // Deep time (macro) and Surface time (micro + observer)
-        float deepTime = u_time * 0.015;
-        float flowTime = u_time * 0.04 + observerInfluence * 2.0;
-
-        // Cosmic Expansion: Breathing, not linear zooming
-        float zoom = 1.0 - sin(deepTime * 2.0) * 0.08;
-        p *= zoom;
-
-        // Slow galactic rotation
-        float s = sin(deepTime), c = cos(deepTime);
-        p = mat2(c, -s, s, c) * p;
-
-        // 3D slice of the universe
-        vec3 pos = vec3(p * 1.5, flowTime);
-
-        // Dark Matter Cosmic Web (Large scale structure) — 3 × 5-octave fbm
-        vec3 q;
-        q.x = fbm(pos + vec3(0.0, deepTime, 1.0));
-        q.y = fbm(pos + vec3(2.0, 1.0, deepTime));
-        q.z = fbm(pos + vec3(1.0, 2.0, 3.0));
-
-        // Emergent complexity — 3 × 5-octave fbm
-        vec3 r;
-        vec3 qOff = 3.0 * q;
-        r.x = fbm(pos + qOff + vec3(1.2, 3.4, 5.6) + flowTime);
-        r.y = fbm(pos + qOff + vec3(7.8, 9.0, 1.2) - flowTime);
-        r.z = fbm(pos + qOff + vec3(3.4, 5.6, 7.8) + flowTime * 0.8);
-
-        // Final density field — 1 × 5-octave fbm
-        float f = fbm(pos + 4.0 * r);
-
-        // Epoch — 2-octave scalar is visually identical to the old 5-octave 1D fbm
-        float epoch = fbm2(vec3(deepTime * 0.5, 0.0, 0.0));
-
-        // Base void color
-        vec3 col = mix(vec3(0.005, 0.01, 0.02), vec3(0.04, 0.08, 0.15), f);
-
-        // Saffron / Cosmic Fire (Creation)
-        col = mix(col, vec3(0.7, 0.3, 0.05),
-                  smoothstep(0.4, 0.8, q.x) * (0.8 + 0.2 * sin(epoch * 10.0)));
-
-        // Crimson / Shakti (Energy/Motion)
-        col = mix(col, vec3(0.5, 0.05, 0.15), smoothstep(0.5, 0.9, r.y));
-
-        // Gold / Brahman (Illumination)
-        float illumination = smoothstep(0.6, 1.0, f) + observerInfluence;
-        col = mix(col, vec3(0.9, 0.7, 0.3), clamp(illumination, 0.0, 1.0));
-
-        // Star sparkle — 2-octave micro-noise at high frequency (was a full 5-octave fbm)
-        float stars = smoothstep(0.75, 1.0, fbm2(pos * 10.0));
-        col += vec3(0.8, 0.9, 1.0) * stars * f * 2.0;
-
-        col *= f * f * 3.5;
-
-        // Vignette
-        float vig = 1.0 - dot(p, p) * 0.15;
-        col *= smoothstep(0.0, 1.0, vig);
-
-        // Subtle pulsation
-        col *= 0.85 + 0.15 * sin(flowTime * 2.0 + f * 10.0);
-
-        gl_FragColor = vec4(col, 1.0);
+      vec3 col=mix(vec3(0.005,0.01,0.02),vec3(0.04,0.08,0.15),f);
+      col=mix(col,vec3(0.7,0.3,0.05),smoothstep(0.4,0.8,q.x)*(0.8+0.2*sin(epoch*10.0)));
+      col=mix(col,vec3(0.5,0.05,0.15),smoothstep(0.5,0.9,r.y));
+      float illumination=smoothstep(0.6,1.0,f)+observerInfluence;
+      col=mix(col,vec3(0.9,0.7,0.3),clamp(illumination,0.0,1.0));
+      float stars=smoothstep(0.75,1.0,fbm2(pos*10.0));
+      col+=vec3(0.8,0.9,1.0)*stars*f*2.0;
+      col*=f*f*3.5;
+      float vig=1.0-dot(p,p)*0.15; col*=smoothstep(0.0,1.0,vig);
+      col*=0.85+0.15*sin(flowTime*2.0+f*10.0);
+      gl_FragColor=vec4(col,1.0);
     }
   `;
 
@@ -1263,32 +1169,28 @@
 
   const posBuffer = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, posBuffer);
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,1,-1,-1,1,1,1]), gl.STATIC_DRAW);
 
   const posAttr = gl.getAttribLocation(program, 'position');
   gl.enableVertexAttribArray(posAttr);
   gl.vertexAttribPointer(posAttr, 2, gl.FLOAT, false, 0, 0);
 
-  const resUniform   = gl.getUniformLocation(program, 'u_res');
-  const timeUniform  = gl.getUniformLocation(program, 'u_time');
+  const resUniform = gl.getUniformLocation(program, 'u_res');
+  const timeUniform = gl.getUniformLocation(program, 'u_time');
   const mouseUniform = gl.getUniformLocation(program, 'u_mouse');
 
-  // ── MOUSE — throttled to every other mousemove event ──────────────────────
-  let targetMouse  = [0.5, 0.5];
+  let targetMouse = [0.5, 0.5];
   let currentMouse = [0.5, 0.5];
-  let mouseFrame   = 0;
-  window.addEventListener('mousemove', (e) => {
-    if (++mouseFrame % 2 !== 0) return; // sample every 2nd event
+  let mouseFrame = 0;
+  window.addEventListener('mousemove', e => {
+    if (++mouseFrame % 2 !== 0) return;
     targetMouse[0] = e.clientX / window.innerWidth;
     targetMouse[1] = 1.0 - (e.clientY / window.innerHeight);
   }, { passive: true });
 
-  // ── RESOLUTION — cap DPR at 1.5 to avoid 4× pixel overdraw on HiDPI ──────
-  // Visual result at 1.5 DPR is identical to native DPR at viewing distance;
-  // the GPU cost scales with DPR², so 1.5 vs 2.0 is ~44% fewer shader invocations.
   function resize() {
     const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
-    canvas.width  = Math.floor(window.innerWidth  * dpr);
+    canvas.width = Math.floor(window.innerWidth * dpr);
     canvas.height = Math.floor(window.innerHeight * dpr);
     gl.viewport(0, 0, canvas.width, canvas.height);
     gl.uniform2f(resUniform, canvas.width, canvas.height);
@@ -1296,15 +1198,10 @@
   window.addEventListener('resize', resize, { passive: true });
   resize();
 
-  // ── VISIBILITY — pause rendering when tab is hidden ───────────────────────
-  let paused    = false;
-  let pausedAt  = 0;
-  let timeOffset = 0; // accumulated pause duration so u_time stays continuous
-
+  let paused = false, pausedAt = 0, timeOffset = 0;
   document.addEventListener('visibilitychange', () => {
     if (document.hidden) {
-      paused   = true;
-      pausedAt = performance.now();
+      paused = true; pausedAt = performance.now();
     } else {
       timeOffset += performance.now() - pausedAt;
       paused = false;
@@ -1312,32 +1209,17 @@
     }
   });
 
-  // ── RENDER LOOP — frame-budget aware ─────────────────────────────────────
-  // If the previous frame took longer than the budget (16.7ms = 60fps), we
-  // skip one frame to let the CPU/GPU breathe instead of building a backlog.
-  // This prevents the "freeze then catch-up" stutter under system load.
-  const FRAME_BUDGET = 1000 / 60; // ~16.7ms
-  let lastFrameTime = 0;
-  let rafId = null;
+  const FRAME_BUDGET = 1000 / 60;
+  let lastFrameTime = 0, rafId = null;
 
   function render(now) {
     rafId = null;
-
     if (paused) return;
 
     const elapsed = now - lastFrameTime;
     lastFrameTime = now;
+    if (elapsed > FRAME_BUDGET * 2.5) { rafId = requestAnimationFrame(render); return; }
 
-    // Skip a frame if the GPU is running behind budget, but never skip twice in a row
-    if (elapsed < FRAME_BUDGET * 0.5 && elapsed > 0) {
-      // Browser called us faster than 60fps somehow — just draw
-    } else if (elapsed > FRAME_BUDGET * 2.5) {
-      // Frame took more than ~42ms — skip this render cycle, queue next
-      rafId = requestAnimationFrame(render);
-      return;
-    }
-
-    // Smooth mouse interpolation
     currentMouse[0] += (targetMouse[0] - currentMouse[0]) * 0.05;
     currentMouse[1] += (targetMouse[1] - currentMouse[1]) * 0.05;
 
