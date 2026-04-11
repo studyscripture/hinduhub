@@ -21,6 +21,18 @@
     --cream-dim: #b8a080;
     --muted: #7a6248;
     --white: #f5ede0;
+    --safe-top: env(safe-area-inset-top, 0px);
+    --safe-right: env(safe-area-inset-right, 0px);
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
+    --safe-left: env(safe-area-inset-left, 0px);
+  }
+  @supports (top: constant(safe-area-inset-top)) {
+    :root {
+      --safe-top: constant(safe-area-inset-top);
+      --safe-right: constant(safe-area-inset-right);
+      --safe-bottom: constant(safe-area-inset-bottom);
+      --safe-left: constant(safe-area-inset-left);
+    }
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   /* Force html to fill behind status bar — this is what shows in the status bar zone */
@@ -67,7 +79,7 @@
     display: flex; justify-content: flex-end; align-items: center;
     padding: 14px 20px 0;
     /* Push content below the iPhone status bar */
-    padding-top: calc(14px + env(safe-area-inset-top, 0px));
+    padding-top: calc(14px + var(--safe-top));
     position: relative; z-index: 10;
     max-width: 1060px; margin: 0 auto;
   }
@@ -275,27 +287,22 @@
   @media print { body { display: none !important; } }
 
   /* ── COSMOS CANVAS ── */
-  /* Wrapper handles all positioning + blend mode.
-     mix-blend-mode on the canvas itself creates a stacking context that
-     Safari clips to the safe area, leaving the Dynamic Island unfilled.
-     Putting blend mode on a plain wrapper div avoids that Safari clip. */
-  #cosmos-wrap {
+  #cosmos-expansion {
     position: fixed;
-    top: calc(-1 * env(safe-area-inset-top, 50px));
-    left: calc(-1 * env(safe-area-inset-left, 0px));
-    right: calc(-1 * env(safe-area-inset-right, 0px));
-    height: calc(100vh + env(safe-area-inset-top, 50px) + env(safe-area-inset-bottom, 34px));
-    width: calc(100vw + env(safe-area-inset-left, 0px) + env(safe-area-inset-right, 0px));
+    /* Extend beyond the layout viewport so iPhone notch/status bar area is covered */
+    top: calc(-1 * var(--safe-top));
+    left: calc(-1 * var(--safe-left));
+    height: calc(100vh + var(--safe-top) + var(--safe-bottom));
+    height: calc(100dvh + var(--safe-top) + var(--safe-bottom));
+    width: calc(100vw + var(--safe-left) + var(--safe-right));
     z-index: 0;
     pointer-events: none;
     mix-blend-mode: screen;
     opacity: 0;
     transition: opacity 0.6s ease;
-  }
-  #cosmos-expansion {
     display: block;
-    width: 100%;
-    height: 100%;
+    will-change: transform, opacity;
+    transform: translateZ(0);
   }
 </style>
 </head>
@@ -1091,15 +1098,15 @@
   document.addEventListener('dragstart', e => e.preventDefault());
 
   function toggleCosmos(btn) {
-    const wrap = document.getElementById('cosmos-wrap');
+    const canvas = document.getElementById('cosmos-expansion');
     const isOff = btn.classList.toggle('cosmos-off');
-    wrap.style.opacity = isOff ? '0' : '0.65';
+    canvas.style.opacity = isOff ? '0' : '0.65';
     btn.querySelector('.bg-toggle-label').textContent = isOff ? 'Cosmos' : 'Cosmos';
   }
 </script>
 
 <!-- ── COSMIC EXPANSION LAYER (default OFF) ── -->
-<div id="cosmos-wrap"><canvas id="cosmos-expansion"></canvas></div>
+<canvas id="cosmos-expansion"></canvas>
 
 <script>
 (function(){
@@ -1199,12 +1206,25 @@
   let mouseFrame = 0;
 
   // ── Resize: use screen.height (hardware pixels) so canvas covers status bar ──
+  function readInsetPx(name) {
+    const value = getComputedStyle(document.documentElement).getPropertyValue(name);
+    const px = parseFloat(value);
+    return Number.isFinite(px) ? px : 0;
+  }
   function resize() {
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    // screen.width/height is the full hardware screen size in CSS pixels
-    // It includes the status bar area that env(safe-area-inset-top) covers
-    const cssW = screen.width  || window.innerWidth;
-    const cssH = screen.height || window.innerHeight;
+    const vv = window.visualViewport;
+    const safeTop = readInsetPx('--safe-top');
+    const safeRight = readInsetPx('--safe-right');
+    const safeBottom = readInsetPx('--safe-bottom');
+    const safeLeft = readInsetPx('--safe-left');
+    const baseW = vv ? vv.width : window.innerWidth;
+    const baseH = vv ? vv.height : window.innerHeight;
+    const cssW = Math.max(baseW + safeLeft + safeRight, window.innerWidth);
+    const cssH = Math.max(baseH + safeTop + safeBottom, window.innerHeight);
+
+    canvas.style.left = (-safeLeft) + 'px';
+    canvas.style.top = (-safeTop) + 'px';
     canvas.width  = Math.round(cssW * dpr);
     canvas.height = Math.round(cssH * dpr);
     canvas.style.width  = cssW + 'px';
@@ -1213,11 +1233,15 @@
     gl.uniform2f(resUniform, canvas.width, canvas.height);
   }
   window.addEventListener('resize', resize, { passive: true });
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', resize, { passive: true });
+    window.visualViewport.addEventListener('scroll', resize, { passive: true });
+  }
   window.addEventListener('orientationchange', () => { setTimeout(resize, 200); setTimeout(resize, 500); }, { passive: true });
   resize();
 
-  function trackW() { return window.innerWidth; }
-  function trackH() { return window.innerHeight; }
+  function trackW() { return window.visualViewport ? window.visualViewport.width : window.innerWidth; }
+  function trackH() { return window.visualViewport ? window.visualViewport.height : window.innerHeight; }
 
   // ── Desktop mouse ──
   window.addEventListener('mousemove', e => {
