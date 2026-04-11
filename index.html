@@ -277,16 +277,12 @@
   /* ── COSMOS CANVAS ── */
   #cosmos-expansion {
     position: fixed;
-    /* Pull canvas above the safe area into the status bar zone.
-       env(safe-area-inset-top) is the iPhone status bar height (44-59px).
-       We subtract it so the canvas starts ABOVE the viewport safe area. */
-    top: calc(-1 * env(safe-area-inset-top, 50px));
-    left: calc(-1 * env(safe-area-inset-left, 0px));
-    right: calc(-1 * env(safe-area-inset-right, 0px));
-    /* Height covers viewport + status bar above + nav bar below */
-    height: calc(100vh + env(safe-area-inset-top, 50px) + env(safe-area-inset-bottom, 34px));
-    /* Width covers any side insets (landscape notch) */
-    width: calc(100vw + env(safe-area-inset-left, 0px) + env(safe-area-inset-right, 0px));
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
     z-index: 0;
     pointer-events: none;
     mix-blend-mode: screen;
@@ -835,7 +831,7 @@
       <div class="card-title-hi">तिरुमुरै — सम्पूर्ण १२ खण्ड</div>
       <div class="card-source">Wisdomlib · Dr B. Natarajan / Sri Ramakrishna Math (Tirumantiram); Shaivam.org (Tevaram)</div>
       <p class="card-desc">The complete 12-volume Śaiva Siddhānta canon in Tamil — the Śaiva equivalent of the Nālāyira Divya Prabandham. Tevaram (Books 1–7): hymns of Sambandar, Appar, and Sundarar. Book 8: Tiruvācakam and Tirukkōvaiyār of Māṇikkavācakar. Book 10: Tirumantiram of Tirumūlar — the earliest full statement of Śaiva Siddhānta in Tamil, over 3,000 verses. Book 12: Periya Purāṇam (Nāyaṉār hagiographies). Sung daily in Śiva temples across Tamil Nadu and the Śaiva diaspora. This card links to the complete Tirumantiram — use the Shaivam.org portal for the full Tirumurai in Tamil + English.</p>
-      <p class="card-desc-hi">तमिल शैव सिद्धान्त का सम्पूर्ण १२-खण्ड कैनन — नालायिर दिव्यप्रबन्धम् का शैव समतुल्य। तेवारम् (खण्ड १–७): सम्बन्दर, अप्पर और सुन्दरर के स्तोत्र। खण्ड ८: माणिक्कवाचकर का तिरुवाचकम्। खण्ड १०: तिरुमूलर का तिरुमन्तिरम् — ३,००० से अधिक श्लोक, शैव सिद्धान्त का प्राचीनतम पूर्ण प्रतिपादन। खण्ड १२: पेरिय पुराणम्। तमिलनाडु के शिव मन्दिरों में प्रतिदिन गाया जाता है। यह कार्ड सम्पूर्ण तिरुमन्तिरम् से जुड़ता है।</p>
+      <p class="card-desc-hi">तमिल शैव सिद्धान्त का सम्पूर्ण १२-खण्ड कैनन — नालायिर दिव्यप्रबन्धम् का शैव समतुल्य। तेवारम् (खण्ड १–७): सम्बन्दर, अप्पर और सुन्दरर के स्तोत्र। खण्ड ८: तिरुवाचकम्। खण्ड १०: तिरुमूलर का तिरुमन्तिरम् — ३,००० से अधिक श्लोक, शैव सिद्धान्त का प्राचीनतम पूर्ण प्रतिपादन। खण्ड १२: पेरिय पुराणम्। तमिलनाडु के शिव मन्दिरों में प्रतिदिन गाया जाता है। यह कार्ड सम्पूर्ण तिरुमन्तिरम् से जुड़ता है।</p>
       <div class="badges"><span class="badge b-hin">Tamil</span><span class="badge b-eng">English</span><span class="badge b-vs">Verse-level</span><span class="badge b-srch">Searchable</span><span class="badge b-trad-shaiva">शैव</span></div>
     </a>
 
@@ -1195,17 +1191,17 @@
   let touchActive = false;
   let mouseFrame = 0;
 
-  // ── Resize: use screen.height (hardware pixels) so canvas covers status bar ──
+  // ── Resize: Let CSS handle dimensions natively ──
   function resize() {
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    // screen.width/height is the full hardware screen size in CSS pixels
-    // It includes the status bar area that env(safe-area-inset-top) covers
-    const cssW = screen.width  || window.innerWidth;
-    const cssH = screen.height || window.innerHeight;
+    // Read the actual dimensions the CSS is applying
+    const cssW = canvas.clientWidth || window.innerWidth;
+    const cssH = canvas.clientHeight || window.innerHeight;
+    
+    // Set the WebGL internal resolution
     canvas.width  = Math.round(cssW * dpr);
     canvas.height = Math.round(cssH * dpr);
-    canvas.style.width  = cssW + 'px';
-    canvas.style.height = cssH + 'px';
+    
     gl.viewport(0, 0, canvas.width, canvas.height);
     gl.uniform2f(resUniform, canvas.width, canvas.height);
   }
