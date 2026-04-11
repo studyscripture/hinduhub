@@ -277,16 +277,16 @@
   /* ── COSMOS CANVAS ── */
   #cosmos-expansion {
     position: fixed;
-    /* Pull canvas above the safe area into the status bar zone.
-       env(safe-area-inset-top) is the iPhone status bar height (44-59px).
-       We subtract it so the canvas starts ABOVE the viewport safe area. */
-    top: calc(-1 * env(safe-area-inset-top, 50px));
-    left: calc(-1 * env(safe-area-inset-left, 0px));
-    right: calc(-1 * env(safe-area-inset-right, 0px));
-    /* Height covers viewport + status bar above + nav bar below */
-    height: calc(100vh + env(safe-area-inset-top, 50px) + env(safe-area-inset-bottom, 34px));
-    /* Width covers any side insets (landscape notch) */
-    width: calc(100vw + env(safe-area-inset-left, 0px) + env(safe-area-inset-right, 0px));
+    /* With viewport-fit=cover, position:fixed top:0 already sits behind the
+       Dynamic Island / status bar — no negative offset needed or wanted.
+       Using inset:0 / all-four-sides-zero is the most reliable full-bleed
+       approach on every iPhone model including Dynamic Island. */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
     z-index: 0;
     pointer-events: none;
     mix-blend-mode: screen;
@@ -1195,13 +1195,12 @@
   let touchActive = false;
   let mouseFrame = 0;
 
-  // ── Resize: use screen.height (hardware pixels) so canvas covers status bar ──
+  // ── Resize: window.inner* with viewport-fit=cover already includes the full
+  //    screen (behind Dynamic Island + home indicator) — no screen.* needed ──
   function resize() {
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    // screen.width/height is the full hardware screen size in CSS pixels
-    // It includes the status bar area that env(safe-area-inset-top) covers
-    const cssW = screen.width  || window.innerWidth;
-    const cssH = screen.height || window.innerHeight;
+    const cssW = window.innerWidth;
+    const cssH = window.innerHeight;
     canvas.width  = Math.round(cssW * dpr);
     canvas.height = Math.round(cssH * dpr);
     canvas.style.width  = cssW + 'px';
