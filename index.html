@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>Hindu Scripture Hub — सनातन ग्रन्थालय</title>
 <!-- COSMIC ENGINE -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -23,6 +23,13 @@
     --white: #f5ede0;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
+  /* Force html to fill behind status bar — this is what shows in the status bar zone */
+  html {
+    background: #0c0905;
+    height: 100%;
+    /* Prevent rubber-band bounce revealing white background */
+    overscroll-behavior: none;
+  }
   body {
     background: var(--bg);
     color: var(--cream);
@@ -32,10 +39,8 @@
     min-height: 100dvh;
     overflow-x: hidden;
     line-height: 1.6;
-    /* Content respects safe-area (notch/status bar) while canvas bleeds behind */
-    padding-top: env(safe-area-inset-top, 0px);
-    padding-left: env(safe-area-inset-left, 0px);
-    padding-right: env(safe-area-inset-right, 0px);
+    overscroll-behavior: none;
+    /* NO padding-top here — content starts below status bar via lang-bar padding instead */
   }
 
   /* Lift all content above the cosmos */
@@ -60,7 +65,10 @@
   /* LANG BAR */
   .lang-bar {
     display: flex; justify-content: flex-end; align-items: center;
-    padding: 14px 20px 0; position: relative; z-index: 10;
+    padding: 14px 20px 0;
+    /* Push content below the iPhone status bar */
+    padding-top: calc(14px + env(safe-area-inset-top, 0px));
+    position: relative; z-index: 10;
     max-width: 1060px; margin: 0 auto;
   }
   .lang-label { font-size: 12px; color: var(--muted); margin-right: 10px; letter-spacing: 0.08em; }
@@ -266,14 +274,19 @@
   .card-desc, .card-desc-hi, .card-title, .card-source, .pd, .sec-desc { -webkit-user-select: text; -moz-user-select: text; user-select: text; }
   @media print { body { display: none !important; } }
 
-  /* ── COSMOS CANVAS (default OFF) ── */
+  /* ── COSMOS CANVAS ── */
   #cosmos-expansion {
     position: fixed;
-    /* Extend beyond viewport in every direction to eat status bar and nav bar */
-    top: -100px;
-    left: -100px;
-    width: calc(100vw + 200px);
-    height: calc(100vh + 200px);
+    /* Pull canvas above the safe area into the status bar zone.
+       env(safe-area-inset-top) is the iPhone status bar height (44-59px).
+       We subtract it so the canvas starts ABOVE the viewport safe area. */
+    top: calc(-1 * env(safe-area-inset-top, 50px));
+    left: calc(-1 * env(safe-area-inset-left, 0px));
+    right: calc(-1 * env(safe-area-inset-right, 0px));
+    /* Height covers viewport + status bar above + nav bar below */
+    height: calc(100vh + env(safe-area-inset-top, 50px) + env(safe-area-inset-bottom, 34px));
+    /* Width covers any side insets (landscape notch) */
+    width: calc(100vw + env(safe-area-inset-left, 0px) + env(safe-area-inset-right, 0px));
     z-index: 0;
     pointer-events: none;
     mix-blend-mode: screen;
@@ -1182,12 +1195,13 @@
   let touchActive = false;
   let mouseFrame = 0;
 
-  // ── Resize: canvas is oversized (+200px each side) to bleed behind all browser chrome ──
+  // ── Resize: use screen.height (hardware pixels) so canvas covers status bar ──
   function resize() {
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    // Add 200px padding each side to guarantee coverage behind status/nav bars
-    const cssW = (window.innerWidth  || screen.width)  + 200;
-    const cssH = (window.innerHeight || screen.height) + 200;
+    // screen.width/height is the full hardware screen size in CSS pixels
+    // It includes the status bar area that env(safe-area-inset-top) covers
+    const cssW = screen.width  || window.innerWidth;
+    const cssH = screen.height || window.innerHeight;
     canvas.width  = Math.round(cssW * dpr);
     canvas.height = Math.round(cssH * dpr);
     canvas.style.width  = cssW + 'px';
