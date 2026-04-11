@@ -2,12 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<meta name="theme-color" content="#0c0905">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Hindu Scripture Hub — सनातन ग्रन्थालय</title>
-<!-- COSMIC ENGINE -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Sanskrit:ital@0;1&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -26,69 +22,32 @@
     --white: #f5ede0;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  /* ── The secret: html background shows through the translucent status bar ── */
-  html {
-    background: #0c0905;
-    height: 100%;
-    overscroll-behavior: none;
-    -webkit-tap-highlight-color: transparent;
-  }
   body {
     background: var(--bg);
     color: var(--cream);
     font-family: 'Jost', sans-serif;
     font-weight: 300;
-    min-height: 100dvh;
+    min-height: 100vh;
     overflow-x: hidden;
     line-height: 1.6;
-    overscroll-behavior: none;
-    /* Safe-area padding pushes CONTENT below status bar — canvas bleeds behind it */
-    padding-top: env(safe-area-inset-top, 0px);
   }
-
-  /* ── COSMOS CANVAS: fixed, truly covers 100% of the screen including status bar ── */
-  /* With apple-mobile-web-app-status-bar-style=black-translucent, position:fixed   */
-  /* elements at top:0 render BEHIND the transparent status bar — this is the key.  */
-  #cosmos-expansion {
+  body::before {
+    content: '';
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 100% 50% at 50% 0%, rgba(245,166,35,0.07) 0%, transparent 55%),
+      radial-gradient(ellipse 60% 60% at 0% 80%, rgba(26,74,122,0.05) 0%, transparent 50%),
+      radial-gradient(ellipse 60% 60% at 100% 20%, rgba(106,42,138,0.04) 0%, transparent 50%);
     pointer-events: none;
-    mix-blend-mode: screen;
-    opacity: 0;
-    transition: opacity 0.6s ease;
+    z-index: 0;
   }
-
-  /* Lift all content above the cosmos */
-  .wrap, header, .lang-bar, footer { position: relative; z-index: 10; }
-
-  /* Cards: glassy backdrop so they stay crisp above the psychedelic field */
-  .card {
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
-    background: rgba(20,14,7,0.75) !important;
-  }
-  .card:hover { background: rgba(20,14,7,0.92) !important; box-shadow: 0 10px 48px rgba(0,0,0,0.85), 0 0 40px rgba(245,166,35,0.07) !important; }
-  .notice { backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); background: rgba(23,16,10,0.85) !important; }
-  .portal-card { backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px); background: rgba(23,16,10,0.80) !important; }
-  footer { background: rgba(12,9,5,0.70); backdrop-filter: blur(4px); }
-
-  /* Typography lifted against the void */
-  h1 { text-shadow: 0 0 60px rgba(245,166,35,0.18), 0 2px 12px rgba(0,0,0,0.98); }
-  .sec-head h2 { text-shadow: 0 0 30px rgba(245,166,35,0.12), 0 2px 8px rgba(0,0,0,0.95); }
   .wrap { max-width: 1060px; margin: 0 auto; padding: 0 20px; position: relative; z-index: 1; }
 
   /* LANG BAR */
   .lang-bar {
     display: flex; justify-content: flex-end; align-items: center;
-    padding: 14px 20px 0;
-    /* Push content below the iPhone status bar */
-    padding-top: calc(14px + env(safe-area-inset-top, 0px));
-    position: relative; z-index: 10;
+    padding: 14px 20px 0; position: relative; z-index: 10;
     max-width: 1060px; margin: 0 auto;
   }
   .lang-label { font-size: 12px; color: var(--muted); margin-right: 10px; letter-spacing: 0.08em; }
@@ -100,77 +59,20 @@
   }
   .lang-btn.active { background: var(--saffron); color: var(--bg); }
 
-  /* BG TOGGLE */
-  .bg-toggle {
-    display: flex; align-items: center; gap: 6px;
-    margin-right: auto;
-    padding: 5px 14px; font-family: 'Jost', sans-serif; font-size: 12px;
-    font-weight: 500; cursor: pointer; border-radius: 3px;
-    border: 1px solid var(--border);
-    background: var(--surface); color: var(--cream-dim);
-    letter-spacing: 0.08em; text-transform: uppercase;
-    transition: all 0.2s;
-  }
-  .bg-toggle:hover { border-color: var(--border-hover); color: var(--white); }
-  .bg-toggle.cosmos-off { color: var(--muted); border-color: var(--border); }
-  .bg-toggle-icon { font-size: 13px; transition: opacity 0.3s; }
-  .bg-toggle.cosmos-off .bg-toggle-icon { opacity: 0.25; }
-
   /* HEADER */
   header { text-align: center; padding: 48px 20px 40px; position: relative; }
   .om {
     font-family: 'Tiro Devanagari Sanskrit', serif;
-    font-size: 56px; 
-    display: inline-block; 
-    margin-bottom: 14px; 
-    line-height: 1;
-    animation: prana-breath 6s ease-in-out infinite;
+    font-size: 56px; color: var(--saffron); display: block;
+    margin-bottom: 14px; line-height: 1;
+    animation: pulse-glow 4s ease-in-out infinite alternate;
   }
-  @keyframes prana-breath {
-    0%, 100% { text-shadow: 0 0 8px rgba(245,166,35,0.15), 0 0 20px rgba(245,166,35,0.05); color: rgba(245,166,35, 0.7); }
-    35% { text-shadow: 0 0 20px rgba(245,166,35,0.9), 0 0 50px rgba(245,166,35,0.6), 0 0 100px rgba(245,166,35,0.3), 0 0 160px rgba(245,166,35,0.2); color: rgba(255,210,120, 1); }
-    45% { text-shadow: 0 0 18px rgba(245,166,35,0.8), 0 0 45px rgba(245,166,35,0.5), 0 0 90px rgba(245,166,35,0.25), 0 0 140px rgba(245,166,35,0.15); color: rgba(255,200,100, 0.95); }
-    90% { text-shadow: 0 0 8px rgba(245,166,35,0.15), 0 0 20px rgba(245,166,35,0.05); color: rgba(245,166,35, 0.7); }
+  @keyframes pulse-glow {
+    from { text-shadow: 0 0 20px rgba(245,166,35,0.25), 0 0 50px rgba(245,166,35,0.08); }
+    to   { text-shadow: 0 0 35px rgba(245,166,35,0.55), 0 0 80px rgba(245,166,35,0.2); }
   }
-
   h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(34px,5.5vw,58px); font-weight: 600; letter-spacing: 0.02em; line-height: 1.15; }
   h1 em { color: var(--saffron); font-style: italic; }
-
-  /* ── SACRED FLICKER SUBTITLE (very dim red + occasional abandoned light flicker) ── */
-  .sub-en, .sub-hi {
-    animation: sacred-flicker 9s ease-in-out infinite;
-    text-shadow: 
-      0 0 5px rgba(165, 35, 35, 0.22),
-      0 0 11px rgba(247, 208, 96, 0.09);
-  }
-  @keyframes sacred-flicker {
-    0%, 100%, 62%, 78% {  /* long calm / "abandoned" periods */
-      text-shadow: 
-        0 0 4px rgba(165, 35, 35, 0.14),
-        0 0 9px rgba(247, 208, 96, 0.07);
-    }
-    18% {  /* occasional gentle red pulse */
-      text-shadow: 
-        0 0 11px rgba(165, 35, 35, 0.38),
-        0 0 19px rgba(247, 208, 96, 0.16);
-    }
-    37% {
-      text-shadow: 
-        0 0 6px rgba(165, 35, 35, 0.19),
-        0 0 12px rgba(247, 208, 96, 0.09);
-    }
-    49% {  /* another rare flicker */
-      text-shadow: 
-        0 0 13px rgba(165, 35, 35, 0.33),
-        0 0 21px rgba(247, 208, 96, 0.14);
-    }
-    81% {
-      text-shadow: 
-        0 0 5px rgba(165, 35, 35, 0.16),
-        0 0 10px rgba(247, 208, 96, 0.08);
-    }
-  }
-
   .sub-en { margin-top: 10px; font-size: 13px; color: var(--muted); letter-spacing: 0.14em; text-transform: uppercase; }
   .sub-hi { margin-top: 10px; font-family: 'Tiro Devanagari Sanskrit', serif; font-size: 17px; color: var(--muted); display: none; }
   .rule { width: 100px; height: 1px; background: linear-gradient(90deg,transparent,var(--saffron),transparent); margin: 24px auto 0; }
@@ -293,16 +195,11 @@
   body { -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
   .card-desc, .card-desc-hi, .card-title, .card-source, .pd, .sec-desc { -webkit-user-select: text; -moz-user-select: text; user-select: text; }
   @media print { body { display: none !important; } }
-
-  /* canvas styles defined above in main block */
 </style>
 </head>
 <body>
 
 <div class="lang-bar">
-  <button class="bg-toggle cosmos-off" id="bg-toggle" onclick="toggleCosmos(this)" title="Toggle cosmic background">
-    <span class="bg-toggle-icon">✦</span> <span class="bg-toggle-label">Cosmos</span>
-  </button>
   <span class="lang-label">Language / भाषा</span>
   <div class="lang-toggle">
     <button class="lang-btn active" onclick="setLang('en',this)">EN</button>
@@ -398,6 +295,7 @@
       <p class="card-desc-hi">यज्ञ-मंत्रों का वेद। मूल संस्कृत, लिप्यंतरण और महर्षि यास्क व स्वामी दयानन्द की आर्ष परम्परा में अंग्रेजी अनुवाद।</p>
       <div class="badges"><span class="badge b-skt">संस्कृत</span><span class="badge b-eng">English</span><span class="badge b-trad-shrauta">श्रौत</span><span class="badge b-trad-smarta">स्मार्त</span><span class="badge b-trad-vaishnava">वैष्णव</span><span class="badge b-trad-shaiva">शैव</span><span class="badge b-trad-shakta">शाक्त</span></div>
     </a>
+
 
     <a href="https://archive.org/details/atharvaved-vol-1" target="_blank" class="card a-saffron" data-trad="shrauta smarta vaishnava shaiva shakta">
       <span class="card-icon">🌿</span>
@@ -660,6 +558,7 @@
     <a href="https://www.wisdomlib.org/hinduism/book/the-markandeya-purana" target="_blank" class="card a-purple" data-trad="shakta smarta shaiva vaishnava">
       <span class="card-icon">🌺</span>
       <div class="card-title">Mārkaṇḍeya Purāṇa</div>
+      <div class="card-title-hi">मार्कण्डेय पुराण</div>
       <div class="card-source">Wisdomlib · Frederick Eden Pargiter trans. (Asiatic Society of Bengal, 1904) — chapter-by-chapter · fully searchable</div>
       <p class="card-desc">All 137 chapters — one of the oldest and most important Mahāpurāṇas, narrated by Ṛṣi Mārkaṇḍeya to his disciple Krauṣṭuki, with an outer frame dialogue between Ṛṣi Jaimini and four learned birds. Covers the 14 Manvantaras, cosmology, dynasties, and dharmaśāstra in chapters 1–80. Chapters 81–93 contain the Devī Māhātmya (Durgā Saptaśatī) — the foundational Śākta pramāṇa, narrating Devī's victories over Madhu-Kaiṭabha, Mahiṣāsura, and Śumbha-Niśumbha, recited daily across traditions. Chapters 94–137 continue the Mārkaṇḍeya-Krauṣṭuki dialogue with further cosmology and legend. Pargiter's translation was prepared for the Asiatic Society of Bengal directly from Sanskrit and rendered as close to the original as possible. Chapter-by-chapter navigation, fully searchable on Wisdomlib.</p>
       <p class="card-desc-hi">सभी १३७ अध्याय — प्राचीनतम और सर्वाधिक महत्त्वपूर्ण महापुराणों में से एक। ऋषि मार्कण्डेय द्वारा अपने शिष्य क्रौष्टुकि को कथित, बाह्य ढाँचे में ऋषि जैमिनि और चार विद्वान पक्षियों का संवाद। अध्याय १–८०: चौदह मन्वन्तर, ब्रह्माण्डविज्ञान, वंशावली और धर्मशास्त्र। अध्याय ८१–९३: देवी माहात्म्य (दुर्गासप्तशती) — मधु-कैटभ, महिषासुर और शुम्भ-निशुम्भ पर देवी की विजय। अध्याय ९४–१३७: मार्कण्डेय-क्रौष्टुकि संवाद जारी। पार्जिटर का अनुवाद एशियाटिक सोसाइटी ऑफ बंगाल के लिए संस्कृत से किया गया।</p>
@@ -756,7 +655,7 @@
       <div class="card-title-hi">विवेकचूडामणि</div>
       <div class="card-source">Internet Archive · Swami Madhavananda, Advaita Ashrama (1970)</div>
       <p class="card-desc">All 580 verses — Devanāgarī, word-for-word, English rendering and commentary. Attributed to Ādi Śaṅkarācārya. The foremost prakaraṇa-grantha of Advaita Vedānta — a master-disciple dialogue expounding viveka, vairāgya, and the direct realization of Tat tvam asi as the path to mokṣa.</p>
-      <p class="card-desc-hi">सभी ५८0 श्लोक — देवनागरी, अन्वय, अंग्रेजी अनुवाद और टिप्पणी। आदि शंकराचार्य को आरोपित। अद्वैत वेदान्त का प्रमुख प्रकरण-ग्रन्थ — विवेक, वैराग्य और "तत् त्वम् असि" की साक्षात् अनुभूति को मोक्ष के मार्ग के रूप में निरूपित करने वाला गुरु-शिष्य संवाद।</p>
+      <p class="card-desc-hi">सभी ५८० श्लोक — देवनागरी, अन्वय, अंग्रेजी अनुवाद और टिप्पणी। आदि शंकराचार्य को आरोपित। अद्वैत वेदान्त का प्रमुख प्रकरण-ग्रन्थ — विवेक, वैराग्य और "तत् त्वम् असि" की साक्षात् अनुभूति को मोक्ष के मार्ग के रूप में निरूपित करने वाला गुरु-शिष्य संवाद।</p>
       <div class="badges"><span class="badge b-skt">संस्कृत</span><span class="badge b-eng">English</span><span class="badge b-vs">Verse-level</span><span class="badge b-trad-smarta">स्मार्त</span><span class="badge b-trad-shaiva">शैव</span><span class="badge b-trad-shakta">शाक्त</span></div>
     </a>
 
@@ -1040,6 +939,7 @@
     document.querySelectorAll('.section').forEach(sec => {
       const sMatch = activeSection === 'all' || sec.dataset.s === activeSection;
 
+      // Portals section has no card-level trad tags — pass through
       if (sec.dataset.s === 'portals') {
         sec.classList.toggle('hidden', !sMatch);
         if (sMatch) anyVisible = true;
@@ -1062,6 +962,7 @@
     document.getElementById('no-results').classList.toggle('visible', !anyVisible);
   }
 
+  // ── SECTION FILTER ──
   function filterSection(key, btn) {
     document.querySelectorAll('.tabs:not(.trad-tabs) .tab').forEach(t => t.classList.remove('active'));
     btn.classList.add('active');
@@ -1069,6 +970,7 @@
     applyFilters();
   }
 
+  // ── TRADITION FILTER ──
   function filterTrad(key, btn) {
     document.querySelectorAll('.trad-tabs .tab').forEach(t => t.classList.remove('active'));
     btn.classList.add('active');
@@ -1076,201 +978,28 @@
     applyFilters();
   }
 </script>
-
 <!-- ── SOURCE PROTECTION ── -->
 <script>
-  document.addEventListener('contextmenu', e => e.preventDefault());
-  document.addEventListener('keydown', e => {
-    const ctrl = e.ctrlKey || e.metaKey;
-    if (ctrl && (e.key === 'u' || e.key === 'U' || e.key === 's' || e.key === 'S' || e.key === 'a' || e.key === 'A')) { e.preventDefault(); return false; }
-    if (e.key === 'F12') { e.preventDefault(); return false; }
-    if (ctrl && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j' || e.key === 'C' || e.key === 'c')) { e.preventDefault(); return false; }
-  });
-  document.addEventListener('dragstart', e => e.preventDefault());
+  // Disable right-click context menu
+  document.addEventListener('contextmenu', function(e){ e.preventDefault(); });
 
-  function toggleCosmos(btn) {
-    const canvas = document.getElementById('cosmos-expansion');
-    const isOff = btn.classList.toggle('cosmos-off');
-    canvas.style.opacity = isOff ? '0' : '0.65';
-    btn.querySelector('.bg-toggle-label').textContent = isOff ? 'Cosmos' : 'Cosmos';
-  }
-</script>
-
-<!-- ── COSMIC EXPANSION LAYER (default OFF) ── -->
-<canvas id="cosmos-expansion"></canvas>
-
-<script>
-(function(){
-  const canvas = document.getElementById('cosmos-expansion');
-  const gl = canvas.getContext('webgl', { alpha:true, antialias:false, depth:false, stencil:false, preserveDrawingBuffer:false, powerPreference:'high-performance' }) || canvas.getContext('experimental-webgl');
-  if (!gl) return;
-
-  const vs = `attribute vec2 position; void main(){ gl_Position=vec4(position,0.0,1.0); }`;
-
-  const fs = `
-    precision highp float;
-    uniform vec2 u_res;
-    uniform float u_time;
-    uniform vec2 u_mouse;
-
-    float hash(float n){ return fract(sin(n)*43758.5453123); }
-    float noise(vec3 x){
-      vec3 p=floor(x), f=fract(x); f=f*f*(3.0-2.0*f);
-      float n=p.x+p.y*57.0+113.0*p.z;
-      return mix(mix(mix(hash(n),hash(n+1.0),f.x), mix(hash(n+57.0),hash(n+58.0),f.x),f.y),
-                 mix(mix(hash(n+113.0),hash(n+114.0),f.x), mix(hash(n+170.0),hash(n+171.0),f.x),f.y),f.z);
-    }
-    mat3 m3=mat3(0.0,0.8,0.6,-0.8,0.36,-0.48,-0.6,-0.48,0.64);
-    float fbm(vec3 p){
-      float f=0.0; f+=0.5*noise(p); p=m3*p*2.02;
-      f+=0.25*noise(p); p=m3*p*2.03; f+=0.125*noise(p); p=m3*p*2.01;
-      f+=0.0625*noise(p); p=m3*p*2.05; f+=0.03125*noise(p); return f;
-    }
-    float fbm2(vec3 p){ float f=0.5*noise(p); p=m3*p*2.02; f+=0.25*noise(p); return f; }
-
-    void main(){
-      vec2 uv=gl_FragCoord.xy/u_res.xy;
-      vec2 p=uv*2.0-1.0; p.x*=u_res.x/u_res.y;
-      vec2 mouseNorm=u_mouse*2.0-1.0; mouseNorm.x*=u_res.x/u_res.y;
-      float d2=dot(p-mouseNorm,p-mouseNorm);
-      float observerInfluence=1.0/(1.0+d2*2.25)*0.05;
-
-      float deepTime=u_time*0.015;
-      float flowTime=u_time*0.04+observerInfluence*2.0;
-      float zoom=1.0-sin(deepTime*2.0)*0.08; p*=zoom;
-      float s=sin(deepTime), c=cos(deepTime); p=mat2(c,-s,s,c)*p;
-
-      vec3 pos=vec3(p*1.5,flowTime);
-      vec3 q,qOff,r;
-      q.x=fbm(pos+vec3(0.0,deepTime,1.0));
-      q.y=fbm(pos+vec3(2.0,1.0,deepTime));
-      q.z=fbm(pos+vec3(1.0,2.0,3.0));
-      qOff=3.0*q;
-      r.x=fbm(pos+qOff+vec3(1.2,3.4,5.6)+flowTime);
-      r.y=fbm(pos+qOff+vec3(7.8,9.0,1.2)-flowTime);
-      r.z=fbm(pos+qOff+vec3(3.4,5.6,7.8)+flowTime*0.8);
-      float f=fbm(pos+4.0*r);
-      float epoch=fbm2(vec3(deepTime*0.5,0.0,0.0));
-
-      vec3 col=mix(vec3(0.005,0.01,0.02),vec3(0.04,0.08,0.15),f);
-      col=mix(col,vec3(0.7,0.3,0.05),smoothstep(0.4,0.8,q.x)*(0.8+0.2*sin(epoch*10.0)));
-      col=mix(col,vec3(0.5,0.05,0.15),smoothstep(0.5,0.9,r.y));
-      /* Dark green — deep forest / sacred grove threading through the nebula */
-      col=mix(col,vec3(0.02,0.22,0.08),smoothstep(0.3,0.65,q.y)*(0.7+0.3*sin(epoch*7.0+3.14)));
-      col=mix(col,vec3(0.05,0.38,0.12),smoothstep(0.55,0.85,r.z)*0.6);
-      float illumination=smoothstep(0.6,1.0,f)+observerInfluence;
-      col=mix(col,vec3(0.9,0.7,0.3),clamp(illumination,0.0,1.0));
-      float stars=smoothstep(0.75,1.0,fbm2(pos*10.0));
-      col+=vec3(0.8,0.9,1.0)*stars*f*2.0;
-      col*=f*f*3.5;
-      float vig=1.0-dot(p,p)*0.15; col*=smoothstep(0.0,1.0,vig);
-      col*=0.85+0.15*sin(flowTime*2.0+f*10.0);
-      gl_FragColor=vec4(col,1.0);
-    }
-  `;
-
-  function compile(type, source) {
-    const sh = gl.createShader(type);
-    gl.shaderSource(sh, source);
-    gl.compileShader(sh);
-    return sh;
-  }
-
-  const program = gl.createProgram();
-  gl.attachShader(program, compile(gl.VERTEX_SHADER, vs));
-  gl.attachShader(program, compile(gl.FRAGMENT_SHADER, fs));
-  gl.linkProgram(program);
-  gl.useProgram(program);
-
-  const posBuffer = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, posBuffer);
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,1,-1,-1,1,1,1]), gl.STATIC_DRAW);
-
-  const posAttr = gl.getAttribLocation(program, 'position');
-  gl.enableVertexAttribArray(posAttr);
-  gl.vertexAttribPointer(posAttr, 2, gl.FLOAT, false, 0, 0);
-
-  const resUniform = gl.getUniformLocation(program, 'u_res');
-  const timeUniform = gl.getUniformLocation(program, 'u_time');
-  const mouseUniform = gl.getUniformLocation(program, 'u_mouse');
-
-  let targetMouse = [0.5, 0.5];
-  let currentMouse = [0.5, 0.5];
-  let touchActive = false;
-  let mouseFrame = 0;
-
-  // With apple-mobile-web-app-status-bar-style=black-translucent, window.innerHeight
-  // includes the status bar zone, so this correctly fills the full screen.
-  function resize() {
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const w = window.innerWidth;
-    const h = window.innerHeight;
-    canvas.width  = Math.round(w * dpr);
-    canvas.height = Math.round(h * dpr);
-    canvas.style.width  = w + 'px';
-    canvas.style.height = h + 'px';
-    gl.viewport(0, 0, canvas.width, canvas.height);
-    gl.uniform2f(resUniform, canvas.width, canvas.height);
-  }
-  window.addEventListener('resize', resize, { passive: true });
-  window.addEventListener('orientationchange', () => { setTimeout(resize, 200); setTimeout(resize, 500); }, { passive: true });
-  resize();
-
-  function trackW() { return window.innerWidth; }
-  function trackH() { return window.innerHeight; }
-
-  // ── Desktop mouse ──
-  window.addEventListener('mousemove', e => {
-    if (++mouseFrame % 2 !== 0) return;
-    targetMouse[0] = e.clientX / trackW();
-    targetMouse[1] = 1.0 - (e.clientY / trackH());
-  }, { passive: true });
-
-  // ── Touch: on document so it fires regardless of pointer-events on canvas ──
-  function applyTouch(e) {
-    const t = e.touches && e.touches[0];
-    if (!t) return;
-    targetMouse[0] = t.clientX / trackW();
-    targetMouse[1] = 1.0 - (t.clientY / trackH());
-  }
-  document.addEventListener('touchstart', e => { touchActive = true;  applyTouch(e); }, { passive: true });
-  document.addEventListener('touchmove',  e => { applyTouch(e); },                     { passive: true });
-  document.addEventListener('touchend',   () => { touchActive = false; },               { passive: true });
-
-  let paused = false, pausedAt = 0, timeOffset = 0;
-  document.addEventListener('visibilitychange', () => {
-    if (document.hidden) {
-      paused = true; pausedAt = performance.now();
-    } else {
-      timeOffset += performance.now() - pausedAt;
-      paused = false;
-      if (!rafId) rafId = requestAnimationFrame(render);
-    }
+  // Disable common keyboard shortcuts for viewing/saving source
+  document.addEventListener('keydown', function(e){
+    // Ctrl/Cmd + U  (view-source)
+    // Ctrl/Cmd + S  (save page)
+    // Ctrl/Cmd + A  (select all)
+    // Ctrl/Cmd + C  (copy — allow on text fields but block blanket)
+    // F12, Ctrl+Shift+I/J/C (DevTools)
+    var ctrl = e.ctrlKey || e.metaKey;
+    if (ctrl && (e.key==='u'||e.key==='U'||e.key==='s'||e.key==='S'||e.key==='a'||e.key==='A')) { e.preventDefault(); return false; }
+    if (e.key==='F12') { e.preventDefault(); return false; }
+    if (ctrl && e.shiftKey && (e.key==='I'||e.key==='i'||e.key==='J'||e.key==='j'||e.key==='C'||e.key==='c')) { e.preventDefault(); return false; }
   });
 
-  const FRAME_BUDGET = 1000 / 60;
-  let lastFrameTime = 0, rafId = null;
+  // Disable drag on images / page elements
+  document.addEventListener('dragstart', function(e){ e.preventDefault(); });
 
-  function render(now) {
-    rafId = null;
-    if (paused) return;
 
-    const elapsed = now - lastFrameTime;
-    lastFrameTime = now;
-    if (elapsed > FRAME_BUDGET * 2.5) { rafId = requestAnimationFrame(render); return; }
-
-    currentMouse[0] += (targetMouse[0] - currentMouse[0]) * (touchActive ? 0.07 : 0.05);
-    currentMouse[1] += (targetMouse[1] - currentMouse[1]) * (touchActive ? 0.07 : 0.05);
-
-    gl.uniform1f(timeUniform, (now - timeOffset) / 1000.0);
-    gl.uniform2f(mouseUniform, currentMouse[0], currentMouse[1]);
-
-    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-    rafId = requestAnimationFrame(render);
-  }
-
-  rafId = requestAnimationFrame(render);
-})();
 </script>
 
 </body>
