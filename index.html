@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0c0905">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Hindu Scripture Hub — सनातन ग्रन्थालय</title>
 <!-- COSMIC ENGINE -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -23,24 +26,41 @@
     --white: #f5ede0;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  /* Force html to fill behind status bar — this is what shows in the status bar zone */
+
+  /* ── The secret: html background shows through the translucent status bar ── */
   html {
     background: #0c0905;
     height: 100%;
-    /* Prevent rubber-band bounce revealing white background */
     overscroll-behavior: none;
+    -webkit-tap-highlight-color: transparent;
   }
   body {
     background: var(--bg);
     color: var(--cream);
     font-family: 'Jost', sans-serif;
     font-weight: 300;
-    min-height: 100vh;
     min-height: 100dvh;
     overflow-x: hidden;
     line-height: 1.6;
     overscroll-behavior: none;
-    /* NO padding-top here — content starts below status bar via lang-bar padding instead */
+    /* Safe-area padding pushes CONTENT below status bar — canvas bleeds behind it */
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+
+  /* ── COSMOS CANVAS: fixed, truly covers 100% of the screen including status bar ── */
+  /* With apple-mobile-web-app-status-bar-style=black-translucent, position:fixed   */
+  /* elements at top:0 render BEHIND the transparent status bar — this is the key.  */
+  #cosmos-expansion {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    mix-blend-mode: screen;
+    opacity: 0;
+    transition: opacity 0.6s ease;
   }
 
   /* Lift all content above the cosmos */
@@ -274,26 +294,7 @@
   .card-desc, .card-desc-hi, .card-title, .card-source, .pd, .sec-desc { -webkit-user-select: text; -moz-user-select: text; user-select: text; }
   @media print { body { display: none !important; } }
 
-  /* ── COSMOS CANVAS ── */
-  #cosmos-expansion {
-    position: fixed;
-    /* Pull canvas above the safe area into the status bar zone.
-       env(safe-area-inset-top) is the iPhone status bar height (44-59px).
-       We subtract it so the canvas starts ABOVE the viewport safe area. */
-    top: calc(-1 * env(safe-area-inset-top, 50px));
-    left: calc(-1 * env(safe-area-inset-left, 0px));
-    right: calc(-1 * env(safe-area-inset-right, 0px));
-    /* Height covers viewport + status bar above + nav bar below */
-    height: calc(100vh + env(safe-area-inset-top, 50px) + env(safe-area-inset-bottom, 34px));
-    /* Width covers any side insets (landscape notch) */
-    width: calc(100vw + env(safe-area-inset-left, 0px) + env(safe-area-inset-right, 0px));
-    z-index: 0;
-    pointer-events: none;
-    mix-blend-mode: screen;
-    opacity: 0;
-    transition: opacity 0.6s ease;
-    display: block;
-  }
+  /* canvas styles defined above in main block */
 </style>
 </head>
 <body>
@@ -1154,6 +1155,9 @@
       vec3 col=mix(vec3(0.005,0.01,0.02),vec3(0.04,0.08,0.15),f);
       col=mix(col,vec3(0.7,0.3,0.05),smoothstep(0.4,0.8,q.x)*(0.8+0.2*sin(epoch*10.0)));
       col=mix(col,vec3(0.5,0.05,0.15),smoothstep(0.5,0.9,r.y));
+      /* Dark green — deep forest / sacred grove threading through the nebula */
+      col=mix(col,vec3(0.02,0.22,0.08),smoothstep(0.3,0.65,q.y)*(0.7+0.3*sin(epoch*7.0+3.14)));
+      col=mix(col,vec3(0.05,0.38,0.12),smoothstep(0.55,0.85,r.z)*0.6);
       float illumination=smoothstep(0.6,1.0,f)+observerInfluence;
       col=mix(col,vec3(0.9,0.7,0.3),clamp(illumination,0.0,1.0));
       float stars=smoothstep(0.75,1.0,fbm2(pos*10.0));
@@ -1195,17 +1199,16 @@
   let touchActive = false;
   let mouseFrame = 0;
 
-  // ── Resize: use screen.height (hardware pixels) so canvas covers status bar ──
+  // With apple-mobile-web-app-status-bar-style=black-translucent, window.innerHeight
+  // includes the status bar zone, so this correctly fills the full screen.
   function resize() {
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    // screen.width/height is the full hardware screen size in CSS pixels
-    // It includes the status bar area that env(safe-area-inset-top) covers
-    const cssW = screen.width  || window.innerWidth;
-    const cssH = screen.height || window.innerHeight;
-    canvas.width  = Math.round(cssW * dpr);
-    canvas.height = Math.round(cssH * dpr);
-    canvas.style.width  = cssW + 'px';
-    canvas.style.height = cssH + 'px';
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    canvas.width  = Math.round(w * dpr);
+    canvas.height = Math.round(h * dpr);
+    canvas.style.width  = w + 'px';
+    canvas.style.height = h + 'px';
     gl.viewport(0, 0, canvas.width, canvas.height);
     gl.uniform2f(resUniform, canvas.width, canvas.height);
   }
