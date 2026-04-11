@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Hindu Scripture Hub — सनातन ग्रन्थालय</title>
 <!-- COSMIC ENGINE -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -29,8 +29,13 @@
     font-family: 'Jost', sans-serif;
     font-weight: 300;
     min-height: 100vh;
+    min-height: 100dvh;
     overflow-x: hidden;
     line-height: 1.6;
+    /* Content respects safe-area (notch/status bar) while canvas bleeds behind */
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-left: env(safe-area-inset-left, 0px);
+    padding-right: env(safe-area-inset-right, 0px);
   }
 
   /* Lift all content above the cosmos */
@@ -265,12 +270,18 @@
   #cosmos-expansion {
     position: fixed;
     top: 0; left: 0;
-    width: 100%; height: 100%;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    /* push behind any safe-area insets so canvas truly bleeds edge-to-edge */
+    margin: 0; padding: 0;
     z-index: 0;
     pointer-events: none;
     mix-blend-mode: screen;
     opacity: 0;
     transition: opacity 0.6s ease;
+    /* prevent any sub-pixel gap on mobile */
+    display: block;
   }
 </style>
 </head>
@@ -1076,16 +1087,7 @@
 <!-- ── COSMIC EXPANSION LAYER (default OFF) ── -->
 <canvas id="cosmos-expansion"></canvas>
 <style>
-  #cosmos-expansion {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    z-index: 0;
-    pointer-events: none;
-    mix-blend-mode: screen;
-    opacity: 0;
-    transition: opacity 0.6s ease;
-  }
+  /* canvas sizing handled in main styles above */
 </style>
 <script>
 (function(){
@@ -1182,20 +1184,56 @@
   let targetMouse = [0.5, 0.5];
   let currentMouse = [0.5, 0.5];
   let mouseFrame = 0;
+
+  // ── Desktop mouse tracking ──
   window.addEventListener('mousemove', e => {
     if (++mouseFrame % 2 !== 0) return;
     targetMouse[0] = e.clientX / window.innerWidth;
     targetMouse[1] = 1.0 - (e.clientY / window.innerHeight);
   }, { passive: true });
 
+  // ── Mobile touch tracking — beautiful parallax with your fingers ──
+  let touchActive = false;
+  let touchLerpSpeed = 0.06; // slightly snappier than mouse for tactile feel
+
+  function updateFromTouch(e) {
+    const t = e.touches[0];
+    if (!t) return;
+    targetMouse[0] = t.clientX / window.innerWidth;
+    targetMouse[1] = 1.0 - (t.clientY / window.innerHeight);
+  }
+
+  window.addEventListener('touchstart', e => {
+    touchActive = true;
+    updateFromTouch(e);
+  }, { passive: true });
+
+  window.addEventListener('touchmove', e => {
+    updateFromTouch(e);
+  }, { passive: true });
+
+  window.addEventListener('touchend', () => {
+    // Gently drift back toward center on lift — like cosmos breathing
+    touchActive = false;
+    // target glides back to center over time via lerp naturally
+    // (no snap — leave targetMouse where last touched for smooth settle)
+  }, { passive: true });
+
+  // ── Canvas resize: use screen dimensions to cover status bar ──
   function resize() {
     const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
-    canvas.width = Math.floor(window.innerWidth * dpr);
-    canvas.height = Math.floor(window.innerHeight * dpr);
+    // Use screen.width/height (not innerWidth/Height) so we cover
+    // the status-bar area on mobile even before safe-area insets scroll away
+    const w = Math.max(window.innerWidth, screen.width || window.innerWidth);
+    const h = Math.max(window.innerHeight, screen.height || window.innerHeight);
+    canvas.width  = Math.floor(w * dpr);
+    canvas.height = Math.floor(h * dpr);
     gl.viewport(0, 0, canvas.width, canvas.height);
     gl.uniform2f(resUniform, canvas.width, canvas.height);
   }
   window.addEventListener('resize', resize, { passive: true });
+  // Also fire on orientation change for mobile
+  window.addEventListener('orientationchange', () => setTimeout(resize, 120), { passive: true });
   resize();
 
   let paused = false, pausedAt = 0, timeOffset = 0;
@@ -1220,8 +1258,8 @@
     lastFrameTime = now;
     if (elapsed > FRAME_BUDGET * 2.5) { rafId = requestAnimationFrame(render); return; }
 
-    currentMouse[0] += (targetMouse[0] - currentMouse[0]) * 0.05;
-    currentMouse[1] += (targetMouse[1] - currentMouse[1]) * 0.05;
+    currentMouse[0] += (targetMouse[0] - currentMouse[0]) * (touchActive ? 0.07 : 0.05);
+    currentMouse[1] += (targetMouse[1] - currentMouse[1]) * (touchActive ? 0.07 : 0.05);
 
     gl.uniform1f(timeUniform, (now - timeOffset) / 1000.0);
     gl.uniform2f(mouseUniform, currentMouse[0], currentMouse[1]);
