@@ -27,7 +27,6 @@
   html {
     background: #0c0905;
     height: 100%;
-    height: -webkit-fill-available;
     /* Prevent rubber-band bounce revealing white background */
     overscroll-behavior: none;
   }
@@ -278,14 +277,14 @@
   /* ── COSMOS CANVAS ── */
   #cosmos-expansion {
     position: fixed;
-    /* Anchor to the very top of the screen — including behind the status bar.
-       On iOS with viewport-fit=cover, top:0 on a fixed element is the physical
-       top of the screen (above the safe area), so no negative offset needed. */
+    /* With viewport-fit=cover, position:fixed top:0 already sits behind the
+       Dynamic Island / status bar — no negative offset needed or wanted.
+       Using inset:0 / all-four-sides-zero is the most reliable full-bleed
+       approach on every iPhone model including Dynamic Island. */
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    /* 100% of the fixed containing block = full physical screen */
     width: 100%;
     height: 100%;
     z-index: 0;
@@ -1196,18 +1195,16 @@
   let touchActive = false;
   let mouseFrame = 0;
 
-  // ── Resize: size canvas to its actual CSS rendered dimensions (full physical screen) ──
+  // ── Resize: window.inner* with viewport-fit=cover already includes the full
+  //    screen (behind Dynamic Island + home indicator) — no screen.* needed ──
   function resize() {
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    // getBoundingClientRect gives us the exact CSS pixel size the browser
-    // assigned to the canvas (matching our CSS top:0/bottom:0/left:0/right:0).
-    // On iOS this covers the full physical screen including the status bar zone.
-    const rect = canvas.getBoundingClientRect();
-    const cssW = rect.width  || window.innerWidth;
-    const cssH = rect.height || window.innerHeight;
+    const cssW = window.innerWidth;
+    const cssH = window.innerHeight;
     canvas.width  = Math.round(cssW * dpr);
     canvas.height = Math.round(cssH * dpr);
-    // canvas.style.width/height are already handled by CSS (width:100%, height:100%)
+    canvas.style.width  = cssW + 'px';
+    canvas.style.height = cssH + 'px';
     gl.viewport(0, 0, canvas.width, canvas.height);
     gl.uniform2f(resUniform, canvas.width, canvas.height);
   }
