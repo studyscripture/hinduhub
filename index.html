@@ -275,24 +275,27 @@
   @media print { body { display: none !important; } }
 
   /* ── COSMOS CANVAS ── */
-  #cosmos-expansion {
+  /* Wrapper handles all positioning + blend mode.
+     mix-blend-mode on the canvas itself creates a stacking context that
+     Safari clips to the safe area, leaving the Dynamic Island unfilled.
+     Putting blend mode on a plain wrapper div avoids that Safari clip. */
+  #cosmos-wrap {
     position: fixed;
-    /* With viewport-fit=cover, position:fixed top:0 already sits behind the
-       Dynamic Island / status bar — no negative offset needed or wanted.
-       Using inset:0 / all-four-sides-zero is the most reliable full-bleed
-       approach on every iPhone model including Dynamic Island. */
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    width: 100%;
-    height: 100%;
+    top: calc(-1 * env(safe-area-inset-top, 50px));
+    left: calc(-1 * env(safe-area-inset-left, 0px));
+    right: calc(-1 * env(safe-area-inset-right, 0px));
+    height: calc(100vh + env(safe-area-inset-top, 50px) + env(safe-area-inset-bottom, 34px));
+    width: calc(100vw + env(safe-area-inset-left, 0px) + env(safe-area-inset-right, 0px));
     z-index: 0;
     pointer-events: none;
     mix-blend-mode: screen;
     opacity: 0;
     transition: opacity 0.6s ease;
+  }
+  #cosmos-expansion {
     display: block;
+    width: 100%;
+    height: 100%;
   }
 </style>
 </head>
@@ -1088,15 +1091,15 @@
   document.addEventListener('dragstart', e => e.preventDefault());
 
   function toggleCosmos(btn) {
-    const canvas = document.getElementById('cosmos-expansion');
+    const wrap = document.getElementById('cosmos-wrap');
     const isOff = btn.classList.toggle('cosmos-off');
-    canvas.style.opacity = isOff ? '0' : '0.65';
+    wrap.style.opacity = isOff ? '0' : '0.65';
     btn.querySelector('.bg-toggle-label').textContent = isOff ? 'Cosmos' : 'Cosmos';
   }
 </script>
 
 <!-- ── COSMIC EXPANSION LAYER (default OFF) ── -->
-<canvas id="cosmos-expansion"></canvas>
+<div id="cosmos-wrap"><canvas id="cosmos-expansion"></canvas></div>
 
 <script>
 (function(){
@@ -1195,12 +1198,13 @@
   let touchActive = false;
   let mouseFrame = 0;
 
-  // ── Resize: window.inner* with viewport-fit=cover already includes the full
-  //    screen (behind Dynamic Island + home indicator) — no screen.* needed ──
+  // ── Resize: use screen.height (hardware pixels) so canvas covers status bar ──
   function resize() {
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const cssW = window.innerWidth;
-    const cssH = window.innerHeight;
+    // screen.width/height is the full hardware screen size in CSS pixels
+    // It includes the status bar area that env(safe-area-inset-top) covers
+    const cssW = screen.width  || window.innerWidth;
+    const cssH = screen.height || window.innerHeight;
     canvas.width  = Math.round(cssW * dpr);
     canvas.height = Math.round(cssH * dpr);
     canvas.style.width  = cssW + 'px';
