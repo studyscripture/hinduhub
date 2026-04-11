@@ -269,18 +269,16 @@
   /* ── COSMOS CANVAS (default OFF) ── */
   #cosmos-expansion {
     position: fixed;
-    top: 0; left: 0;
-    width: 100vw;
-    height: 100vh;
-    height: 100dvh;
-    /* push behind any safe-area insets so canvas truly bleeds edge-to-edge */
-    margin: 0; padding: 0;
+    /* Extend beyond viewport in every direction to eat status bar and nav bar */
+    top: -100px;
+    left: -100px;
+    width: calc(100vw + 200px);
+    height: calc(100vh + 200px);
     z-index: 0;
     pointer-events: none;
     mix-blend-mode: screen;
     opacity: 0;
     transition: opacity 0.6s ease;
-    /* prevent any sub-pixel gap on mobile */
     display: block;
   }
 </style>
@@ -1086,9 +1084,7 @@
 
 <!-- ── COSMIC EXPANSION LAYER (default OFF) ── -->
 <canvas id="cosmos-expansion"></canvas>
-<style>
-  /* canvas sizing handled in main styles above */
-</style>
+
 <script>
 (function(){
   const canvas = document.getElementById('cosmos-expansion');
@@ -1183,58 +1179,46 @@
 
   let targetMouse = [0.5, 0.5];
   let currentMouse = [0.5, 0.5];
+  let touchActive = false;
   let mouseFrame = 0;
 
-  // ── Desktop mouse tracking ──
-  window.addEventListener('mousemove', e => {
-    if (++mouseFrame % 2 !== 0) return;
-    targetMouse[0] = e.clientX / window.innerWidth;
-    targetMouse[1] = 1.0 - (e.clientY / window.innerHeight);
-  }, { passive: true });
-
-  // ── Mobile touch tracking — beautiful parallax with your fingers ──
-  let touchActive = false;
-  let touchLerpSpeed = 0.06; // slightly snappier than mouse for tactile feel
-
-  function updateFromTouch(e) {
-    const t = e.touches[0];
-    if (!t) return;
-    targetMouse[0] = t.clientX / window.innerWidth;
-    targetMouse[1] = 1.0 - (t.clientY / window.innerHeight);
-  }
-
-  window.addEventListener('touchstart', e => {
-    touchActive = true;
-    updateFromTouch(e);
-  }, { passive: true });
-
-  window.addEventListener('touchmove', e => {
-    updateFromTouch(e);
-  }, { passive: true });
-
-  window.addEventListener('touchend', () => {
-    // Gently drift back toward center on lift — like cosmos breathing
-    touchActive = false;
-    // target glides back to center over time via lerp naturally
-    // (no snap — leave targetMouse where last touched for smooth settle)
-  }, { passive: true });
-
-  // ── Canvas resize: use screen dimensions to cover status bar ──
+  // ── Resize: canvas is oversized (+200px each side) to bleed behind all browser chrome ──
   function resize() {
-    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
-    // Use screen.width/height (not innerWidth/Height) so we cover
-    // the status-bar area on mobile even before safe-area insets scroll away
-    const w = Math.max(window.innerWidth, screen.width || window.innerWidth);
-    const h = Math.max(window.innerHeight, screen.height || window.innerHeight);
-    canvas.width  = Math.floor(w * dpr);
-    canvas.height = Math.floor(h * dpr);
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    // Add 200px padding each side to guarantee coverage behind status/nav bars
+    const cssW = (window.innerWidth  || screen.width)  + 200;
+    const cssH = (window.innerHeight || screen.height) + 200;
+    canvas.width  = Math.round(cssW * dpr);
+    canvas.height = Math.round(cssH * dpr);
+    canvas.style.width  = cssW + 'px';
+    canvas.style.height = cssH + 'px';
     gl.viewport(0, 0, canvas.width, canvas.height);
     gl.uniform2f(resUniform, canvas.width, canvas.height);
   }
   window.addEventListener('resize', resize, { passive: true });
-  // Also fire on orientation change for mobile
-  window.addEventListener('orientationchange', () => setTimeout(resize, 120), { passive: true });
+  window.addEventListener('orientationchange', () => { setTimeout(resize, 200); setTimeout(resize, 500); }, { passive: true });
   resize();
+
+  function trackW() { return window.innerWidth; }
+  function trackH() { return window.innerHeight; }
+
+  // ── Desktop mouse ──
+  window.addEventListener('mousemove', e => {
+    if (++mouseFrame % 2 !== 0) return;
+    targetMouse[0] = e.clientX / trackW();
+    targetMouse[1] = 1.0 - (e.clientY / trackH());
+  }, { passive: true });
+
+  // ── Touch: on document so it fires regardless of pointer-events on canvas ──
+  function applyTouch(e) {
+    const t = e.touches && e.touches[0];
+    if (!t) return;
+    targetMouse[0] = t.clientX / trackW();
+    targetMouse[1] = 1.0 - (t.clientY / trackH());
+  }
+  document.addEventListener('touchstart', e => { touchActive = true;  applyTouch(e); }, { passive: true });
+  document.addEventListener('touchmove',  e => { applyTouch(e); },                     { passive: true });
+  document.addEventListener('touchend',   () => { touchActive = false; },               { passive: true });
 
   let paused = false, pausedAt = 0, timeOffset = 0;
   document.addEventListener('visibilitychange', () => {
