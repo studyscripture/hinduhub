@@ -152,7 +152,7 @@
   }
 
   .sub-en { margin-top: 10px; font-size: 13px; color: var(--muted); letter-spacing: 0.14em; text-transform: uppercase; }
-  .sub-hi { margin-top: 10px; font-family: 'Tiro Devanagari Sanskrit', serif; font-size: 17px; color: var(--muted); display: none; }
+  .sub-hi { margin-top: 10px; font-family: 'Tiro Devanagari Sanskrit', serif; font-size: 17px; color: var(--muted); }
   .rule { width: 100px; height: 1px; background: linear-gradient(90deg,transparent,var(--saffron),transparent); margin: 24px auto 0; }
 
   /* NOTICE */
@@ -300,7 +300,7 @@
 
 <div class="lang-bar">
   <button class="bg-toggle cosmos-off" id="bg-toggle" onclick="toggleCosmos(this)" title="Toggle cosmic background">
-    <span class="bg-toggle-icon">✦</span> <span class="bg-toggle-label">Cosmos</span>
+    <span class="bg-toggle-icon">✦</span> <span class="bg-toggle-label t-en">Cosmos</span><span class="bg-toggle-label t-hi" style="display:none">ब्रह्माण्ड</span>
   </button>
   <span class="lang-label">Language / भाषा</span>
   <div class="lang-toggle">
@@ -312,8 +312,8 @@
 <header>
   <span class="om">ॐ</span>
   <h1>Hindu <em>Scripture</em> Hub</h1>
-  <p class="sub-en">Tradition-rooted texts &nbsp;·&nbsp; Ācārya translations &nbsp;·&nbsp; All traditions</p>
-  <p class="sub-hi">परम्परा-आधारित ग्रन्थ · आचार्य-अनुमोदित अनुवाद · सभी सम्प्रदाय</p>
+  <p class="sub-en t-en">Tradition-rooted texts &nbsp;·&nbsp; Ācārya translations &nbsp;·&nbsp; All traditions</p>
+  <p class="sub-hi t-hi" style="display:none">परम्परा-आधारित ग्रन्थ &nbsp;·&nbsp; आचार्य-अनुमोदित अनुवाद &nbsp;·&nbsp; सभी सम्प्रदाय</p>
   <div class="rule"></div>
 </header>
 
@@ -362,7 +362,7 @@
   <div class="sec-head">
     <h2><span class="t-en">Śruti</span><span class="t-hi" style="display:none">श्रुति</span></h2>
     <div class="sec-line"></div>
-    <span class="sec-tag">Apauruṣeya — Eternal &amp; Revealed</span>
+    <span class="sec-tag t-en">Apauruṣeya — Eternal &amp; Revealed</span><span class="sec-tag t-hi" style="display:none">अपौरुषेय — नित्य एवं प्रकाशित</span>
   </div>
   <p class="sec-desc t-en">The four Vedas and Upaniṣads — eternal sound heard by the ṛṣis, not composed by any person. The highest pramāṇa in all āstika darśanas.</p>
   <p class="sec-desc t-hi" style="display:none">चारों वेद और उपनिषद् — ऋषियों द्वारा श्रुत अपौरुषेय ज्ञान। समस्त आस्तिक दर्शनों में सर्वोच्च प्रमाण।</p>
@@ -496,7 +496,7 @@
   <div class="sec-head">
     <h2><span class="t-en">Smṛti &amp; Itihāsa</span><span class="t-hi" style="display:none">स्मृति और इतिहास</span></h2>
     <div class="sec-line"></div>
-    <span class="sec-tag">Remembered Tradition</span>
+    <span class="sec-tag t-en">Remembered Tradition</span><span class="sec-tag t-hi" style="display:none">स्मृत परम्परा</span>
   </div>
   <p class="sec-desc t-en">The Bhagavad Gītā (three sampradāya perspectives), Vālmīki Rāmāyaṇa, Rāmcaritmānas, Mahābhārata, and Dharmaśāstra — all from Indian and sampradāya sources.</p>
   <p class="sec-desc t-hi" style="display:none">भगवद्गीता (तीन सम्प्रदायों के दृष्टिकोण), वाल्मीकि रामायण, रामचरितमानस, महाभारत और धर्मशास्त्र — सभी भारतीय और सम्प्रदाय-आधारित स्रोतों से।</p>
@@ -610,7 +610,7 @@
   <div class="sec-head">
     <h2><span class="t-en">Purāṇas</span><span class="t-hi" style="display:none">पुराण</span></h2>
     <div class="sec-line"></div>
-    <span class="sec-tag">18 Mahāpurāṇas + Upapurāṇas</span>
+    <span class="sec-tag t-en">18 Mahāpurāṇas + Upapurāṇas</span><span class="sec-tag t-hi" style="display:none">१८ महापुराण + उपपुराण</span>
   </div>
   <p class="sec-desc t-en">Cosmology, theology, and lineage of all Hindu traditions — the encyclopedic literature covering Sarga, Pratisarga, Vaṃśa, Manvantara, and Vaṃśānucarita.</p>
   <p class="sec-desc t-hi" style="display:none">समस्त हिन्दू परम्पराओं की ब्रह्माण्डविद्या, देवशास्त्र और वंशावली — सर्ग, प्रतिसर्ग, वंश, मन्वन्तर और वंशानुचरित का विश्वकोश।</p>
@@ -723,7 +723,7 @@
   <div class="sec-head">
     <h2><span class="t-en">Darśana &amp; Āgama</span><span class="t-hi" style="display:none">दर्शन और आगम</span></h2>
     <div class="sec-line"></div>
-    <span class="sec-tag">Philosophy · Tantra · Yoga · Stotra</span>
+    <span class="sec-tag t-en">Philosophy · Tantra · Yoga · Stotra</span><span class="sec-tag t-hi" style="display:none">दर्शन · तन्त्र · योग · स्तोत्र</span>
   </div>
   <p class="sec-desc t-en">The six āstika darśanas, Vaiṣṇava Pañcarātra Āgamas, Śaiva Āgamas, Śākta Tantras, Śrautasūtras, Yoga texts, Sahasranāmas, stotras, and the Dravida Veda — the philosophical, devotional, tantric, and Vedic ritual dimensions of Sanātana Dharma.</p>
   <p class="sec-desc t-hi" style="display:none">षड् आस्तिक दर्शन, वैष्णव पञ्चरात्र आगम, शैव आगम, शाक्त तन्त्र, श्रौतसूत्र, योगशास्त्र, सहस्रनाम, स्तोत्र और द्राविड-वेद — सनातन धर्म के दार्शनिक, भक्तिमय, तान्त्रिक और वैदिक यज्ञ-विधि के आयाम।</p>
@@ -917,7 +917,7 @@
   <div class="sec-head">
     <h2><span class="t-en">Full Portals</span><span class="t-hi" style="display:none">सम्पूर्ण पोर्टल</span></h2>
     <div class="sec-line"></div>
-    <span class="sec-tag">Start Here for Broad Study</span>
+    <span class="sec-tag t-en">Start Here for Broad Study</span><span class="sec-tag t-hi" style="display:none">व्यापक अध्ययन का प्रारम्भ</span>
   </div>
   <p class="sec-desc t-en">Entire libraries in one place — verified working, tradition-rooted, and free. Best for broad exploration or if you are not sure where to start.</p>
   <p class="sec-desc t-hi" style="display:none">एक स्थान पर सम्पूर्ण पुस्तकालय — सत्यापित, परम्परा-आधारित और निःशुल्क। व्यापक अध्ययन के लिए सर्वोत्तम।</p>
@@ -928,7 +928,8 @@
       <div class="pt">
         <div class="pn t-en">Vedic Heritage Portal</div>
         <div class="pn-hi t-hi" style="display:none">वैदिक हेरिटेज पोर्टल</div>
-        <div class="pd">Govt. of India · All 4 Vedas + Upaniṣads</div>
+        <div class="pd t-en">Govt. of India · All 4 Vedas + Upaniṣads</div>
+        <div class="pd t-hi" style="display:none">भारत सरकार · चारों वेद + उपनिषद्</div>
       </div>
     </a>
     <a href="https://vedabase.io/en/library/" target="_blank" class="portal-card">
@@ -936,7 +937,8 @@
       <div class="pt">
         <div class="pn t-en">Vedabase</div>
         <div class="pn-hi t-hi" style="display:none">वेदाबेस</div>
-        <div class="pd">Gauḍīya · Gītā · Bhāgavata · Upaniṣads</div>
+        <div class="pd t-en">Gauḍīya · Gītā · Bhāgavata · Upaniṣads</div>
+        <div class="pd t-hi" style="display:none">गौड़ीय · गीता · भागवत · उपनिषद्</div>
       </div>
     </a>
     <a href="https://shlokam.org/" target="_blank" class="portal-card">
@@ -944,7 +946,8 @@
       <div class="pt">
         <div class="pn t-en">Shlokam.org</div>
         <div class="pn-hi t-hi" style="display:none">श्लोकम्</div>
-        <div class="pd">Gītā · Upaniṣads · Sūtras · Stotras · Audio</div>
+        <div class="pd t-en">Gītā · Upaniṣads · Sūtras · Stotras · Audio</div>
+        <div class="pd t-hi" style="display:none">गीता · उपनिषद् · सूत्र · स्तोत्र · ऑडियो</div>
       </div>
     </a>
     <a href="https://www.gitapress.org/" target="_blank" class="portal-card">
@@ -952,7 +955,8 @@
       <div class="pt">
         <div class="pn t-en">Gīta Press Gorakhpur</div>
         <div class="pn-hi t-hi" style="display:none">गीताप्रेस गोरखपुर</div>
-        <div class="pd">World's largest Hindu publisher · Books &amp; eBooks</div>
+        <div class="pd t-en">World's largest Hindu publisher · Books &amp; eBooks</div>
+        <div class="pd t-hi" style="display:none">विश्व का सबसे बड़ा हिन्दू प्रकाशन · पुस्तकें एवं ई-पुस्तकें</div>
       </div>
     </a>
     <a href="https://sanskritdocuments.org/" target="_blank" class="portal-card">
@@ -960,7 +964,8 @@
       <div class="pt">
         <div class="pn t-en">Sanskrit Documents</div>
         <div class="pn-hi t-hi" style="display:none">संस्कृत डॉक्युमेंट्स</div>
-        <div class="pd">Raw Sanskrit · GRETIL · Digital Library of India</div>
+        <div class="pd t-en">Raw Sanskrit · GRETIL · Digital Library of India</div>
+        <div class="pd t-hi" style="display:none">मूल संस्कृत · GRETIL · डिजिटल लाइब्रेरी ऑफ इण्डिया</div>
       </div>
     </a>
     <a href="https://www.wisdomlib.org/hinduism" target="_blank" class="portal-card">
@@ -968,7 +973,8 @@
       <div class="pt">
         <div class="pn t-en">Wisdomlib — Hinduism</div>
         <div class="pn-hi t-hi" style="display:none">विज्डमलिब — हिन्दू धर्म</div>
-        <div class="pd">Purāṇas · Āgamas · Dharmaśāstras · Searchable</div>
+        <div class="pd t-en">Purāṇas · Āgamas · Dharmaśāstras · Searchable</div>
+        <div class="pd t-hi" style="display:none">पुराण · आगम · धर्मशास्त्र · खोज-योग्य</div>
       </div>
     </a>
   </div>
@@ -1091,7 +1097,6 @@
     const canvas = document.getElementById('cosmos-expansion');
     const isOff = btn.classList.toggle('cosmos-off');
     canvas.style.opacity = isOff ? '0' : '0.65';
-    btn.querySelector('.bg-toggle-label').textContent = isOff ? 'Cosmos' : 'Cosmos';
   }
 </script>
 
