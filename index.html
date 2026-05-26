@@ -228,6 +228,21 @@
   .b-trad-smarta    { background: rgba(26,155,140,0.15); color: #4abaaa; border: 1px solid rgba(26,155,140,0.35); }
   .b-trad-shrauta   { background: rgba(192,128,48,0.15); color: #d4943a; border: 1px solid rgba(192,128,48,0.35); }
 
+  /* multi-volume card (non-link card with volume buttons) */
+  .card-multivolume { cursor: default; }
+  .card-multivolume:hover { transform: none; box-shadow: 0 4px 18px rgba(0,0,0,0.4); }
+  .vol-btns { display: flex; gap: 8px; margin-top: 14px; }
+  .vol-btn {
+    flex: 1; padding: 7px 4px; font-size: 12px; font-weight: 600; letter-spacing: 0.07em;
+    text-align: center; text-decoration: none; border-radius: 3px;
+    border: 1px solid rgba(245,166,35,0.35); color: #e0ab48;
+    background: rgba(245,166,35,0.08);
+    transition: background 0.18s, border-color 0.18s, color 0.18s;
+    line-height: 1.4;
+  }
+  .vol-btn:hover { background: rgba(245,166,35,0.18); border-color: rgba(245,166,35,0.65); color: #f5c355; }
+  .vol-btn-label { display: block; font-size: 9.5px; font-weight: 400; opacity: 0.7; letter-spacing: 0.04em; margin-top: 2px; }
+
   /* accent colors */
   .a-saffron { --accent: #f5a623; }
   .a-red     { --accent: #c05050; }
@@ -760,14 +775,29 @@
       <div class="badges"><span class="badge b-skt t-en">Sanskrit</span><span class="badge b-skt t-hi" style="display:none">संस्कृत</span><span class="badge b-eng t-en">English</span><span class="badge b-eng t-hi" style="display:none">अंग्रेजी</span><span class="badge b-vs t-en">Sūtra-level</span><span class="badge b-vs t-hi" style="display:none">सूत्र-स्तर</span><span class="badge b-trad-smarta t-en">Smārta</span><span class="badge b-trad-smarta t-hi" style="display:none">स्मार्त</span><span class="badge b-trad-vaishnava t-en">Vaiṣṇava</span><span class="badge b-trad-vaishnava t-hi" style="display:none">वैष्णव</span><span class="badge b-trad-shaiva t-en">Śaiva</span><span class="badge b-trad-shaiva t-hi" style="display:none">शैव</span><span class="badge b-trad-shakta t-en">Śākta</span><span class="badge b-trad-shakta t-hi" style="display:none">शाक्त</span></div>
     </a>
 
-    <a href="https://archive.org/details/vivekachudamani-1970" target="_blank" class="card a-green" data-trad="smarta shaiva shakta">
+    <div class="card a-green card-multivolume" data-trad="smarta shaiva shakta">
       <span class="card-icon">💎</span>
       <div class="card-title">Vivekacūḍāmaṇi</div>
       <div class="card-title-hi">विवेकचूडामणि</div>
-      <div class="card-source t-en">Internet Archive · Swami Madhavananda, Advaita Ashrama (1970)</div><div class="card-source t-hi" style="display:none">इंटरनेट आर्काइव · स्वामी माधवानन्द, अद्वैत आश्रम (१९७०)</div>
-      <p class="card-desc">All 580 verses — Devanāgarī, word-for-word, English rendering and commentary. Attributed to Ādi Śaṅkarācārya. The foremost prakaraṇa-grantha of Advaita Vedānta — a master-disciple dialogue expounding viveka, vairāgya, and the direct realization of Tat tvam asi as the path to mokṣa.</p>
-      <p class="card-desc-hi">सभी ५८0 श्लोक — देवनागरी, अन्वय, अंग्रेजी अनुवाद और टिप्पणी। आदि शंकराचार्य को आरोपित। अद्वैत वेदान्त का प्रमुख प्रकरण-ग्रन्थ — विवेक, वैराग्य और "तत् त्वम् असि" की साक्षात् अनुभूति को मोक्ष के मार्ग के रूप में निरूपित करने वाला गुरु-शिष्य संवाद।</p>
+      <div class="card-source t-en">Ādi Śaṅkarācārya · Swami Chinmayananda · 3 Volumes · PDF</div><div class="card-source t-hi" style="display:none">आदि शंकराचार्य · स्वामी चिन्मयानन्द · ३ खण्ड · PDF</div>
+      <p class="card-desc">The foremost prakaraṇa-grantha of Advaita Vedānta — 580 verses attributed to Ādi Śaṅkarācārya. A master-disciple dialogue expounding viveka, vairāgya, and the direct realization of Tat tvam asi. Swami Chinmayananda's authoritative 3-volume commentary edition — verse-by-verse Sanskrit, transliteration, and English commentary from within the Advaita sampradāya.</p>
+      <p class="card-desc-hi">अद्वैत वेदान्त का प्रमुख प्रकरण-ग्रन्थ — आदि शंकराचार्य को आरोपित ५८० श्लोक। विवेक, वैराग्य और "तत् त्वम् असि" की साक्षात् अनुभूति को मोक्ष के मार्ग के रूप में निरूपित करने वाला गुरु-शिष्य संवाद। स्वामी चिन्मयानन्द कृत प्रामाणिक ३-खण्ड भाष्य — संस्कृत, लिप्यंतरण एवं अंग्रेजी व्याख्या।</p>
       <div class="badges"><span class="badge b-skt t-en">Sanskrit</span><span class="badge b-skt t-hi" style="display:none">संस्कृत</span><span class="badge b-eng t-en">English</span><span class="badge b-eng t-hi" style="display:none">अंग्रेजी</span><span class="badge b-vs t-en">Verse-level</span><span class="badge b-vs t-hi" style="display:none">श्लोक-स्तर</span><span class="badge b-trad-smarta t-en">Smārta</span><span class="badge b-trad-smarta t-hi" style="display:none">स्मार्त</span><span class="badge b-trad-shaiva t-en">Śaiva</span><span class="badge b-trad-shaiva t-hi" style="display:none">शैव</span><span class="badge b-trad-shakta t-en">Śākta</span><span class="badge b-trad-shakta t-hi" style="display:none">शाक्त</span></div>
+      <div class="vol-btns">
+        <a href="./01-Vivekachudamani-Volume-01.pdf" target="_blank" class="vol-btn">Vol. I<span class="vol-btn-label">Verses 1–253</span></a>
+        <a href="./02-Vivekachudamani-Volume-02.pdf" target="_blank" class="vol-btn">Vol. II<span class="vol-btn-label">Verses 250–348</span></a>
+        <a href="./03-Vivekachudamani-Volume-03.pdf" target="_blank" class="vol-btn">Vol. III<span class="vol-btn-label">Verses 349–580</span></a>
+      </div>
+    </div>
+
+    <a href="https://estudantedavedanta.net/Vasisthas_Yoga_Venkatesananda.pdf" target="_blank" class="card a-green" data-trad="smarta shaiva shakta vaishnava">
+      <span class="card-icon">🌊</span>
+      <div class="card-title">Yoga Vāsiṣṭha — Vāsiṣṭha's Yoga</div>
+      <div class="card-title-hi">योगवासिष्ठ — वसिष्ठ का योग</div>
+      <div class="card-source t-en">estudantedavedanta.net · Swami Venkatesananda (1984) — complete abridged prose rendering</div><div class="card-source t-hi" style="display:none">estudantedavedanta.net · स्वामी वेङ्कटेशानन्द (१९८४) — पूर्ण संक्षिप्त गद्य अनुवाद</div>
+      <p class="card-desc">The Yoga Vāsiṣṭha (Mahā Rāmāyaṇa), one of the most encyclopaedic texts of Advaita Vedānta — Sage Vasiṣṭha's teachings to Prince Rāma on the nature of consciousness, māyā, and liberation. Six Prakaraṇas: Vairāgya, Mumukṣu, Utpatti, Sthiti, Upaśama, Nirvāṇa. Swami Venkatesananda's complete abridged prose rendering (1984) is the most readable single-volume English edition — faithful to the text's Advaita import while preserving its narrative depth. A Smārta and pan-Vedāntic authority, deeply resonant with Śaiva non-dualism and cited in the Śrī Vaiṣṇava tradition for its Rāma frame narrative. Approximately 32,000 ślokas in the complete recension.</p>
+      <p class="card-desc-hi">योगवासिष्ठ (महारामायण) — अद्वैत वेदान्त के सर्वाधिक विस्तृत ग्रन्थों में से एक। महर्षि वसिष्ठ द्वारा राजकुमार राम को चेतना, माया और मोक्ष पर उपदेश। छः प्रकरण: वैराग्य, मुमुक्षु, उत्पत्ति, स्थिति, उपशम, निर्वाण। स्वामी वेङ्कटेशानन्द (१९८४) का संक्षिप्त अंग्रेजी गद्यानुवाद — एकल-खण्ड में सर्वाधिक सुपाठ्य संस्करण। पूर्ण संस्करण में लगभग ३२,००० श्लोक।</p>
+      <div class="badges"><span class="badge b-skt t-en">Sanskrit</span><span class="badge b-skt t-hi" style="display:none">संस्कृत</span><span class="badge b-eng t-en">English</span><span class="badge b-eng t-hi" style="display:none">अंग्रेजी</span><span class="badge b-vs t-en">Prakaraṇa-level</span><span class="badge b-vs t-hi" style="display:none">प्रकरण-स्तर</span><span class="badge b-trad-smarta t-en">Smārta</span><span class="badge b-trad-smarta t-hi" style="display:none">स्मार्त</span><span class="badge b-trad-shaiva t-en">Śaiva</span><span class="badge b-trad-shaiva t-hi" style="display:none">शैव</span><span class="badge b-trad-shakta t-en">Śākta</span><span class="badge b-trad-shakta t-hi" style="display:none">शाक्त</span><span class="badge b-trad-vaishnava t-en">Vaiṣṇava</span><span class="badge b-trad-vaishnava t-hi" style="display:none">वैष्णव</span></div>
     </a>
 
     <a href="https://shlokam.org/vishnu-sahasranamam/" target="_blank" class="card a-green" data-trad="vaishnava smarta shaiva">
