@@ -231,9 +231,9 @@
   /* multi-volume card (non-link card with volume buttons) */
   .card-multivolume { cursor: default; }
   .card-multivolume:hover { transform: none; box-shadow: 0 4px 18px rgba(0,0,0,0.4); }
-  .vol-btns { display: flex; gap: 8px; margin-top: 14px; }
+  .vol-btns { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
   .vol-btn {
-    flex: 1; padding: 7px 4px; font-size: 12px; font-weight: 600; letter-spacing: 0.07em;
+    flex: 1 1 calc(33.333% - 6px); min-width: 0; padding: 7px 4px; font-size: 12px; font-weight: 600; letter-spacing: 0.07em;
     text-align: center; text-decoration: none; border-radius: 3px;
     border: 1px solid rgba(245,166,35,0.35); color: #e0ab48;
     background: rgba(245,166,35,0.08);
@@ -781,7 +781,7 @@
       <div class="card-title-hi">विवेकचूडामणि</div>
       <div class="card-source t-en">Ādi Śaṅkarācārya · Swami Chinmayananda · 3 Volumes · PDF</div><div class="card-source t-hi" style="display:none">आदि शंकराचार्य · स्वामी चिन्मयानन्द · ३ खण्ड · PDF</div>
       <p class="card-desc">The foremost prakaraṇa-grantha of Advaita Vedānta — 580 verses attributed to Ādi Śaṅkarācārya. A master-disciple dialogue expounding viveka, vairāgya, and the direct realization of Tat tvam asi. Swami Chinmayananda's authoritative 3-volume commentary edition — verse-by-verse Sanskrit, transliteration, and English commentary from within the Advaita sampradāya.</p>
-      <p class="card-desc-hi">अद्वैत वेदान्त का प्रमुख प्रकरण-ग्रन्थ — आदि शंकराचार्य को आरोपित ५८० श्लोक। विवेक, वैराग्य और "तत् त्वम् असि" की साक्षात् अनुभूति को मोक्ष के मार्ग के रूप में निरूपित करने वाला गुरु-शिष्य संवाद। स्वामी चिन्मयानन्द कृत प्रामाणिक ३-खण्ड भाष्य — संस्कृत, लिप्यंतरण एवं अंग्रेजी व्याख्या।</p>
+      <p class="card-desc-hi">अद्वैत वेदान्त का प्रमुख प्रकरण-ग्रन्थ — आदि शंकराचार्य को आरोपित ५८० श्लोक। विवेक, वैराग्य और "तत् त्वम् असि" की साक्षात् अनुभूति को मोक्ष के मार्ग के रूप में निरूपित गुरु-शिष्य संवाद। स्वामी चिन्मयानन्द कृत ३-खण्ड भाष्य — संस्कृत, लिप्यंतरण एवं अंग्रेजी व्याख्या।</p>
       <div class="badges"><span class="badge b-skt t-en">Sanskrit</span><span class="badge b-skt t-hi" style="display:none">संस्कृत</span><span class="badge b-eng t-en">English</span><span class="badge b-eng t-hi" style="display:none">अंग्रेजी</span><span class="badge b-vs t-en">Verse-level</span><span class="badge b-vs t-hi" style="display:none">श्लोक-स्तर</span><span class="badge b-trad-smarta t-en">Smārta</span><span class="badge b-trad-smarta t-hi" style="display:none">स्मार्त</span><span class="badge b-trad-shaiva t-en">Śaiva</span><span class="badge b-trad-shaiva t-hi" style="display:none">शैव</span><span class="badge b-trad-shakta t-en">Śākta</span><span class="badge b-trad-shakta t-hi" style="display:none">शाक्त</span></div>
       <div class="vol-btns">
         <a href="./01-Vivekachudamani-Volume-01.pdf" target="_blank" class="vol-btn">Vol. I<span class="vol-btn-label">Verses 1–253</span></a>
@@ -790,13 +790,41 @@
       </div>
     </div>
 
+    <div class="card a-green card-multivolume" data-trad="smarta shaiva shakta">
+      <span class="card-icon">🪔</span>
+      <div class="card-title">Upadeśa Sāhasrī</div>
+      <div class="card-title-hi">उपदेशसाहस्री</div>
+      <div class="card-source t-en">Ādi Śaṅkarācārya · Swami Chinmayananda · 6 Volumes · PDF</div><div class="card-source t-hi" style="display:none">आदि शंकराचार्य · स्वामी चिन्मयानन्द · ६ खण्ड · PDF</div>
+      <p class="card-desc">The Upadeśa Sāhasrī — "A Thousand Teachings" — is one of the two major prakaraṇa-granthas unambiguously attributed to Ādi Śaṅkarācārya, alongside Vivekacūḍāmaṇi. It comprises a Gadya section (prose: methodical dialogue on the mahāvākya Tat tvam asi and the qualifications of teacher and student) and a Padya section (verse: 19 chapters covering adhyāsa, śarīra-traya, the three avasthās, and the culminating Ātma-Manau Saṃvāda Prakaraṇa — a dialogue between the Ātman and the mind on the unreality of duality). Chinmaya Mission 6-volume class notes — Sanskrit text, transliteration, word meanings, and lecture-based Advaita commentary covering all 19 verse chapters and the prose section.</p>
+      <p class="card-desc-hi">उपदेशसाहस्री — "एक हज़ार उपदेश" — आदि शंकराचार्य के दो प्रमुख प्रकरण-ग्रन्थों में से एक, जिसका प्रामाणिक आरोपण निर्विवाद है। इसमें गद्य भाग (महावाक्य "तत् त्वम् असि" पर क्रमबद्ध संवाद) और पद्य भाग (१९ प्रकरण: अध्यास, शरीरत्रय, तीन अवस्थाएँ, और आत्म-मनौ संवाद प्रकरण) सम्मिलित हैं। चिन्मय मिशन ६-खण्ड कक्षा-टिप्पणी — संस्कृत पाठ, लिप्यंतरण, शब्दार्थ एवं अद्वैत व्याख्या।</p>
+      <div class="badges"><span class="badge b-skt t-en">Sanskrit</span><span class="badge b-skt t-hi" style="display:none">संस्कृत</span><span class="badge b-eng t-en">English</span><span class="badge b-eng t-hi" style="display:none">अंग्रेजी</span><span class="badge b-vs t-en">Verse + Prose</span><span class="badge b-vs t-hi" style="display:none">पद्य + गद्य</span><span class="badge b-trad-smarta t-en">Smārta</span><span class="badge b-trad-smarta t-hi" style="display:none">स्मार्त</span><span class="badge b-trad-shaiva t-en">Śaiva</span><span class="badge b-trad-shaiva t-hi" style="display:none">शैव</span><span class="badge b-trad-shakta t-en">Śākta</span><span class="badge b-trad-shakta t-hi" style="display:none">शाक्त</span></div>
+      <div class="vol-btns">
+        <a href="./02-Upadesa-Sahasri-Volume-1.pdf" target="_blank" class="vol-btn">Vol. I<span class="vol-btn-label">Prose + Ch. 1–3</span></a>
+        <a href="./03-Upadesa-Sahasri-Volume-2.pdf" target="_blank" class="vol-btn">Vol. II<span class="vol-btn-label">Ch. 4–9</span></a>
+        <a href="./04-Upadesa-Sahasri-Volume-3.pdf" target="_blank" class="vol-btn">Vol. III<span class="vol-btn-label">Ch. 10–13</span></a>
+        <a href="./05-Upadesa-Sahasri-Volume-4.pdf" target="_blank" class="vol-btn">Vol. IV<span class="vol-btn-label">Ch. 14–16</span></a>
+        <a href="./06-Upadesa-Sahasri-Volume-5.pdf" target="_blank" class="vol-btn">Vol. V<span class="vol-btn-label">Ch. 17–18</span></a>
+        <a href="./07-Upadesa-Sahasri-Volume-6.pdf" target="_blank" class="vol-btn">Vol. VI<span class="vol-btn-label">Ch. 19 · Ātma-Manas</span></a>
+      </div>
+    </div>
+
+    <a href="./01-Atma-Bodha-Class-Notes.pdf" target="_blank" class="card a-green" data-trad="smarta shaiva shakta">
+      <span class="card-icon">✨</span>
+      <div class="card-title">Ātma Bodha</div>
+      <div class="card-title-hi">आत्मबोध</div>
+      <div class="card-source t-en">Ādi Śaṅkarācārya · Chinmaya Mission Class Notes · PDF</div><div class="card-source t-hi" style="display:none">आदि शंकराचार्य · चिन्मय मिशन कक्षा-टिप्पणी · PDF</div>
+      <p class="card-desc">All 68 verses of Ādi Śaṅkarācārya's Ātma Bodha — "Knowledge of the Self." The most accessible of Śaṅkara's prakaraṇa-granthas: a concise, systematic exposition of Advaita Vedānta covering adhikāritva (qualifications), adhyāsa (superimposition), the pañca-kośa analysis, three bodies (śarīra-traya), avasthā-traya (three states), and the mahāvākya realization Aham Brahmāsmi. Chinmaya Mission class notes with verse-by-verse Sanskrit, transliteration, word meanings, and detailed Advaita commentary — foundational across Smārta, Śaiva, and Śākta Advaita study.</p>
+      <p class="card-desc-hi">आदि शंकराचार्य के आत्मबोध के सभी ६८ श्लोक। शंकराचार्य के प्रकरण-ग्रन्थों में सर्वाधिक सुलभ — अद्वैत वेदान्त का संक्षिप्त और क्रमबद्ध निरूपण: अधिकारित्व, अध्यास, पञ्चकोश-विश्लेषण, शरीरत्रय, अवस्थात्रय और महावाक्य अहम् ब्रह्मास्मि की अनुभूति। चिन्मय मिशन कक्षा-टिप्पणी — संस्कृत, लिप्यंतरण, शब्दार्थ और विस्तृत अद्वैत व्याख्या।</p>
+      <div class="badges"><span class="badge b-skt t-en">Sanskrit</span><span class="badge b-skt t-hi" style="display:none">संस्कृत</span><span class="badge b-eng t-en">English</span><span class="badge b-eng t-hi" style="display:none">अंग्रेजी</span><span class="badge b-vs t-en">Verse-level</span><span class="badge b-vs t-hi" style="display:none">श्लोक-स्तर</span><span class="badge b-trad-smarta t-en">Smārta</span><span class="badge b-trad-smarta t-hi" style="display:none">स्मार्त</span><span class="badge b-trad-shaiva t-en">Śaiva</span><span class="badge b-trad-shaiva t-hi" style="display:none">शैव</span><span class="badge b-trad-shakta t-en">Śākta</span><span class="badge b-trad-shakta t-hi" style="display:none">शाक्त</span></div>
+    </a>
+
     <a href="https://estudantedavedanta.net/Vasisthas_Yoga_Venkatesananda.pdf" target="_blank" class="card a-green" data-trad="smarta shaiva shakta vaishnava">
       <span class="card-icon">🌊</span>
       <div class="card-title">Yoga Vāsiṣṭha — Vāsiṣṭha's Yoga</div>
       <div class="card-title-hi">योगवासिष्ठ — वसिष्ठ का योग</div>
       <div class="card-source t-en">estudantedavedanta.net · Swami Venkatesananda (1984) — complete abridged prose rendering</div><div class="card-source t-hi" style="display:none">estudantedavedanta.net · स्वामी वेङ्कटेशानन्द (१९८४) — पूर्ण संक्षिप्त गद्य अनुवाद</div>
-      <p class="card-desc">The Yoga Vāsiṣṭha (Mahā Rāmāyaṇa), one of the most encyclopaedic texts of Advaita Vedānta — Sage Vasiṣṭha's teachings to Prince Rāma on the nature of consciousness, māyā, and liberation. Six Prakaraṇas: Vairāgya, Mumukṣu, Utpatti, Sthiti, Upaśama, Nirvāṇa. Swami Venkatesananda's complete abridged prose rendering (1984) is the most readable single-volume English edition — faithful to the text's Advaita import while preserving its narrative depth. A Smārta and pan-Vedāntic authority, deeply resonant with Śaiva non-dualism and cited in the Śrī Vaiṣṇava tradition for its Rāma frame narrative. Approximately 32,000 ślokas in the complete recension.</p>
-      <p class="card-desc-hi">योगवासिष्ठ (महारामायण) — अद्वैत वेदान्त के सर्वाधिक विस्तृत ग्रन्थों में से एक। महर्षि वसिष्ठ द्वारा राजकुमार राम को चेतना, माया और मोक्ष पर उपदेश। छः प्रकरण: वैराग्य, मुमुक्षु, उत्पत्ति, स्थिति, उपशम, निर्वाण। स्वामी वेङ्कटेशानन्द (१९८४) का संक्षिप्त अंग्रेजी गद्यानुवाद — एकल-खण्ड में सर्वाधिक सुपाठ्य संस्करण। पूर्ण संस्करण में लगभग ३२,००० श्लोक।</p>
+      <p class="card-desc">The Yoga Vāsiṣṭha (Mahā Rāmāyaṇa) — Sage Vasiṣṭha's teachings to Prince Rāma on the nature of consciousness, māyā, and liberation. Six Prakaraṇas: Vairāgya, Mumukṣu, Utpatti, Sthiti, Upaśama, Nirvāṇa. One of the most encyclopaedic texts of Advaita Vedānta (~32,000 ślokas in the complete recension). Swami Venkatesananda's complete abridged prose rendering (1984) is the most readable single-volume English edition — faithful to the text's Advaita import while preserving its narrative depth. A Smārta and pan-Vedāntic authority, deeply resonant with Śaiva non-dualism.</p>
+      <p class="card-desc-hi">योगवासिष्ठ (महारामायण) — महर्षि वसिष्ठ द्वारा राजकुमार राम को चेतना, माया और मोक्ष पर उपदेश। छः प्रकरण: वैराग्य, मुमुक्षु, उत्पत्ति, स्थिति, उपशम, निर्वाण। अद्वैत वेदान्त के सर्वाधिक विस्तृत ग्रन्थों में से एक (~३२,००० श्लोक)। स्वामी वेङ्कटेशानन्द (१९८४) का संक्षिप्त अंग्रेजी गद्यानुवाद — एकल-खण्ड में सर्वाधिक सुपाठ्य संस्करण।</p>
       <div class="badges"><span class="badge b-skt t-en">Sanskrit</span><span class="badge b-skt t-hi" style="display:none">संस्कृत</span><span class="badge b-eng t-en">English</span><span class="badge b-eng t-hi" style="display:none">अंग्रेजी</span><span class="badge b-vs t-en">Prakaraṇa-level</span><span class="badge b-vs t-hi" style="display:none">प्रकरण-स्तर</span><span class="badge b-trad-smarta t-en">Smārta</span><span class="badge b-trad-smarta t-hi" style="display:none">स्मार्त</span><span class="badge b-trad-shaiva t-en">Śaiva</span><span class="badge b-trad-shaiva t-hi" style="display:none">शैव</span><span class="badge b-trad-shakta t-en">Śākta</span><span class="badge b-trad-shakta t-hi" style="display:none">शाक्त</span><span class="badge b-trad-vaishnava t-en">Vaiṣṇava</span><span class="badge b-trad-vaishnava t-hi" style="display:none">वैष्णव</span></div>
     </a>
 
